@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DeckAlchemist.WebApp.Api.Managers;
+using DeckAlchemist.WebApp.Api.Managers.Source;
+using DeckAlchemist.WebApp.Api.Managers.Source.MtgJson;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace DeckAlchemist.WebApp.Api
 {
@@ -24,6 +21,12 @@ namespace DeckAlchemist.WebApp.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            ConfigureDependencies(services);
+        }
+
+        private void ConfigureDependencies(IServiceCollection services) {
+            services.AddTransient<ICardDatabaseSource, MtgJsonCardDatabaseSource>();
+            services.AddSingleton<ICardDatabaseManager, CachingCardDatabaseManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
