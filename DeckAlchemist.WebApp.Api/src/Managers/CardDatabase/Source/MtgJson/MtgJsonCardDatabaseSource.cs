@@ -32,8 +32,7 @@ namespace DeckAlchemist.WebApp.Api.Managers.Source.MtgJson
             foreach(var card in cards.Values) if(card != null)
                 conversion.Add(ConvertToCard(card));
 
-            
-            return cards.Select(pair => ConvertToCard(pair.Value));
+            return conversion;
         }
 
         private Card ConvertToCard(MtgJsonCard card) {
