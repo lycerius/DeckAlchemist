@@ -13530,23 +13530,23 @@
     ]
   },
   "packageFolders": {
-    "/Users/longdog/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\Nathan C. Purpura\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Volumes/Encrypted/DeckAlchemist/DeckAlchemist.WebApp.Api.Test/DeckAlchemist.WebApp.Api.Test.csproj",
+      "projectUniqueName": "d:\\Projects\\DeckAlchemist\\DeckAlchemist.WebApp.Api.Test\\DeckAlchemist.WebApp.Api.Test.csproj",
       "projectName": "DeckAlchemist.WebApp.Api.Test",
-      "projectPath": "/Volumes/Encrypted/DeckAlchemist/DeckAlchemist.WebApp.Api.Test/DeckAlchemist.WebApp.Api.Test.csproj",
-      "packagesPath": "/Users/longdog/.nuget/packages/",
-      "outputPath": "/Volumes/Encrypted/DeckAlchemist/DeckAlchemist.WebApp.Api.Test/obj/",
+      "projectPath": "d:\\Projects\\DeckAlchemist\\DeckAlchemist.WebApp.Api.Test\\DeckAlchemist.WebApp.Api.Test.csproj",
+      "packagesPath": "C:\\Users\\Nathan C. Purpura\\.nuget\\packages\\",
+      "outputPath": "d:\\Projects\\DeckAlchemist\\DeckAlchemist.WebApp.Api.Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/longdog/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Nathan C. Purpura\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -13557,8 +13557,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "/Volumes/Encrypted/DeckAlchemist/DeckAlchemist.WebApp.Api/DeckAlchemist.WebApp.Api.csproj": {
-              "projectPath": "/Volumes/Encrypted/DeckAlchemist/DeckAlchemist.WebApp.Api/DeckAlchemist.WebApp.Api.csproj"
+            "d:\\Projects\\DeckAlchemist\\DeckAlchemist.WebApp.Api\\DeckAlchemist.WebApp.Api.csproj": {
+              "projectPath": "d:\\Projects\\DeckAlchemist\\DeckAlchemist.WebApp.Api\\DeckAlchemist.WebApp.Api.csproj"
             }
           }
         }
@@ -13572,23 +13572,23 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
+          "Microsoft.NET.Test.Sdk": {
+            "target": "Package",
+            "version": "[15.3.0, )"
+          },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "2.0",
+            "version": "[2.0.0, )",
             "autoReferenced": true
-          },
-          "Microsoft.NET.Test.Sdk": {
-            "target": "Package",
-            "version": "15.3.0"
           },
           "xunit": {
             "target": "Package",
-            "version": "2.2.0"
+            "version": "[2.2.0, )"
           },
           "xunit.runner.visualstudio": {
             "target": "Package",
-            "version": "2.2.0"
+            "version": "[2.2.0, )"
           }
         },
         "imports": [

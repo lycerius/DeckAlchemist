@@ -1,36 +1,29 @@
 using System.Collections.Generic;
+using DeckAlchemist.WebApp.Api.Managers.Caching;
 using DeckAlchemist.WebApp.Api.Managers.Source;
 using DeckAlchemist.WebApp.Api.Objects;
 
-namespace DeckAlchemist.WebApp.Api.Managers 
+namespace DeckAlchemist.WebApp.Api.Managers
 {
     public class CachingCardDatabaseManager : ICardDatabaseManager
     {
         private readonly ICardDatabaseSource _source;
-        private volatile IEnumerable<Card> _cache = new List<Card>();
+        private readonly ICardDatabaseCache _cache;
 
-        public CachingCardDatabaseManager(ICardDatabaseSource source){
+        public CachingCardDatabaseManager(ICardDatabaseSource source, ICardDatabaseCache cache)
+        {
             _source = source;
-            Invalidate();
-        }
-
-        public void Invalidate() 
-        {
-            lock(_cache){
-                _cache = _source.GetAllCards();
-            }
-        }
-
-        private bool IsInvalidCache()
-        {
-            return _cache != null;
+            _cache = cache;
         }
 
         public IEnumerable<Card> GetAllCards()
         {
-            lock(_cache) {
-                return _cache;
+            if(_cache.IsInvalid())
+            {
+                _cache.Set(_source.GetAllCards());
             }
+
+            return _cache.Get();
         }
     }
 }
