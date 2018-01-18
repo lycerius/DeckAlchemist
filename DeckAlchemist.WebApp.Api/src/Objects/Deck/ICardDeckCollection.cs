@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DeckAlchemist.WebApp.Api.Objects.Deck
 {
     public interface ICardDeckCollection
