@@ -1,20 +1,23 @@
 using System.Collections.Generic;
-using DeckAlchemist.WebApp.Api.Managers.Caching;
-using DeckAlchemist.WebApp.Api.Managers.Source;
-using DeckAlchemist.WebApp.Api.Objects;
+using System.Linq;
+using DeckAlchemist.WebApp.Api.Managers.CardDatabase;
+using DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.Local;
+using DeckAlchemist.WebApp.Api.Objects.CardDatabase;
 
-namespace DeckAlchemist.WebApp.Api.Managers
-{
-    public class CardDatabaseManager : ICardDatabaseManager
-    {
-        private readonly ICardDatabaseSource _source;
-        public CardDatabaseManager(ICardDatabaseSource source)
-        {
+namespace DeckAlchemist.WebApp.Api.Managers {
+    public class CardDatabaseManager : ICardDatabaseManager {
+        private readonly ILocalCardDatabaseSource _source;
+
+        public CardDatabaseManager (ILocalCardDatabaseSource source) {
             _source = source;
         }
-        public IEnumerable<Card> GetAllCards()
-        {
-            return _source.GetAllCards();
+        public CardDatabaseCollection GetAllCards () {
+            return _source.GetAllCards ();
         }
+
+        public CardDatabaseCollection GetAllStandard () {
+            return _source.GetAllStandardCards();
+        }
+
     }
 }
