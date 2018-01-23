@@ -11,20 +11,6 @@ namespace DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.Local {
             }
         }
 
-        public CardDatabaseCollection GetAllStandardCards()
-        {
-            var standardLegal = new Legality{
-                Format = "Standard",
-                Status = "Legal"
-            };
-
-            lock(_storage)
-            {
-                return new CardDatabaseCollection(_storage.Where(entry => entry.Value.Legalities != null && entry.Value.Legalities.Contains(standardLegal)).Select(item => item.Value).ToDictionary(item => item.Name));
-            }
-        
-        }
-
         public void Update (params ICard[] cards) {
             lock (_storage) {
                 foreach (var card in cards) {

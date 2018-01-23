@@ -15,9 +15,5 @@ namespace DeckAlchemist.WebApp.Api.Managers {
             return _source.GetAllCards ();
         }
 
-        public CardDatabaseCollection GetAllStandard () {
-            return _source.GetAllStandardCards();
-        }
-
     }
 }

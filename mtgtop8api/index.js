@@ -8,5 +8,5 @@ var mtgtop8v1 = require('./api/mtgtop8/v1');
 app.use('/v1', mtgtop8v1);
 
 //Start
-app.listen(80, () => console.log("MTGTop8Api Started"));
+app.listen(1284, () => console.log("MTGTop8Api Started"));
 

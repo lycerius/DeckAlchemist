@@ -17,9 +17,5 @@ namespace DeckAlchemist.WebApp.Api.Controllers {
             return _cardDatabaseManager.GetAllCards ().Collection;
         }
 
-        [HttpGet ("standard")]
-        public IReadOnlyDictionary<string, ICard> GetAllStandardCards() {
-            return _cardDatabaseManager.GetAllStandard().Collection;
-        }
     }
 }

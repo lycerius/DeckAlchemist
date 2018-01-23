@@ -2,6 +2,7 @@ namespace DeckAlchemist.WebApp.Api.Objects.Deck
 {
     public interface IDeckCard
     {
-        string Name {get;set;}
+         string Name {get; set;}
+         int Count {get; set;}
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using DeckAlchemist.WebApp.Api.Objects;
 using DeckAlchemist.WebApp.Api.Objects.CardDatabase;
+using DeckAlchemist.WebApp.Api.Objects.CardDatabase.MTG;
 using Newtonsoft.Json;
 
 namespace DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.External.MtgJson {
@@ -36,7 +38,12 @@ namespace DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.External.MtgJson
         }
 
         private ICard ConvertToCard (MtgJsonCard card) {
-            return new Card {
+            return new MTGCard {
+                CCG = CCGType.MTG,
+                Name = card.Name,
+                Image = ""
+            };
+            /*return new Card {
                     ColorIdentity = card.ColorIdentity,
                     Colors = card.Colors,
                     ConvertedManaCost = card.ConvertedManaCost,
@@ -51,13 +58,16 @@ namespace DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.External.MtgJson
                     Type = card.Type,
                     Types = card.Types
             };
+            */
         }
 
+        /* 
         private Legality ConvertToLegality (MtgJsonLegality legal) {
             return new Legality {
                 Format = legal.Format,
                     Status = legal.Status
             };
         }
+        */
     }
 }

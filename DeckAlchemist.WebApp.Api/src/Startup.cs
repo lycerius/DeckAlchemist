@@ -3,6 +3,8 @@ using DeckAlchemist.WebApp.Api.Managers.CardDatabase.Integration;
 using DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.External;
 using DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.External.MtgJson;
 using DeckAlchemist.WebApp.Api.Managers.CardDatabase.Source.Local;
+using DeckAlchemist.WebApp.Api.Managers.Deck.External;
+using DeckAlchemist.WebApp.Api.Managers.Deck.External.MTGGoldfish;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,7 @@ namespace DeckAlchemist.WebApp.Api {
             services.AddTransient<ICardDatabaseManager, CardDatabaseManager> ();
             services.AddSingleton<ILocalCardDatabaseSource, InMemoryLocalCardDatabaseSource> ();
             services.AddSingleton<ICardDatabaseIntegrator, CardDatabaseIntegrator> ();
+            services.AddTransient<IExternalDeckSource, MTGGoldfishExternalDeckSource>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +38,9 @@ namespace DeckAlchemist.WebApp.Api {
                 app.UseDeveloperExceptionPage ();
             }
             var integrate = app.ApplicationServices.GetService<ICardDatabaseIntegrator> ();
-            integrate.Integrate ();
+            //integrate.Integrate ();
+            var deckSource = app.ApplicationServices.GetService<IExternalDeckSource> ();
+            deckSource.GetAllDecks();
             app.UseMvc ();
         }
     }
