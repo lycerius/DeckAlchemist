@@ -7,6 +7,7 @@ services:
       - mongodb
     depends_on:
       - mongodb
+      - mtgtop8api
     ports:
       - 5000:80
       #TODO HTTPS Only
@@ -22,6 +23,14 @@ services:
       - 80:80
       #TODO: HTTPS
   
+  mtgtop8api: #TODO: Remove
+    build: ./mtgtop8api/.
+    container_name: "mtgtop8api"
+    ports:
+      - 1284:1284
+
+  #TODO: Database integration service
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
