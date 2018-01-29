@@ -32,6 +32,7 @@ namespace DeckAlchemist.WebApp.Api {
             services.AddSingleton<ICardDatabaseIntegrator, CardDatabaseIntegrator> ();
             services.AddTransient<IExternalDeckSource, MTGGoldfishExternalDeckSource>();
             services.AddTransient<IDeckManager, DeckManager>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +40,10 @@ namespace DeckAlchemist.WebApp.Api {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
             }
+
+            var integration = app.ApplicationServices.GetService<ICardDatabaseIntegrator>();
+            integration.Integrate();
+            
             app.UseMvc ();
         }
     }
