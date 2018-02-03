@@ -29,21 +29,21 @@ router.get('/events/modern/:page', (req, res) => {
     })
 })
 
-router.get('events/info/:eventId', function(req, res) {
+router.get('/events/info/:eventId', function(req, res) {
     var eventId = req.params['eventId']
     top8.eventInfo(eventId, (err, result) => {
         sendResponse(res, err, result)
     })
 })
 
-router.get('events/info/:eventId/more', function(req, res) {
+router.get('/events/info/:eventId/more', function(req, res) {
     var eventId = req.params['eventId']
     top8.event(eventId, (err, result) => {
         sendResponse(res, err, result)
     })
 })
 
-router.get('deck/:eventId/:deckId', function(req, res) {
+router.get('/deck/:eventId/:deckId', function(req, res) {
     var eventId = req.params['eventId']
     var deckId = req.params['deckId']
     top8.deck(eventId, deckId, (err, result) => {

@@ -1,0 +1,45 @@
+version: '3'
+services:
+  api:
+    build:  ./DeckAlchemist.WebApp.Api/.
+    container_name: "deckalchemist-webapi"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+      - mtgtop8api
+    ports:
+      - 5000:80
+      #TODO HTTPS Only
+  
+  web:
+    build: ./DeckAlchemist.WebApp/.
+    container_name: "deckalchemist-web"
+    links:
+      - api
+    depends_on:
+      - api
+    ports:
+      - 80:80
+      #TODO: HTTPS
+  
+  mtgtop8api: #TODO: Remove
+    build: ./mtgtop8api/.
+    container_name: "mtgtop8api"
+    ports:
+      - 1284:1284
+
+  #TODO: Database integration service
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/data/logs
+    volumes:
+      - ~/colossus/data/mongo:/data
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/data/logs
+    

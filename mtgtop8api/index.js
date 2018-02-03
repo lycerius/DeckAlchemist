@@ -7,10 +7,6 @@ var mtgtop8v1 = require('./api/mtgtop8/v1');
 //Routers
 app.use('/v1', mtgtop8v1);
 
-var port = process.env.Port ? process.env.Port : 3498;
-
-console.log("Using port "+port);
-
 //Start
-app.listen(port, () => console.log("MTGTop8Api Started"));
+app.listen(1284, () => console.log("MTGTop8Api Started"));
 
