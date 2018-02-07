@@ -1,35 +1,30 @@
 version: '3'
-services:
-  api:
-    build:  ./DeckAlchemist.WebApp.Api/.
-    container_name: "deckalchemist-webapi"
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
-      - mtgtop8api
-    ports:
-      - 5000:80
-      #TODO HTTPS Only
-  
-  web:
-    build: ./DeckAlchemist.WebApp/.
-    container_name: "deckalchemist-web"
-    links:
-      - api
-    depends_on:
-      - api
-    ports:
-      - 80:80
-      #TODO: HTTPS
-  
-  mtgtop8api: #TODO: Remove
-    build: ./mtgtop8api/.
-    container_name: "mtgtop8api"
-    ports:
-      - 1284:1284
 
-  #TODO: Database integration service
+services:
+  deckalchemist.api:
+    image: deckalchemist.api
+    build:
+      context: ./DeckAlchemist.Api
+      dockerfile: Dockerfile
+    ports: 
+        - 5000:80
+    
+
+  deckalchemist.collector:
+    image: deckalchemist.collector
+    build:
+      context: ./DeckAlchemist.Collector
+      dockerfile: Dockerfile
+    ports: 
+        - 3865:80
+
+  deckalchemist.webapp:
+    image: deckalchemist.webapp
+    build:
+      context: ./DeckAlchemist.WebApp
+      dockerfile: Dockerfile
+    ports: 
+        - 80:80
 
   mongodb:
     image: mongo:latest
@@ -42,4 +37,3 @@ services:
     ports:
       - 27017:27017
     command: mongod --smallfiles --logpath=/data/logs
-    
