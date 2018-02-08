@@ -13,12 +13,13 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
         const string MongoCollection = "Mtg";
 
         readonly IMongoCollection<MongoMtgDeck> collection;
+        readonly IMongoDatabase database;
         readonly FilterDefinitionBuilder<MongoMtgDeck> _filter = Builders<MongoMtgDeck>.Filter;
 
         public MongoMtgInternalDeckSource()
         {
             var client = new MongoClient(MongoConnectionString);
-            var database = client.GetDatabase(MongoDatabase);
+            database = client.GetDatabase(MongoDatabase);
             EnsureCollectionExists(database);
             collection = database.GetCollection<MongoMtgDeck>(MongoCollection);
         }
@@ -26,9 +27,15 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
 
         public void UpdateAllDecks(IEnumerable<IMtgDeck> externalDecks)
         {
+            database.DropCollection(MongoCollection);
+            EnsureCollectionExists(database);
+            collection.InsertMany(externalDecks.Select(externalDeck => MongoMtgDeck.FromMtgDeck(externalDeck)));
+
+            /* We need a way to match an external deck to one that is already in the database. Name is not enough (because it can change and names can be duplicated, making it unable to be a PK)
             var existingDecks = FindDecksByName(externalDecks.Select(deck => deck.Name).ToList());
             var plan = CreateDeckUpdatePlan(existingDecks, externalDecks);
             collection.BulkWrite(plan);
+            */
         }
 
         IDictionary<string, MongoMtgDeck> FindDecksByName(IEnumerable<string> names)

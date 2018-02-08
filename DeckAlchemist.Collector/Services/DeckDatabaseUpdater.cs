@@ -1,5 +1,4 @@
-﻿using System;
-using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
+﻿using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
 using DeckAlchemist.Collector.Sources.Decks.Mtg.Internal;
 
 namespace DeckAlchemist.Collector.Services
