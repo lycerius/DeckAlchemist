@@ -7,5 +7,6 @@ namespace DeckAlchemist.Api.Sources.Mtg.Internal
     {
         IEnumerable<IMtgCard> GetAllCards();
         void UpdateAllCards(IEnumerable<IMtgCard> cards);
+        IEnumerable<IMtgCard> FindCardsByName(string name);
     }
 }

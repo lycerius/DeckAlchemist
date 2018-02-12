@@ -32,21 +32,28 @@ namespace DeckAlchemist.Api.Sources.Mtg.Internal
 
         public void UpdateAllCards(IEnumerable<IMtgCard> cards)
         {
-            var existingCards = FindCardsByNames(cards.Select(card => card.Name));
+            var existingCards = FindMongoCardsByNames(cards.Select(card => card.Name));
             var plan = CreateCardUpdatePlan(existingCards, cards);
             if(plan.Any()) collection.BulkWrite(plan);
         }
 
-        public Dictionary<string, MongoMtgCard> FindCardsByName(string name)
+        public IEnumerable<IMtgCard> FindCardsByName(string name)
         {
             var findCardsFilter = _filter.In("Name", name);
             var result = collection.Find(findCardsFilter);
-            return result.ToEnumerable().ToDictionary(card => card.Name);
+            return result.ToEnumerable().Select(MtgCard.FromMongo);
         }
-
-        public Dictionary<string, MongoMtgCard> FindCardsByNames(IEnumerable<string> cardNames)
+        
+        public Dictionary<string, MongoMtgCard> FindMongoCardsByNames(IEnumerable<string> cardNames)
         {
             var findCardsFilter = _filter.In("Name", cardNames);
+            var result = collection.Find(findCardsFilter);
+            return result.ToEnumerable().ToDictionary(card => card.Name);
+        }
+        
+        public Dictionary<string, MongoMtgCard> FindMongoCardsByName(string name)
+        {
+            var findCardsFilter = _filter.In("Name", name);
             var result = collection.Find(findCardsFilter);
             return result.ToEnumerable().ToDictionary(card => card.Name);
         }
