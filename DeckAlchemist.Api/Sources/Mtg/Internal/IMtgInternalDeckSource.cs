@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DeckAlchemist.Collector.Objects.Decks;
 
-namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
+namespace DeckAlchemist.Api.Sources.Mtg.Internal
 {
     public interface IMtgInternalDeckSource
     {

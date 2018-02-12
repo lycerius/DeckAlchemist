@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DeckAlchemist.Collector.Objects.Cards;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DeckAlchemist.Collector.Objects.Cards
+namespace DeckAlchemist.Api.Objects.Mtg.Cards
 {
     public class MongoMtgCard : IMtgCard
     {

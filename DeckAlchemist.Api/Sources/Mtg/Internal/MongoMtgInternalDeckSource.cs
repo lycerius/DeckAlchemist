@@ -1,14 +1,15 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DeckAlchemist.Api.Objects.Mtg.Decks;
 using DeckAlchemist.Collector.Objects.Decks;
-using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Security.Cryptography;
 using System.IO;
 using System.Text;
 using System;
+using MongoDB.Driver;
 
-namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
+namespace DeckAlchemist.Api.Sources.Mtg.Internal
 {
     public class MongoMtgInternalDeckSource : IMtgInternalDeckSource
     {

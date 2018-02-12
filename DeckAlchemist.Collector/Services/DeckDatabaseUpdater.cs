@@ -1,5 +1,5 @@
-﻿using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
-using DeckAlchemist.Collector.Sources.Decks.Mtg.Internal;
+﻿using DeckAlchemist.Api.Sources.Mtg.Internal;
+using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
 
 namespace DeckAlchemist.Collector.Services
 {

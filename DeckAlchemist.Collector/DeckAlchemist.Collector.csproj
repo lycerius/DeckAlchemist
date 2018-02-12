@@ -1,39 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Sources\" />
     <Folder Include="Sources\Cards\" />
     <Folder Include="Sources\Cards\Mtg\" />
-    <Folder Include="Objects\" />
-    <Folder Include="Objects\Cards\" />
     <Folder Include="Sources\Cards\Mtg\External\" />
-    <Folder Include="Sources\Cards\Mtg\Internal\" />
     <Folder Include="Services\" />
-    <Folder Include="Objects\Decks\" />
     <Folder Include="Sources\Decks\" />
     <Folder Include="Sources\Decks\Mtg\" />
     <Folder Include="Sources\Decks\Mtg\External\" />
-    <Folder Include="Sources\Decks\Mtg\Internal\" />
     <Folder Include="Controllers\" />
     <Folder Include="Schedulers\" />
     <Folder Include="Objects\Messages\" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="OpenScraping" Version="1.0.1" />
   </ItemGroup>
-
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -41,12 +31,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\DeckAlchemist.Api\DeckAlchemist.Api.csproj" />
+  </ItemGroup>
 </Project>

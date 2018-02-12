@@ -1,8 +1,4 @@
-﻿using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace DeckAlchemist.Collector.Objects.Cards
+﻿namespace DeckAlchemist.Api.Objects.Mtg.Cards
 {
     
     public class MtgLegality : IMtgLegality

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using DeckAlchemist.Collector.Objects.Cards;
 using Newtonsoft.Json;
 using System.Linq;
+using DeckAlchemist.Api.Objects.Mtg.Cards;
+
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
 {
     public class MtgJsonCard
