@@ -22,6 +22,7 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
             var database = client.GetDatabase(MongoDatabase);
             EnsureCollectionExists(database);
             collection = database.GetCollection<MongoMtgCard>(MongoCollection);
+            EnsureCollectionIndexed(collection);
         }
 
         public IEnumerable<IMtgCard> GetAllCards()
@@ -59,6 +60,7 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
 
                         var internalCardFilter = _filter.Eq("_id", internalCard._id);
 
+                        //TODO: Individual field replacement instead of the entire card?
                         var newPlan = new ReplaceOneModel<MongoMtgCard>(
                             internalCardFilter,
                             updatedInternalCard
@@ -114,6 +116,16 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
             if (!exists)
                 database.CreateCollection(MongoCollection);
         }
+
+        void EnsureCollectionIndexed(IMongoCollection<MongoMtgCard> collection)
+        {
+            var indexes = collection.Indexes.List().ToList();
+            foreach(var index in indexes)
+            {
+                
+            }
+        }
+
 
     }
 }

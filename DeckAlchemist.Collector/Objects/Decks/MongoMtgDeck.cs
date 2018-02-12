@@ -13,6 +13,7 @@ namespace DeckAlchemist.Collector.Objects.Decks
         public string Name { get; set; }
         public double Meta { get; set; }
         public IDictionary<string, IMtgDeckCard> Cards { get; set; }
+        public string id { get; set; }
 
         public static MongoMtgDeck FromMtgDeck(IMtgDeck deck)
         {

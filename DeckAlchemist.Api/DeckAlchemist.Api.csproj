@@ -8,13 +8,21 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Sources\" />
-    <Folder Include="Sources\Mtg\" />
     <Folder Include="Objects\" />
-    <Folder Include="Objects\Mtg\" />
+    <Folder Include="Sources\Cards\" />
+    <Folder Include="Sources\Decks\" />
+    <Folder Include="Sources\Cards\Mtg\" />
+    <Folder Include="Sources\Users\" />
+    <Folder Include="Sources\Groups\" />
+    <Folder Include="Sources\Collections\" />
+    <Folder Include="Objects\Cards\" />
+    <Folder Include="Objects\Cards\Mtg\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>

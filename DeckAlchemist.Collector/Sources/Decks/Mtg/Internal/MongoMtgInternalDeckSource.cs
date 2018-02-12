@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using DeckAlchemist.Collector.Objects.Decks;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
+using System;
 
 namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
 {
@@ -29,13 +33,26 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
         {
             database.DropCollection(MongoCollection);
             EnsureCollectionExists(database);
-            collection.InsertMany(externalDecks.Select(externalDeck => MongoMtgDeck.FromMtgDeck(externalDeck)));
+            var mongoCards = externalDecks.Select(externalDeck => { var deck = MongoMtgDeck.FromMtgDeck(externalDeck); deck.id = CreateUniqueIdForDeck(deck); return deck; });
+            collection.InsertMany(mongoCards);
 
             /* We need a way to match an external deck to one that is already in the database. Name is not enough (because it can change and names can be duplicated, making it unable to be a PK)
             var existingDecks = FindDecksByName(externalDecks.Select(deck => deck.Name).ToList());
             var plan = CreateDeckUpdatePlan(existingDecks, externalDecks);
             collection.BulkWrite(plan);
             */
+        }
+
+        public string CreateUniqueIdForDeck(IMtgDeck deck)
+        {
+            var orderedCards = deck.Cards.Values.OrderBy(card => card.Name);
+            var builder = new StringBuilder();
+            foreach (var card in orderedCards)
+                builder.Append(card.Name);
+            var bytes = Encoding.UTF8.GetBytes(builder.ToString());
+            var hasher = new SHA256Managed();
+            var id = hasher.ComputeHash(bytes);
+            return Convert.ToBase64String(id);
         }
 
         IDictionary<string, MongoMtgDeck> FindDecksByName(IEnumerable<string> names)
