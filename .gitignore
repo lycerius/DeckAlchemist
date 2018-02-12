@@ -1,3 +1,6 @@
+# Rider project folder
+.idea/
+
 _build/
 _site/
 Properties/
