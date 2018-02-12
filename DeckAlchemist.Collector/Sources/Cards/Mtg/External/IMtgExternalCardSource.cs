@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Cards;
+using DeckAlchemist.Api.Objects.Mtg.Cards;
 
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg
 {

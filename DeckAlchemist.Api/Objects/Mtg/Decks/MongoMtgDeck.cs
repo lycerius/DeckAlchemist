@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Decks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DeckAlchemist.Collector.Objects.Decks
+namespace DeckAlchemist.Api.Objects.Mtg.Decks
 {
     public interface IMtgDeck
     {

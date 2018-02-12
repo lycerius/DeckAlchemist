@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DeckAlchemist.Api.Objects.Mtg.Decks;
-using DeckAlchemist.Collector.Objects.Decks;
 using MongoDB.Bson;
 using System.Security.Cryptography;
 using System.IO;

@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DeckAlchemist.Api.Objects.Mtg.Cards;
-using DeckAlchemist.Api.Sources.Mtg.Internal;
-using DeckAlchemist.Collector.Objects.Cards;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 
-namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
+namespace DeckAlchemist.Api.Sources.Mtg.Internal
 {
     public class MongoMtgInternalCardSource : IMtgInternalCardSource
     {
@@ -40,7 +37,14 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
             if(plan.Any()) collection.BulkWrite(plan);
         }
 
-        Dictionary<string, MongoMtgCard> FindCardsByNames(IEnumerable<string> cardNames)
+        public Dictionary<string, MongoMtgCard> FindCardsByName(string name)
+        {
+            var findCardsFilter = _filter.In("Name", name);
+            var result = collection.Find(findCardsFilter);
+            return result.ToEnumerable().ToDictionary(card => card.Name);
+        }
+
+        public Dictionary<string, MongoMtgCard> FindCardsByNames(IEnumerable<string> cardNames)
         {
             var findCardsFilter = _filter.In("Name", cardNames);
             var result = collection.Find(findCardsFilter);

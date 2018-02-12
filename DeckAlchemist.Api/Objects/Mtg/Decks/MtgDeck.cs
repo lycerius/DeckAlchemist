@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Mtg.Decks;
+﻿using System.Collections.Generic;
 
-namespace DeckAlchemist.Collector.Objects.Decks
+namespace DeckAlchemist.Api.Objects.Mtg.Decks
 {
     public class MtgDeck : IMtgDeck
     {

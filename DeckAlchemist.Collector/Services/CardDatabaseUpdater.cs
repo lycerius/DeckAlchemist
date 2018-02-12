@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Cards;
 using DeckAlchemist.Collector.Sources.Cards.Mtg;
-using DeckAlchemist.Collector.Sources.Cards.Mtg.Internal;
 using System.Linq;
 using DeckAlchemist.Api.Sources.Mtg.Internal;
 

@@ -1,5 +1,4 @@
-﻿using System;
-namespace DeckAlchemist.Collector.Objects.Decks
+﻿namespace DeckAlchemist.Api.Objects.Mtg.Decks
 {
     public interface IMtgDeckCard
     {

@@ -11,7 +11,6 @@ using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DeckAlchemist.Api.Objects.Mtg.Decks;
 using DeckAlchemist.Api.Sources.Mtg.Internal;
-using DeckAlchemist.Collector.Sources.Cards.Mtg.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
