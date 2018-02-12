@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using DeckAlchemist.Collector.Objects.Cards;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
 {
     public class MongoMtgInternalCardSource : IMtgInternalCardSource
     {
-        const string MongoConnectionString = "mongodb://localhost:27017";
-        const string MongoDatabase = "Cards";
-        const string MongoCollection = "Mtg";
+        readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI");
+        const string MongoDatabase = "Mtg";
+        const string MongoCollection = "Cards";
 
         readonly IMongoCollection<MongoMtgCard> collection;
         readonly FilterDefinitionBuilder<MongoMtgCard> _filter = Builders<MongoMtgCard>.Filter;
