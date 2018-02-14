@@ -19,6 +19,7 @@
     <Folder Include="Sources\Decks\Mtg\" />
     <Folder Include="Sources\Decks\Mtg\External\" />
     <Folder Include="Sources\Decks\Mtg\Internal\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\ValuesController.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
