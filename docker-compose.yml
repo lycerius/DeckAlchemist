@@ -1,3 +1,4 @@
+#To run DeckAlchemist in Docker: docker-compose build && docker-compose up
 version: '3'
 
 networks:
@@ -51,6 +52,8 @@ services:
         - mongodb
     networks:
         - mainnetwork
+    environment:
+        - MONGO_URI=mongodb://mongo
 
   mongodb:
     image: mongo:latest
