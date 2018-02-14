@@ -66,6 +66,7 @@ namespace DeckAlchemist.Collector
             cardServ.UpdateCardDatabase();
             var serv = app.ApplicationServices.GetService<IDeckDatabaseUpdater>();
             serv.UpdateDecks();
+
         }
 
         void RegisterClassMaps()

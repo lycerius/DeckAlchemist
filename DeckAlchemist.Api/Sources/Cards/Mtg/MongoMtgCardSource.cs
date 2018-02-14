@@ -7,7 +7,7 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
 {
     public class MongoMtgCardSource : IMTGCardSource
     {
-        const string MongoConnectionString = "mongodb://localhost:27017";
+        readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI");
         const string MongoDatabase = "Cards";
         const string MongoCollection = "Mtg";
 
