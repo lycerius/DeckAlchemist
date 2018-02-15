@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using DeckAlchemist.Api.Objects.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 
 namespace DeckAlchemist.Api
@@ -27,6 +29,8 @@ namespace DeckAlchemist.Api
         {
             services.AddMvc();
             services.AddTransient<IMTGCardSource, MongoMtgCardSource>();
+            services.AddCors();
+            ConfigureAuthentication(services);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -34,7 +38,15 @@ namespace DeckAlchemist.Api
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             
+            app.UseCors(builder => {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
+            app.UseAuthentication();
+
             app.UseMvc();
+
         }
 
         void RegisterClassMaps()
@@ -49,6 +61,25 @@ namespace DeckAlchemist.Api
                 cm.SetDiscriminator("MtgDeckCard");
             });
             */
+        }
+
+        void ConfigureAuthentication(IServiceCollection services)
+        {
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://securetoken.google.com/deckalchemist";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/deckalchemist",
+                        ValidateAudience = true,
+                        ValidAudience = "deckalchemist",
+                        ValidateLifetime = true
+                    };
+                    options.SaveToken = true;
+                });
         }
     }
 }
