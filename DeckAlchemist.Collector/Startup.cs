@@ -58,8 +58,8 @@ namespace DeckAlchemist.Collector
             RegisterClassMaps();
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-            
             app.UseMvc();
+            StartUpdateSchedulers(app.ApplicationServices);
         }
 
         void RegisterClassMaps()
@@ -73,5 +73,15 @@ namespace DeckAlchemist.Collector
                 cm.SetDiscriminator("MtgDeckCard");
             });
         }
+
+        void StartUpdateSchedulers(IServiceProvider services)
+        {
+            var cardScheduler = services.GetService<ICardDatabaseServiceScheduler>();
+            var deckScheduler = services.GetService<IDeckDatabaseServiceScheduler>();
+
+            cardScheduler.Start();
+            deckScheduler.Start();
+        }
+
     }
 }
