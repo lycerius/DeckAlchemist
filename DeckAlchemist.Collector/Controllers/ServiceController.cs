@@ -23,6 +23,44 @@ namespace DeckAlchemist.Collector.Controllers
             cardService = cardDatabaseService;
         }
 
+        [HttpPost("all/now")]
+        public IDictionary<string, string> TriggerAllServices() {
+            var servicesTriggered = new Dictionary<string, string>();
+
+            //Card Service
+            try
+            {
+                cardService.Trigger();
+                servicesTriggered["cards"] = "ok";
+            }
+            catch (OperationInProgressException oip)
+            {
+                servicesTriggered["cards"] = "in-progress";
+            }            
+            catch(Exception e)
+            {
+                servicesTriggered["cards"] = "error";
+            }
+
+            //Deck Service
+            try
+            {
+                deckService.Trigger();
+                servicesTriggered["decks"] = "ok";
+            }
+            catch(OperationInProgressException oip)
+            {
+                servicesTriggered["decks"] = "in-progress";
+            }
+            catch(Exception e)
+            {
+                servicesTriggered["decks"] = "error";
+            }
+
+            return servicesTriggered;
+
+        }
+
         [HttpPost("decks/now")]
         public IActionResult TriggerDeckServiceNow() {
             try
