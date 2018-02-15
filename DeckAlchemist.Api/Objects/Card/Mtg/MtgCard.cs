@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DeckAlchemist.Api.Objects.Cards.Mtg
+namespace DeckAlchemist.Api.Objects.Card.Mtg
 {
-    public class MtgCard
+    public class MtgCard : IMtgCard
     {
         public string ManaCost { get; set; }
         public double? Cmc { get; set; }
