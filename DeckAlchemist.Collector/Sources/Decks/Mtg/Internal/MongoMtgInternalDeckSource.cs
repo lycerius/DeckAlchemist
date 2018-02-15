@@ -12,7 +12,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
 {
     public class MongoMtgInternalDeckSource : IMtgInternalDeckSource
     {
-        readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI");
+        readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
         const string MongoDatabase = "Mtg";
         const string MongoCollection = "Decks";
 

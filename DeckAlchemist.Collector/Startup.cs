@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DeckAlchemist.Collector.Objects.Cards;
 using DeckAlchemist.Collector.Objects.Decks;
+using DeckAlchemist.Collector.Schedulers;
 using DeckAlchemist.Collector.Services;
 using DeckAlchemist.Collector.Sources.Cards.Mtg;
 using DeckAlchemist.Collector.Sources.Cards.Mtg.External;
@@ -43,12 +44,15 @@ namespace DeckAlchemist.Collector
             services.AddTransient<IMtgExternalCardSource, MtgJsonExternalCardSource>();
             services.AddTransient<IMtgExternalDeckSource, MtgGoldFishExternalDeckSource>();
             services.AddTransient<IMtgInternalDeckSource, MongoMtgInternalDeckSource>();
+
         }
 
         void AddUpdateServices(IServiceCollection services)
         {
             services.AddSingleton<ICardDatabaseUpdater, CardDatabaseUpdater>();
             services.AddSingleton<IDeckDatabaseUpdater, DeckDatabaseUpdater>();
+            services.AddSingleton<ICardDatabaseServiceScheduler, CardDatabaseServiceScheduler>();
+            services.AddSingleton<IDeckDatabaseServiceScheduler, DeckDatabaseServiceScheduler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,11 +66,6 @@ namespace DeckAlchemist.Collector
             }
 
             app.UseMvc();
-            var cardServ = app.ApplicationServices.GetService<ICardDatabaseUpdater>();
-            cardServ.UpdateCardDatabase();
-            var serv = app.ApplicationServices.GetService<IDeckDatabaseUpdater>();
-            serv.UpdateDecks();
-
         }
 
         void RegisterClassMaps()
