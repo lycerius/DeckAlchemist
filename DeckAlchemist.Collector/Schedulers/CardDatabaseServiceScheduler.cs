@@ -9,6 +9,7 @@ namespace DeckAlchemist.Collector.Schedulers
         readonly ICardDatabaseUpdater cardDatabaseUpdater;
         Timer updateTimer;
         volatile bool inProcess;
+        const int hourTriggerDaily = 0;
 
         public CardDatabaseServiceScheduler(ICardDatabaseUpdater updater)
         {

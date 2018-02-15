@@ -30,7 +30,6 @@ namespace DeckAlchemist.Collector
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
@@ -44,7 +43,6 @@ namespace DeckAlchemist.Collector
             services.AddTransient<IMtgExternalCardSource, MtgJsonExternalCardSource>();
             services.AddTransient<IMtgExternalDeckSource, MtgGoldFishExternalDeckSource>();
             services.AddTransient<IMtgInternalDeckSource, MongoMtgInternalDeckSource>();
-
         }
 
         void AddUpdateServices(IServiceCollection services)
@@ -55,16 +53,12 @@ namespace DeckAlchemist.Collector
             services.AddSingleton<IDeckDatabaseServiceScheduler, DeckDatabaseServiceScheduler>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
             RegisterClassMaps();
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
-
+            
             app.UseMvc();
         }
 
@@ -74,7 +68,6 @@ namespace DeckAlchemist.Collector
                 cm.AutoMap();
                 cm.SetDiscriminator("MtgLegality");
             });
-
             BsonClassMap.RegisterClassMap<MtgDeckCard>(cm => {
                 cm.AutoMap();
                 cm.SetDiscriminator("MtgDeckCard");
