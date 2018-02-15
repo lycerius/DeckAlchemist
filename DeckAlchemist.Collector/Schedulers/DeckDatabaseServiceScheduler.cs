@@ -4,11 +4,12 @@ using DeckAlchemist.Collector.Services;
 
 namespace DeckAlchemist.Collector.Schedulers
 {
-    public class DeckDatabaseServiceScheduler : IDeckDatabaseServiceScheduler
+    public class DeckDatabaseServiceScheduler : IDeckDatabaseServiceScheduler, IDisposable
     {
         readonly IDeckDatabaseUpdater deckDatabaseUpdater;
         Timer updateTimer;
         volatile bool inProcess;
+        const int hourTriggerDaily = 0;
 
         public DeckDatabaseServiceScheduler(IDeckDatabaseUpdater updater)
         {
@@ -18,12 +19,14 @@ namespace DeckAlchemist.Collector.Schedulers
 
         public void Start()
         {
-            throw new NotImplementedException();
+            updateTimer.Change(0, Timeout.Infinite);
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Stopped DeckScheduler");
+            updateTimer.Dispose();
+            while (inProcess) Thread.Yield();
         }
 
         public void Trigger()
@@ -38,7 +41,18 @@ namespace DeckAlchemist.Collector.Schedulers
         {
             if (!inProcess)
             {
-                UpdateDatabase();
+                try
+                {
+                    UpdateDatabase(); 
+                }
+                catch(Exception e)
+                {
+                    //TODO: Log
+                }
+                var now = DateTimeOffset.UtcNow;
+                var tomorrow = new DateTimeOffset(now.Year, now.Month, now.Day, hourTriggerDaily, 0, 0, 0, TimeSpan.FromMilliseconds(0)).AddDays(1);
+                var delta = tomorrow.Subtract(now);
+                updateTimer.Change(delta, Timeout.InfiniteTimeSpan);
             }
         }
 
@@ -57,5 +71,9 @@ namespace DeckAlchemist.Collector.Schedulers
             }
         }
 
+        public void Dispose()
+        {
+            Stop();
+        }
     }
 }
