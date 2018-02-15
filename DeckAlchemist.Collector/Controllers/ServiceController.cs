@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DeckAlchemist.Collector.Objects.Messages;
 using DeckAlchemist.Collector.Schedulers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,81 +24,85 @@ namespace DeckAlchemist.Collector.Controllers
             cardService = cardDatabaseService;
         }
 
-        [HttpPost("all/now")]
-        public IDictionary<string, string> TriggerAllServices() {
-            var servicesTriggered = new Dictionary<string, string>();
+        [HttpPost("trigger")]
+        public IEnumerable<ServiceStatusMessage> TriggerServices([FromBody] IEnumerable<string> serviceNames)
+        {
+            var serviceTriggers = new List<ServiceStatusMessage>();
+            if (serviceNames.Any())
+            {
+                foreach (var serviceName in serviceNames)
+                {
+                    try
+                    {
+                        switch (serviceName.ToLower())
+                        {
+                            case ("deck"):
+                                try { deckService.Trigger(); serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.OK }); }
+                                catch (OperationInProgressException oip)
+                                {
+                                    serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
+                                }
+                                continue;
+                            case ("card"):
+                                try { cardService.Trigger(); serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.OK }); }
+                                catch (OperationInProgressException oip)
+                                {
+                                    serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
+                                }
+                                continue;
+                            default:
+                                serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.INVALID_NAME });
+                                continue;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
+                    }
+                }
+            }
+            return serviceTriggers;
+        }
+
+
+
+        [HttpPost("trigger/all")]
+        public IEnumerable<ServiceStatusMessage> TriggerAllServices()
+        {
+            var servicesTriggered = new List<ServiceStatusMessage>();
 
             //Card Service
             try
             {
                 cardService.Trigger();
-                servicesTriggered["cards"] = "ok";
+                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.OK });
             }
             catch (OperationInProgressException oip)
             {
-                servicesTriggered["cards"] = "in-progress";
-            }            
-            catch(Exception e)
+                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
+            }
+            catch (Exception e)
             {
-                servicesTriggered["cards"] = "error";
+                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
             }
 
             //Deck Service
             try
             {
                 deckService.Trigger();
-                servicesTriggered["decks"] = "ok";
+                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.OK });
             }
-            catch(OperationInProgressException oip)
+            catch (OperationInProgressException oip)
             {
-                servicesTriggered["decks"] = "in-progress";
+                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                servicesTriggered["decks"] = "error";
+                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
             }
 
             return servicesTriggered;
 
-        }
-
-        [HttpPost("decks/now")]
-        public IActionResult TriggerDeckServiceNow() {
-            try
-            {
-                deckService.Trigger();
-                return StatusCode(200);
-            }
-            catch(OperationInProgressException oip)
-            {
-                //We don't want to trigger the service if it is already in progress
-                return StatusCode(503);
-            }
-            catch(Exception e)
-            {
-                //TODO: Log Exception
-                return StatusCode(500);
-            }
-
-        }
-
-        [HttpPost("cards/now")]
-        public IActionResult TriggerCardServiceNow() {
-            try
-            {
-                cardService.Trigger();
-                return StatusCode(200);
-            }
-            catch (OperationInProgressException oip)
-            {
-                //We don't want to trigger the service if it is already in progress
-                return StatusCode(503);
-            }
-            catch (Exception e)
-            {
-                //TODO: Log Exception
-                return StatusCode(500);
-            }
         }
     }
 }

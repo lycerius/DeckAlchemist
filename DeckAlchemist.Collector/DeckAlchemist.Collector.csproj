@@ -21,6 +21,7 @@
     <Folder Include="Sources\Decks\Mtg\Internal\" />
     <Folder Include="Controllers\" />
     <Folder Include="Schedulers\" />
+    <Folder Include="Objects\Messages\" />
   </ItemGroup>
 
   <ItemGroup>
