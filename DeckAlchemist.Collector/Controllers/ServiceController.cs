@@ -32,10 +32,12 @@ namespace DeckAlchemist.Collector.Controllers
             }
             catch(OperationInProgressException oip)
             {
+                //We don't want to trigger the service if it is already in progress
                 return StatusCode(503);
             }
             catch(Exception e)
             {
+                //TODO: Log Exception
                 return StatusCode(500);
             }
 
@@ -50,10 +52,12 @@ namespace DeckAlchemist.Collector.Controllers
             }
             catch (OperationInProgressException oip)
             {
+                //We don't want to trigger the service if it is already in progress
                 return StatusCode(503);
             }
             catch (Exception e)
             {
+                //TODO: Log Exception
                 return StatusCode(500);
             }
         }
