@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Cards.Mtg;
+using DeckAlchemist.Api.Objects.Card.Mtg;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Cards.Mtg
 {
-    public class MongoMtgCardSource : IMTGCardSource
+    public class MongoMtgCardSource : IMtgCardSource
     {
-        readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI");
-        const string MongoDatabase = "Cards";
-        const string MongoCollection = "Mtg";
+        readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
+        const string MongoDatabase = "Mtg";
+        const string MongoCollection = "Cards";
 
         readonly IMongoCollection<MongoMtgCard> collection;
         readonly FilterDefinitionBuilder<MongoMtgCard> _filter = Builders<MongoMtgCard>.Filter;

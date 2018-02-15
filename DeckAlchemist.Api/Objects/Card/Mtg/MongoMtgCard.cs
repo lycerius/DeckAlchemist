@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DeckAlchemist.Api.Objects.Cards.Mtg
+namespace DeckAlchemist.Api.Objects.Card.Mtg
 {
     public class MongoMtgCard : IMtgCard
     {

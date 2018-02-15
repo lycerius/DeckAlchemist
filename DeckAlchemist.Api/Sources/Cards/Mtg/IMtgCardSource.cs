@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Cards.Mtg;
+using DeckAlchemist.Api.Objects.Card.Mtg;
 
 namespace DeckAlchemist.Api.Sources.Cards.Mtg
 {
-    public interface IMTGCardSource
+    public interface IMtgCardSource
     {
         IEnumerable<IMtgCard> GetCardsByNames(params string[] names);
     }

@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Cards.Mtg;
+using DeckAlchemist.Api.Objects.Card.Mtg;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
+using DeckAlchemist.Api.Sources.Collection;
+using DeckAlchemist.Api.Sources.Deck.Mtg;
+using DeckAlchemist.Api.Sources.Group;
+using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,13 +32,24 @@ namespace DeckAlchemist.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddTransient<IMTGCardSource, MongoMtgCardSource>();
+
             services.AddCors();
             ConfigureAuthentication(services);
+            ConfigureSources(services);
+        }
+
+        public void ConfigureSources(IServiceCollection services)
+        {
+            services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
+            services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
+            services.AddTransient<ICollectionSource, MongoCollectionSource>();
+            services.AddTransient<IGroupSource, MongoGroupSource>();
+            services.AddTransient<IUserSource, MongoUserSource>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            RegisterClassMaps();
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             

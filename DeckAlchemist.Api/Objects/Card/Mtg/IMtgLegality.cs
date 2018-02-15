@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DeckAlchemist.Api.Objects.Cards.Mtg
+namespace DeckAlchemist.Api.Objects.Card.Mtg
 {
     public interface IMtgLegality
     {

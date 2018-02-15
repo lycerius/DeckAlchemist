@@ -9,13 +9,15 @@
     <Folder Include="Sources\" />
     <Folder Include="Objects\" />
     <Folder Include="Sources\Cards\" />
-    <Folder Include="Sources\Decks\" />
+    <Folder Include="Sources\Deck\" />
     <Folder Include="Sources\Cards\Mtg\" />
-    <Folder Include="Sources\Users\" />
-    <Folder Include="Sources\Groups\" />
-    <Folder Include="Sources\Collections\" />
-    <Folder Include="Objects\Cards\" />
-    <Folder Include="Objects\Cards\Mtg\" />
+    <Folder Include="Objects\User\" />
+    <Folder Include="Objects\Group\" />
+    <Folder Include="Objects\Collection\" />
+    <Folder Include="Sources\Deck\Mtg\" />
+    <Folder Include="Sources\User\" />
+    <Folder Include="Sources\Group\" />
+    <Folder Include="Sources\Collection\" />
   </ItemGroup>
 
   <ItemGroup>
