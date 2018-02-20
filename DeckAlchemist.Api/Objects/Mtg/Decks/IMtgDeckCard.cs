@@ -4,5 +4,6 @@
     {
         string Name { get; set; }
         int Count { get; set; }
+        float FeatureIndex { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace DeckAlchemist.Api.Objects.Mtg.Decks
 {
@@ -8,5 +9,6 @@ namespace DeckAlchemist.Api.Objects.Mtg.Decks
         double Meta { get; set; }
         string id { get; set; }
         IDictionary<string, IMtgDeckCard> Cards { get; set; }
+        float CompareDecks(IMtgDeck other);
     }
 }

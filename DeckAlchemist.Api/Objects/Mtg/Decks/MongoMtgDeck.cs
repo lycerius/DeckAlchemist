@@ -23,5 +23,10 @@ namespace DeckAlchemist.Api.Objects.Mtg.Decks
                 Meta = deck.Meta
             };
         }
+        
+        public float CompareDecks(IMtgDeck other)
+        {
+            return DeckCompare.Compare(this, other);
+        }
     }
 }

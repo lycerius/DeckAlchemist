@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace DeckAlchemist.Api.Objects.Mtg.Decks
 {
@@ -17,6 +19,11 @@ namespace DeckAlchemist.Api.Objects.Mtg.Decks
                 Meta = deck.Meta,
                 Cards = deck.Cards
             };
+        }
+
+        public float CompareDecks(IMtgDeck other)
+        {
+            return DeckCompare.Compare(this, other);
         }
     }
 }
