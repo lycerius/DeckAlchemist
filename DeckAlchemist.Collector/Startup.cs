@@ -1,8 +1,9 @@
 ﻿using System;
+using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Api.Objects.Deck;
+using DeckAlchemist.Api.Sources.Cards.Mtg;
+using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Collector.Schedulers;
-using DeckAlchemist.Api.Objects.Mtg.Cards;
-using DeckAlchemist.Api.Objects.Mtg.Decks;
-using DeckAlchemist.Api.Sources.Mtg.Internal;
 using DeckAlchemist.Collector.Services;
 using DeckAlchemist.Collector.Sources.Cards.Mtg;
 using DeckAlchemist.Collector.Sources.Cards.Mtg.External;
@@ -33,10 +34,10 @@ namespace DeckAlchemist.Collector
 
         void AddSources(IServiceCollection services)
         {
-            services.AddTransient<IMtgInternalCardSource, MongoMtgInternalCardSource>();
+            services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
             services.AddTransient<IMtgExternalCardSource, MtgJsonExternalCardSource>();
             services.AddTransient<IMtgExternalDeckSource, MtgGoldFishExternalDeckSource>();
-            services.AddTransient<IMtgInternalDeckSource, MongoMtgInternalDeckSource>();
+            services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
         }
 
         void AddUpdateServices(IServiceCollection services)

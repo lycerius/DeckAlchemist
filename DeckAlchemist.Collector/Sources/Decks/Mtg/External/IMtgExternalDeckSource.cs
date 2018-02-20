@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Mtg.Decks;
+﻿using System.Collections.Generic;
+using DeckAlchemist.Api.Objects.Deck;
 
 namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
 {

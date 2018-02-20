@@ -38,5 +38,37 @@ namespace DeckAlchemist.Api.Objects.Card.Mtg
                 Types = card.Types
             };
         }
+        
+        protected bool Equals(MtgCard other)
+        {
+            return string.Equals(ManaCost, other.ManaCost) 
+                   && Equals(Types, other.Types) 
+                   && Equals(SubTypes, other.SubTypes) 
+                   && string.Equals(Text, other.Text)
+                   && string.Equals(Name, other.Name) 
+                   && Equals(Legality, other.Legality);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((MtgCard) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (ManaCost != null ? ManaCost.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Types != null ? Types.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SubTypes != null ? SubTypes.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Legality != null ? Legality.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

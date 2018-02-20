@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-using DeckAlchemist.Api.Objects.Mtg.Decks;
+using DeckAlchemist.Api.Objects.Deck;
 using Newtonsoft.Json.Linq;
 using OpenScraping;
 using OpenScraping.Config;

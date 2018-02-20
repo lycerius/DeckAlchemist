@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Numerics;
-using System.Reflection.Metadata;
 
-namespace DeckAlchemist.Api.Objects.Mtg.Decks
+namespace DeckAlchemist.Api.Objects.Deck
 {
     public class DeckCompare
     {
@@ -24,11 +23,8 @@ namespace DeckAlchemist.Api.Objects.Mtg.Decks
             return space;
         }
 
-        public static float Compare(IMtgDeck deck1, IMtgDeck deck2)
+        public static float VectorCompare(Vector2[] deck1Space, Vector2[] deck2Space)
         {
-            Vector2[] deck1Space = FeatureSpaceFor(deck1);
-            Vector2[] deck2Space = FeatureSpaceFor(deck2);
-
             int smallerSize = Math.Min(deck1Space.Length, deck2Space.Length);
 
             float dSum = 0f;
@@ -43,6 +39,14 @@ namespace DeckAlchemist.Api.Objects.Mtg.Decks
             float featureScore = dSum / smallerSize;
 
             return featureScore;
+        }
+
+        public static float Compare(IMtgDeck deck1, IMtgDeck deck2)
+        {
+            Vector2[] deck1Space = FeatureSpaceFor(deck1);
+            Vector2[] deck2Space = FeatureSpaceFor(deck2);
+
+            return VectorCompare(deck1Space, deck2Space);
         }
     }
 }

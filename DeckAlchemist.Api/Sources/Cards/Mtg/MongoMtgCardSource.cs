@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DeckAlchemist.Api.Objects.Card.Mtg;
 using MongoDB.Driver;
 
@@ -24,6 +25,79 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
         {
             var byNameFilter = _filter.In("Name", names);
             return collection.Find(byNameFilter).ToList();
+        }
+        
+        public void UpdateAllCards(IEnumerable<IMtgCard> cards)
+        {
+            var existingCards = FindCardsByNames(cards.Select(card => card.Name));
+            var plan = CreateCardUpdatePlan(existingCards, cards);
+            if(plan.Any()) collection.BulkWrite(plan);
+        }
+        
+        Dictionary<string, MongoMtgCard> FindCardsByNames(IEnumerable<string> cardNames)
+        {
+            var findCardsFilter = _filter.In("Name", cardNames);
+            var result = collection.Find(findCardsFilter);
+            return result.ToEnumerable().ToDictionary(card => card.Name);
+        }
+
+        IEnumerable<WriteModel<MongoMtgCard>> CreateCardUpdatePlan(Dictionary<string, MongoMtgCard> internalCards, IEnumerable<IMtgCard> externalCards)
+        {
+            var plan = new LinkedList<WriteModel<MongoMtgCard>>();
+
+            foreach(var externalCard in externalCards)
+            {
+                if(internalCards.ContainsKey(externalCard.Name))
+                {
+                    var internalCard = internalCards[externalCard.Name];
+                    if(DifferencesExist(externalCard, internalCard))
+                    {
+                        var updatedInternalCard = MongoMtgCard.FromMtgCard(externalCard);
+                        updatedInternalCard._id = internalCard._id;
+
+                        var internalCardFilter = _filter.Eq("_id", internalCard._id);
+
+                        //TODO: Individual field replacement instead of the entire card?
+                        var newPlan = new ReplaceOneModel<MongoMtgCard>(
+                            internalCardFilter,
+                            updatedInternalCard
+                        );
+
+                        plan.AddLast(newPlan);
+                    }
+                }
+                else
+                {
+                    var insertPlan = new InsertOneModel<MongoMtgCard>(MongoMtgCard.FromMtgCard(externalCard));
+                    plan.AddLast(insertPlan);
+                }
+            }
+
+            return plan;
+        }
+        
+        bool DifferencesExist(IMtgCard card1, IMtgCard card2)
+        {
+            //TODO: Expand this to include all property checks
+            return
+                card1.Name != card2.Name ||
+                LegalDifferencesExist(card1.Legality, card2.Legality);
+        }
+        
+        bool LegalDifferencesExist(IEnumerable<IMtgLegality> legalitySet1, IEnumerable<IMtgLegality> legalitySet2)
+        {
+            if (legalitySet1 == null || legalitySet2 == null){
+                if (legalitySet2 != legalitySet1) return true;
+                return false;
+            }
+            if (legalitySet1.Count() != legalitySet2.Count()) return true;
+            foreach(var legality in legalitySet1)
+            {
+                if (!legalitySet2.Any(legality2 => legality2.Format == legality.Format && legality.Legality == legality2.Legality))
+                    return true;
+            }
+
+            return false;
         }
     }
 }

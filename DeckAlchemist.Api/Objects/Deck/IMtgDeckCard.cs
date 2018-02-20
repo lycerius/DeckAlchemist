@@ -5,5 +5,6 @@ namespace DeckAlchemist.Api.Objects.Deck
     {
         string Name { get; set; }
         int Count { get; set; }
+        float FeatureIndex { get; }
     }
 }
