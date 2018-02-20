@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Numerics;
 
 namespace DeckAlchemist.Api.Objects.Deck
@@ -25,6 +26,9 @@ namespace DeckAlchemist.Api.Objects.Deck
 
         public static float VectorCompare(Vector2[] deck1Space, Vector2[] deck2Space)
         {
+            deck1Space = deck1Space.OrderByDescending(v => v.X).ToArray();
+            deck2Space = deck2Space.OrderByDescending(v => v.X).ToArray();
+            
             int smallerSize = Math.Min(deck1Space.Length, deck2Space.Length);
 
             float dSum = 0f;
@@ -48,5 +52,7 @@ namespace DeckAlchemist.Api.Objects.Deck
 
             return VectorCompare(deck1Space, deck2Space);
         }
+        
+        
     }
 }

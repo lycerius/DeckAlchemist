@@ -44,5 +44,23 @@ namespace DeckAlchemist.Api.Objects.Card.Mtg
                 Legality = card.Legality
             };
         }
+        
+        protected bool Equals(IMtgCard other)
+        {
+            return string.Equals(Name, other.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType() && !(obj is IMtgCard)) return false;
+            return Equals((IMtgCard) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Name != null ? Name.GetHashCode() : 0);
+        }
     }
 }

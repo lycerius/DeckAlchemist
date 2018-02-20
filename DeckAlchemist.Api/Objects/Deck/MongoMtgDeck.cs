@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -29,28 +30,23 @@ namespace DeckAlchemist.Api.Objects.Deck
             return DeckCompare.Compare(this, other);
         }
 
-        protected bool Equals(MongoMtgDeck other)
+        protected bool Equals(IMtgDeck other)
         {
-            return string.Equals(Name, other.Name) && Meta.Equals(other.Meta) && Equals(Cards, other.Cards);
+            return Math.Abs(CompareDecks(other)) < float.Epsilon;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((MongoMtgDeck) obj);
+            if (obj.GetType() != this.GetType() && !(obj is IMtgDeck)) return false;
+            return Equals((IMtgDeck) obj);
         }
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = (Name != null ? Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ Meta.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Cards != null ? Cards.GetHashCode() : 0);
-                return hashCode;
-            }
+            var space = DeckCompare.FeatureSpaceFor(this);
+            return space.GetHashCode();
         }
     }
 }

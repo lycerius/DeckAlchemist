@@ -1,4 +1,6 @@
 ﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace DeckAlchemist.Api.Objects.Deck
 {
     public class MtgDeckCard : IMtgDeckCard
@@ -6,6 +8,7 @@ namespace DeckAlchemist.Api.Objects.Deck
         public string Name { get; set; }
         public int Count { get; set; }
         
+        [BsonIgnore]
         public float FeatureIndex
         {
             get
@@ -26,10 +29,8 @@ namespace DeckAlchemist.Api.Objects.Deck
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((MtgDeckCard) obj);
+            return !ReferenceEquals(null, obj) &&
+                   (ReferenceEquals(this, obj) || obj.GetType() == this.GetType() && Equals((MtgDeckCard) obj));
         }
 
         public override int GetHashCode()
