@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeckAlchemist.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/card")]
     public class CardsController : Controller
     {
         readonly IMtgCardSource _source;

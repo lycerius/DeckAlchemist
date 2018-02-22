@@ -2,45 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeckAlchemist.Api.Objects.Group;
+using DeckAlchemist.Api.Objects.User;
+using DeckAlchemist.Api.Sources.Group;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DeckAlchemist.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/group")]
     public class GroupsController : Controller
     {
-        // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+        readonly IGroupSource _source;
+
+        public GroupsController(IGroupSource source)
         {
-            return new string[] { "value1", "value2" };
+            _source = source;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/group/{name}/all
+        [HttpGet("{name}/all")]
+        public IEnumerable<IUser> Get(string name)
         {
-            return "value";
+            var members = _source.GetAllUsers(name);
+            return members;
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // PUT api/group/{name}/member
+        [HttpPut("{groupName}/member")]
+        public IActionResult AddMember(string groupName, [FromBody]string userName)
         {
+            try
+            {
+                _source.AddUser(groupName, userName);
+                return Ok();
+            }
+            catch{
+                return StatusCode(500);
+            }
+
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
+        // PUT api/group/{name}/member
+        [HttpDelete("{groupName}/member")]
+        public IActionResult RemoveMember(string groupName, [FromBody]string userName){
+            try
+            {
+                _source.RemoveUser(groupName, userName);
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
