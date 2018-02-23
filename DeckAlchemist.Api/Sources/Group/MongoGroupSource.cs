@@ -24,10 +24,9 @@ namespace DeckAlchemist.Api.Sources.Group
             collection = database.GetCollection<MongoGroup>(MongoCollection);
         }
         public IEnumerable<IUser> GetAllUsers(string groupName){
-            var byNameFilter = _filter.In("Name", groupName);
-            var groupobj = collection.Find(byNameFilter).ToList();
-
-            return null;
+            var byNameFilter = _filter.In("name", groupName);
+            IList<MongoGroup> groupobjs = collection.Find(byNameFilter).ToList();
+            return groupobjs[0].members;
         }
         public void AddUser(string groupName, string user){
             

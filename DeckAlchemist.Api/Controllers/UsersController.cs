@@ -13,6 +13,15 @@ namespace DeckAlchemist.Api.Controllers
     [Route("api/user")]
     public class UsersController : Controller
     {
+
+        readonly IUserSource _source;
+
+        public UsersController(IUserSource source)
+        {
+            _source = source;
+        }
+
+
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()

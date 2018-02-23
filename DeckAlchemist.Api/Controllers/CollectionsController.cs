@@ -13,36 +13,50 @@ namespace DeckAlchemist.Api.Controllers
     [Route("api/collection")]
     public class CollectionsController : Controller
     {
-        // GET: api/values
+        readonly ICollectionSource _source;
+
+        public CollectionsController(ICollectionSource source)
+        {
+            _source = source;
+        }
+
+
+        //one or many users
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<string> AllCollectionsByUsersIds([FromBody]string[] users)
         {
-            return new string[] { "value1", "value2" };
+            var collectionIds = new List<string>();
+            foreach( var user in users){
+                collectionIds.Add(_source.GetCollectionIdOf(user));
+            }
+            return collectionIds;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        //one or many cards
+        [HttpPut("{cards}")]
+        public List<string> AddCardsToCollection([FromBody]string[] cardnames, [FromBody]string userid )
         {
-            return "value";
+            var errorOnAdd = new List<string>();
+            foreach(var card in cardnames){
+                if (!_source.AddCard(card,userid)){
+                    errorOnAdd.Add(card);
+                }
+            }
+            return errorOnAdd;
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        [HttpDelete("{cards}")]
+        public List<string> RemoveCardsFromCollection([FromBody]string[] cardnames, [FromBody]string userid)
         {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var errorOnDel = new List<string>();
+            foreach (var card in cardnames)
+            {
+                if (!_source.DeleteCard(card, userid))
+                {
+                    errorOnDel.Add(card);
+                }
+            }
+            return errorOnDel;
         }
     }
 }

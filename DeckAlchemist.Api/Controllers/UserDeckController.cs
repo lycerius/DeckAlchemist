@@ -2,23 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Sources.Deck.Mtg;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DeckAlchemist.Api.Controllers
 {
-    [Route("api/deck")]
-    public class DecksController : Controller
+    [Route("api/[controller]")]
+    public class UserDeckController : Controller
     {
-        readonly IMtgDeckSource _source;
-
-        public DecksController(IMtgDeckSource source)
-        {
-            _source = source;
-        }
-
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()
