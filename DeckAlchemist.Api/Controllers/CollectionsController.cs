@@ -20,7 +20,6 @@ namespace DeckAlchemist.Api.Controllers
             _source = source;
         }
 
-
         //one or many users
         [HttpGet]
         public List<string> AllCollectionsByUsersIds([FromBody]string[] users)
@@ -45,6 +44,7 @@ namespace DeckAlchemist.Api.Controllers
             return errorOnAdd;
         }
 
+        //remove one ore many cards
         [HttpDelete("{cards}")]
         public List<string> RemoveCardsFromCollection([FromBody]string[] cardnames, [FromBody]string userid)
         {

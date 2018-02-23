@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeckAlchemist.Api.Objects.Deck;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeckAlchemist.Api.Controllers
 {
-    [Route("api/deck")]
+    [Route("api/decks")]
     public class DecksController : Controller
     {
         readonly IMtgDeckSource _source;
@@ -20,35 +21,17 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("all")]
+        public IEnumerable<IMtgDeck> GetAllDecks()
         {
-            return new string[] { "value1", "value2" };
+            return _source.GetAllDecks();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet()]
+        public IMtgDeck GetByName([FromBody]string deckname)
         {
-            return "value";
+            return _source.GetDeckOfName(deckname);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
