@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DeckAlchemist.Api.Objects.Collection;
 using DeckAlchemist.Api.Sources.Collection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -32,9 +33,12 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         //one or many cards
+        [Authorize]
         [HttpPut("{cards}")]
-        public List<string> AddCardsToCollection([FromBody]string[] cardnames, [FromBody]string userid )
+        public List<string> AddCardsToCollection([FromBody]string[] cardnames)
         {
+            
+            var userid = HttpContext.User.FindFirst("sub").Value;
             var errorOnAdd = new List<string>();
             foreach(var card in cardnames){
                 if (!_source.AddCard(card,userid)){
@@ -45,9 +49,11 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         //remove one ore many cards
+        [Authorize]
         [HttpDelete("{cards}")]
-        public List<string> RemoveCardsFromCollection([FromBody]string[] cardnames, [FromBody]string userid)
+        public List<string> RemoveCardsFromCollection([FromBody]string[] cardnames)
         {
+            var userid = HttpContext.User.FindFirst("sub").Value;
             var errorOnDel = new List<string>();
             foreach (var card in cardnames)
             {
