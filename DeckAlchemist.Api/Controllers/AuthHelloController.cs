@@ -22,6 +22,7 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         // GET api/values/5
+        [Authorize(Policy = "Email")]
         [HttpGet("{id}")]
         public string Get(int id)
         {
