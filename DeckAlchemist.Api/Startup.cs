@@ -30,6 +30,7 @@ namespace DeckAlchemist.Api
             services.AddCors();
             ConfigureAuthentication(services);
             ConfigureSources(services);
+            services.AddMvc();
         }
 
         public void ConfigureSources(IServiceCollection services)
