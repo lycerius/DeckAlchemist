@@ -9,8 +9,8 @@ services:
   deckalchemist.api:
     image: deckalchemist.api
     build:
-      context: ./DeckAlchemist.Api
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile-Api
     ports: 
         - 5000:80
     depends_on:
@@ -26,8 +26,8 @@ services:
   deckalchemist.collector:
     image: deckalchemist.collector
     build:
-      context: ./DeckAlchemist.Collector
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile-Collector
     ports: 
         - 3865:80
     depends_on:
@@ -42,8 +42,8 @@ services:
   deckalchemist.webapp:
     image: deckalchemist.webapp
     build:
-      context: ./DeckAlchemist.WebApp
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile-WebApp
     ports: 
         - 80:80
     depends_on:
