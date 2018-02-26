@@ -14,7 +14,7 @@
     <Folder Include="Sources\Decks\Mtg\External\" />
     <Folder Include="Controllers\" />
     <Folder Include="Schedulers\" />
-    <Folder Include="Objects\Messages\" />
+    <Folder Include="Objects\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
@@ -23,6 +23,21 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Objects\Cards\IMtgCard.cs" />
+    <Compile Remove="Objects\Cards\IMtgLegality.cs" />
+    <Compile Remove="Objects\Cards\MongoMtgCard.cs" />
+    <Compile Remove="Objects\Cards\MongoMtgLegality.cs" />
+    <Compile Remove="Objects\Cards\MtgCard.cs" />
+    <Compile Remove="Objects\Cards\MtgLegality.cs" />
+    <Compile Remove="Objects\Decks\DeckCompare.cs" />
+    <Compile Remove="Objects\Decks\IMtgDeck.cs" />
+    <Compile Remove="Objects\Decks\IMtgDeckCard.cs" />
+    <Compile Remove="Objects\Decks\MongoMtgDeck.cs" />
+    <Compile Remove="Objects\Decks\MtgDeck.cs" />
+    <Compile Remove="Objects\Decks\MtgDeckCard.cs" />
+    <Compile Remove="Objects\Messages\ServiceStatusMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -36,5 +51,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeckAlchemist.Support\DeckAlchemist.Support.csproj" />
   </ItemGroup>
 </Project>

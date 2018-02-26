@@ -5,13 +5,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Sources\" />
-    <Folder Include="Objects\" />
     <Folder Include="Sources\Cards\" />
     <Folder Include="Sources\Deck\" />
     <Folder Include="Sources\Cards\Mtg\" />
-    <Folder Include="Objects\User\" />
-    <Folder Include="Objects\Group\" />
-    <Folder Include="Objects\Collection\" />
     <Folder Include="Sources\Deck\Mtg\" />
     <Folder Include="Sources\User\" />
     <Folder Include="Sources\Group\" />
@@ -35,5 +31,8 @@
     <Reference Include="MongoDB.Driver.Core, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\.nuget\packages\mongodb.driver.core\2.5.0\lib\netstandard1.5\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeckAlchemist.Support\DeckAlchemist.Support.csproj" />
   </ItemGroup>
 </Project>

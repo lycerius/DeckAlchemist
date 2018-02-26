@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Card.Mtg;
+﻿using System.Collections.Generic;
+using DeckAlchemist.Support.Objects.Cards;
 
 namespace DeckAlchemist.Api.Sources.Cards.Mtg
 {
