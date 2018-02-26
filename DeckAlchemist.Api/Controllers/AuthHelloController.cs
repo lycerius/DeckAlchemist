@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +19,7 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         // GET api/values/5
+        [Authorize(Policy = "Email")]
         [HttpGet("{id}")]
         public string Get(int id)
         {
