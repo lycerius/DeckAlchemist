@@ -1,4 +1,4 @@
-﻿using DeckAlchemist.Api.Auth;
+using DeckAlchemist.Api.Auth;
 using DeckAlchemist.Api.Objects.Card.Mtg;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
@@ -27,8 +27,6 @@ namespace DeckAlchemist.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
             services.AddCors();
             ConfigureAuthentication(services);
             ConfigureSources(services);
@@ -41,6 +39,8 @@ namespace DeckAlchemist.Api
             services.AddTransient<ICollectionSource, MongoCollectionSource>();
             services.AddTransient<IGroupSource, MongoGroupSource>();
             services.AddTransient<IUserSource, MongoUserSource>();
+            services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
+            services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
             services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
         }
 
