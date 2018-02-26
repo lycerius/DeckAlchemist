@@ -1,22 +1,23 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeckAlchemist.Api", "DeckAlchemist.Api\DeckAlchemist.Api.csproj", "{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeckAlchemist.Api", "DeckAlchemist.Api\DeckAlchemist.Api.csproj", "{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeckAlchemist.WebApp", "DeckAlchemist.WebApp\DeckAlchemist.WebApp.csproj", "{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeckAlchemist.WebApp", "DeckAlchemist.WebApp\DeckAlchemist.WebApp.csproj", "{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeckAlchemist.Collector", "DeckAlchemist.Collector\DeckAlchemist.Collector.csproj", "{77D16250-71ED-48B0-AE05-7C7D6F3041A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeckAlchemist.Collector", "DeckAlchemist.Collector\DeckAlchemist.Collector.csproj", "{77D16250-71ED-48B0-AE05-7C7D6F3041A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC63E20C-A4A1-4B80-90DF-3C6A863686CD}"
 	ProjectSection(SolutionItems) = preProject
+		.env = .env
 		docker-compose.yml = docker-compose.yml
 		Dockerfile-Api = Dockerfile-Api
 		Dockerfile-Collector = Dockerfile-Collector
 		Dockerfile-WebApp = Dockerfile-WebApp
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeckAlchemist.Support", "DeckAlchemist.Support\DeckAlchemist.Support.csproj", "{1FF1B21E-38B6-4105-839B-31076F13C15A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeckAlchemist.Support", "DeckAlchemist.Support\DeckAlchemist.Support.csproj", "{1FF1B21E-38B6-4105-839B-31076F13C15A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
