@@ -1,10 +1,10 @@
 using DeckAlchemist.Api.Auth;
-using DeckAlchemist.Api.Objects.Card.Mtg;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Api.Sources.Group;
 using DeckAlchemist.Api.Sources.User;
+using DeckAlchemist.Support.Objects.Cards;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;

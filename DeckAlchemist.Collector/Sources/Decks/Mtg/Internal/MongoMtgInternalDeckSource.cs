@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Decks;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Security.Cryptography;
-using System.IO;
 using System.Text;
 using System;
+using DeckAlchemist.Support.Objects.Decks;
 
 namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
 {
