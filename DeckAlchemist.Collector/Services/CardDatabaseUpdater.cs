@@ -1,5 +1,8 @@
-﻿using DeckAlchemist.Collector.Sources.Cards.Mtg;
-using DeckAlchemist.Api.Sources.Cards.Mtg;
+﻿using System.Collections.Generic;
+using DeckAlchemist.Collector.Objects.Cards;
+using DeckAlchemist.Collector.Sources.Cards.Mtg;
+using DeckAlchemist.Collector.Sources.Cards.Mtg.Internal;
+using System.Linq;
 
 namespace DeckAlchemist.Collector.Services
 {
@@ -7,9 +10,9 @@ namespace DeckAlchemist.Collector.Services
     {
         readonly IMtgExternalCardSource _externalCardSource;
 
-        readonly IMtgCardSource _internalCardSource;
+        readonly IMtgInternalCardSource _internalCardSource;
 
-        public CardDatabaseUpdater(IMtgExternalCardSource externalSource, IMtgCardSource internalSource)
+        public CardDatabaseUpdater(IMtgExternalCardSource externalSource, IMtgInternalCardSource internalSource)
         {
             _externalCardSource = externalSource;
             _internalCardSource = internalSource;

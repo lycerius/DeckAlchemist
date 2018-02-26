@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 
-namespace DeckAlchemist.Api.Objects.Deck
+namespace DeckAlchemist.Collector.Objects.Decks
 {
     public static class DeckCompare
     {

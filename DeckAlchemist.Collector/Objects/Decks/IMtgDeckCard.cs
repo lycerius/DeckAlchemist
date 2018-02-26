@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DeckAlchemist.Api.Objects.Deck
+namespace DeckAlchemist.Collector.Objects.Decks
 {
     public interface IMtgDeckCard
     {

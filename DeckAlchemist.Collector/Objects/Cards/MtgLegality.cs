@@ -1,14 +1,13 @@
 ﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
 
-namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
+namespace DeckAlchemist.Collector.Objects.Cards
 {
     
-    public class MtgJsonLegality
+    public class MtgLegality : IMtgLegality
     {
         public string Format { get; set; }
-        [JsonProperty("legality")]
         public string Legality { get; set; }
     }
 }

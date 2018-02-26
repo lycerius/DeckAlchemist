@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
-using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Collector.Objects.Cards;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DeckAlchemist.Api.Objects.Deck
+namespace DeckAlchemist.Collector.Objects.Decks
 {
     public class MtgDeckCard : IMtgDeckCard
     {

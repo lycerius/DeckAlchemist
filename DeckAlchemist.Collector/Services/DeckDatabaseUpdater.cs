@@ -1,14 +1,14 @@
-﻿using DeckAlchemist.Api.Sources.Deck.Mtg;
-using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
+﻿using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
+using DeckAlchemist.Collector.Sources.Decks.Mtg.Internal;
 
 namespace DeckAlchemist.Collector.Services
 {
     public class DeckDatabaseUpdater : IDeckDatabaseUpdater
     {
         readonly IMtgExternalDeckSource _externalDeckSource;
-        readonly IMtgDeckSource _internalDeckSource;
+        readonly IMtgInternalDeckSource _internalDeckSource;
 
-        public DeckDatabaseUpdater(IMtgExternalDeckSource externalSource, IMtgDeckSource internalSource)
+        public DeckDatabaseUpdater(IMtgExternalDeckSource externalSource, IMtgInternalDeckSource internalSource)
         {
             _externalDeckSource = externalSource;
             _internalDeckSource = internalSource;

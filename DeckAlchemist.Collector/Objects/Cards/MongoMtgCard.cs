@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DeckAlchemist.Api.Objects.Card.Mtg
+namespace DeckAlchemist.Collector.Objects.Cards
 {
     public class MongoMtgCard : IMtgCard
     {
@@ -21,8 +21,8 @@ namespace DeckAlchemist.Api.Objects.Card.Mtg
         public string Layout { get; set; }
         public string ImageName { get; set; }
         public string Name { get; set; }
-
         [BsonIgnoreIfNull]
+
         public IEnumerable<IMtgLegality> Legality { get; set; }
 
         public static MongoMtgCard FromMtgCard(IMtgCard card)

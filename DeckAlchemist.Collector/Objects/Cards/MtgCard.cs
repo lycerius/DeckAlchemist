@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DeckAlchemist.Api.Objects.Card.Mtg
+namespace DeckAlchemist.Collector.Objects.Cards
 {
     public class MtgCard : IMtgCard
     {
@@ -18,25 +18,5 @@ namespace DeckAlchemist.Api.Objects.Card.Mtg
         public string ImageName { get; set; }
         public string Name { get; set; }
         public IEnumerable<IMtgLegality> Legality { get; set; }
-
-        public static MtgCard FromMtg(IMtgCard card)
-        {
-            return new MtgCard
-            {
-                Cmc = card.Cmc,
-                Colors = card.Colors,
-                ImageName = card.ImageName,
-                Layout = card.Layout,
-                Legality = card.Legality,
-                ManaCost = card.ManaCost,
-                Name = card.Name,
-                Power = card.Power,
-                SubTypes = card.SubTypes,
-                Text = card.Text,
-                Toughness = card.Toughness,
-                Type = card.Type,
-                Types = card.Types
-            };
-        }
     }
 }

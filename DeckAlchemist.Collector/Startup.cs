@@ -1,17 +1,22 @@
 ﻿using System;
-using DeckAlchemist.Api.Objects.Card.Mtg;
-using DeckAlchemist.Api.Objects.Deck;
-using DeckAlchemist.Api.Sources.Cards.Mtg;
-using DeckAlchemist.Api.Sources.Deck.Mtg;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DeckAlchemist.Collector.Objects.Cards;
+using DeckAlchemist.Collector.Objects.Decks;
 using DeckAlchemist.Collector.Schedulers;
 using DeckAlchemist.Collector.Services;
 using DeckAlchemist.Collector.Sources.Cards.Mtg;
 using DeckAlchemist.Collector.Sources.Cards.Mtg.External;
+using DeckAlchemist.Collector.Sources.Cards.Mtg.Internal;
 using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
+using DeckAlchemist.Collector.Sources.Decks.Mtg.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization;
 
 namespace DeckAlchemist.Collector
@@ -34,10 +39,10 @@ namespace DeckAlchemist.Collector
 
         void AddSources(IServiceCollection services)
         {
-            services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
+            services.AddTransient<IMtgInternalCardSource, MongoMtgInternalCardSource>();
             services.AddTransient<IMtgExternalCardSource, MtgJsonExternalCardSource>();
             services.AddTransient<IMtgExternalDeckSource, MtgGoldFishExternalDeckSource>();
-            services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
+            services.AddTransient<IMtgInternalDeckSource, MongoMtgInternalDeckSource>();
         }
 
         void AddUpdateServices(IServiceCollection services)

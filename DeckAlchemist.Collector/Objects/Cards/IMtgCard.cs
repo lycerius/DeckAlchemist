@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DeckAlchemist.Api.Objects.Card.Mtg
+namespace DeckAlchemist.Collector.Objects.Cards
 {
     public interface IMtgCard
     {
