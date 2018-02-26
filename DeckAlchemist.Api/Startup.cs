@@ -1,10 +1,12 @@
-﻿using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Api.Auth;
+using DeckAlchemist.Api.Objects.Card.Mtg;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Api.Sources.Group;
 using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +41,7 @@ namespace DeckAlchemist.Api
             services.AddTransient<IUserSource, MongoUserSource>();
             services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
             services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
+            services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -89,6 +92,13 @@ namespace DeckAlchemist.Api
                     };
                     options.SaveToken = true;
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Email", policy => {
+                    policy.AddRequirements(new EmailVerificationRequirement());
+                });
+            });
+            
         }
     }
 }
