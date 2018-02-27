@@ -62,7 +62,7 @@ services:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/data/logs
     volumes:
-      - ${MongoDir}/colossus/data/mongo:/data
+      - ${MongoDir}:/data
     ports:
       - 27017:27017
     command: mongod --smallfiles --logpath=/data/logs
