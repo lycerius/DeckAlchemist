@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Group;
+﻿using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.User;
 using DeckAlchemist.Api.Sources.Group;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DeckAlchemist.Api.Controllers
 {
+    [Authorize(Policy = "Email")]
     [Route("api/group")]
     public class GroupsController : Controller
     {
