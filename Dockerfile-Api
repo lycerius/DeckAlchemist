@@ -1,0 +1,20 @@
+FROM microsoft/aspnetcore-build:2.0 AS build-env
+WORKDIR /app
+
+# Copy csproj and restore as distinct layers
+COPY ./DeckAlchemist.Api/*.csproj ./DeckAlchemist.Api/
+COPY ./DeckAlchemist.Support/*.csproj ./DeckAlchemist.Support/
+RUN cd ./DeckAlchemist.Api && dotnet restore && cd ..
+RUN cd ./DeckAlchemist.Support && dotnet restore && cd ..
+
+# Copy everything else and build
+COPY ./DeckAlchemist.Api ./DeckAlchemist.Api
+COPY ./DeckAlchemist.Support ./DeckAlchemist.Support
+RUN cd ./DeckAlchemist.Api && dotnet publish -c Release -o out && cd ..
+
+# Build runtime image
+FROM microsoft/aspnetcore:2.0
+WORKDIR /app
+COPY --from=build-env /app/DeckAlchemist.Api/out .
+EXPOSE 80
+ENTRYPOINT ["dotnet", "DeckAlchemist.Api.dll"]

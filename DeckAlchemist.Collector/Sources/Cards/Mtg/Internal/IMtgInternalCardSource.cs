@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Cards;
+using DeckAlchemist.Support.Objects.Cards;
 
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
 {

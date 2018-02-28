@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Cards;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Linq;
+using DeckAlchemist.Support.Objects.Cards;
+
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
 {
     public class MtgJsonCard
