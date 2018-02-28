@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.User;
+using DeckAlchemist.Support.Objects.User;
 using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.User;
+using DeckAlchemist.Support.Objects.User;
 
 namespace DeckAlchemist.Api.Objects.Group
 {

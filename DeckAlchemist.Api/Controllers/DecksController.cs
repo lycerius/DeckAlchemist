@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Deck;
+using DeckAlchemist.Support.Objects.Decks;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,13 +24,13 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("all")]
         public IEnumerable<IMtgDeck> GetAllDecks()
         {
-            return _source.GetAllDecks();
+            return null;
         }
 
         [HttpGet()]
         public IMtgDeck GetByName([FromBody]string deckname)
         {
-            return _source.GetDeckOfName(deckname);
+            return null;
         }
 
     }

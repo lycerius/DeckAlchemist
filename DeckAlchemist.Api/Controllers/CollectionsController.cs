@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Collection;
 using DeckAlchemist.Api.Sources.Collection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeckAlchemist.Api.Controllers
 {
+    [Authorize(Policy = "Email")]
     [Route("api/collection")]
     public class CollectionsController : Controller
     {
@@ -23,46 +23,23 @@ namespace DeckAlchemist.Api.Controllers
 
         //one or many users
         [HttpGet]
-        public List<string> AllCollectionsByUsersIds([FromBody]string[] users)
+        public void AllCollectionsByUsersIds([FromBody]string[] users)
         {
-            var collectionIds = new List<string>();
-            foreach( var user in users){
-                collectionIds.Add(_source.GetCollectionIdOf(user));
-            }
-            return collectionIds;
+          
         }
 
         //one or many cards
-        [Authorize]
         [HttpPut("{cards}")]
-        public List<string> AddCardsToCollection([FromBody]string[] cardnames)
+        public void AddCardsToCollection([FromBody]string[] cardnames)
         {
-            
-            var userid = HttpContext.User.FindFirst("sub").Value;
-            var errorOnAdd = new List<string>();
-            foreach(var card in cardnames){
-                if (!_source.AddCard(card,userid)){
-                    errorOnAdd.Add(card);
-                }
-            }
-            return errorOnAdd;
+         
         }
 
         //remove one ore many cards
-        [Authorize]
         [HttpDelete("{cards}")]
-        public List<string> RemoveCardsFromCollection([FromBody]string[] cardnames)
+        public void RemoveCardsFromCollection([FromBody]string[] cardnames)
         {
-            var userid = HttpContext.User.FindFirst("sub").Value;
-            var errorOnDel = new List<string>();
-            foreach (var card in cardnames)
-            {
-                if (!_source.DeleteCard(card, userid))
-                {
-                    errorOnDel.Add(card);
-                }
-            }
-            return errorOnDel;
+     
         }
     }
 }

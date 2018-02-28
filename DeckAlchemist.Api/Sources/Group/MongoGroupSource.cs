@@ -1,11 +1,8 @@
 ﻿using System;
-<<<<<<< HEAD
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Group;
-using DeckAlchemist.Api.Objects.User;
-=======
+using DeckAlchemist.Api.Objects.Group.DeckAlchemist.Support.Objects.Group;
 using DeckAlchemist.Support.Objects.Group;
->>>>>>> devel
+using DeckAlchemist.Support.Objects.User;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Group
