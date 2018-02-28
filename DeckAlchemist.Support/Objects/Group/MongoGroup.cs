@@ -13,7 +13,7 @@ namespace DeckAlchemist.Support.Objects.Group
         public string name { get; set; }
         public string owner { get; set; }
         public string game { get; set; }
-        public IEnumerable<IUser> members { get; set; }
+        public IEnumerable<string> membersIDs { get; set; }
     }
 }
 }
