@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using DeckAlchemist.Api.Objects.Group.DeckAlchemist.Support.Objects.Group;
 using DeckAlchemist.Support.Objects.Group;
+using DeckAlchemist.Support.Objects.User;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Group
@@ -20,6 +23,18 @@ namespace DeckAlchemist.Api.Sources.Group
             var client = new MongoClient(MongoConnectionString);
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoGroup>(MongoCollection);
+        }
+        public IEnumerable<IUser> GetAllUsers(string groupName){
+            var byNameFilter = _filter.In("name", groupName);
+            IList<MongoGroup> groupobjs = collection.Find(byNameFilter).ToList();
+            //TODO: return groupobjs[0].members;
+            return null;
+        }
+        public void AddUser(string groupName, string user){
+            
+        }
+        public void RemoveUser(string groupName, string user){
+
         }
     }
 }
