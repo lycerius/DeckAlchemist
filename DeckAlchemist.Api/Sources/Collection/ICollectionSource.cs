@@ -6,6 +6,6 @@ namespace DeckAlchemist.Api.Sources.Collection
 {
     public interface ICollectionSource
     {
-
+        bool addCardToCollection(string uId, IEnumerable<string> cardName);
     }
 }

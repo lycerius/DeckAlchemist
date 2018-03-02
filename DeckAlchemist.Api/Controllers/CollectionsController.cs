@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DeckAlchemist.Api.Sources.Collection;
+using DeckAlchemist.Api.Sources.Cards.Mtg;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +15,13 @@ namespace DeckAlchemist.Api.Controllers
     [Route("api/collection")]
     public class CollectionsController : Controller
     {
-        readonly ICollectionSource _source;
+        readonly ICollectionSource _collectionSource;
+        readonly IMtgCardSource _cardSource;
 
-        public CollectionsController(ICollectionSource source)
+        public CollectionsController(ICollectionSource collectionSource, IMtgCardSource cardSource)
         {
-            _source = source;
+            _collectionSource = collectionSource;
+            _cardSource = cardSource;
         }
 
         //one or many users
@@ -29,14 +32,25 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         //one or many cards
-        [HttpPut("{cards}")]
-        public void AddCardsToCollection([FromBody]string[] cardnames)
+        [HttpPut("cards")]
+        public IActionResult AddCardsToCollection([FromBody]IEnumerable<string> cardnames)
         {
-         
+            try
+            {
+                var uId = HttpContext.User.FindFirst("sub").Value;
+                bool cardExists = _cardSource.CheckExistance(cardnames);
+                if (!cardExists) return StatusCode(401);
+                bool result = _collectionSource.addCardToCollection(uId, cardnames);
+                if (result) return StatusCode(200);
+                return StatusCode(500);
+            }
+            catch(Exception){
+                return StatusCode(500);
+            }
         }
 
         //remove one ore many cards
-        [HttpDelete("{cards}")]
+        [HttpDelete("cards")]
         public void RemoveCardsFromCollection([FromBody]string[] cardnames)
         {
      
