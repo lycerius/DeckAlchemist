@@ -1,6 +1,8 @@
 ﻿using System;
 using DeckAlchemist.Support.Objects.Collection;
 using MongoDB.Driver;
+using System.Collections.Generic;
+
 
 namespace DeckAlchemist.Api.Sources.Collection
 {
@@ -20,6 +22,21 @@ namespace DeckAlchemist.Api.Sources.Collection
             var client = new MongoClient(MongoConnectionString);
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoCollection>(MongoCollection);
+        }
+        public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName){
+            throw new NotImplementedException();
+        }
+        public bool MarkCardAsLent(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public bool AddCardAsLent(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
