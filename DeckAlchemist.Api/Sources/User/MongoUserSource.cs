@@ -19,5 +19,13 @@ namespace DeckAlchemist.Api.Sources.User
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoUser>(MongoCollection);
         }
+        public bool userExists(string recivingUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string getUIDByName(string recivingUser){
+            throw new NotImplementedException();
+        }
     }
 }
