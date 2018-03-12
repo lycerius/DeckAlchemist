@@ -2,7 +2,7 @@
 
 namespace DeckAlchemist.Support.Objects.Group
 {
-     class MongoGroup : IGroup
+    public class MongoGroup : IGroup
     {
         public string GroupName { get; set; }
         public string Owner { get; set; }
