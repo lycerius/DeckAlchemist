@@ -50,8 +50,8 @@ namespace DeckAlchemist.Api.Controllers
             {
                 var user = _userSource.GetUser(userId);
                 var collectionId = _collectionSource.CreateCollection(userId);
-
-                _userSource.SetCollection(userId, collectionId);
+                user.CollectionId = collectionId;
+                _userSource.Update(user);
             }
         }
 

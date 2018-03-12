@@ -19,5 +19,37 @@ namespace DeckAlchemist.Api.Sources.User
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoUser>(MongoCollection);
         }
+
+        public void Initialize()
+        {
+            var filter = new BsonDocument("name", MongoCollection);
+            //filter by collection name
+            var collections = database.ListCollections(new ListCollectionsOptions { Filter = filter });
+            //check for existence
+            var exists = collections.Any();
+
+            if (!exists)
+                database.CreateCollection(MongoCollection);
+        }
+
+        public IUser Get(string userId)
+        {
+            var search = _filter.Eq("UserId", userId);
+            var user = collection.Find(search).FirstOrDefault();
+            return user;
+        }
+
+        public void Create(IUser user)
+        {
+            var mongoUser = MongoUser.FromUser(user);
+            collection.InsertOne(mongoUser);
+        }
+
+        public void Update(IUser user)
+        {
+            var mongoUser = user as MongoUser;
+            var query = _filter.Eq("UserId", mongoUser.UserId);
+            collection.FindOneAndReplace(query, mongoUser);
+        }
     }
 }
