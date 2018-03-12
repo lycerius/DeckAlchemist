@@ -3,7 +3,7 @@ namespace DeckAlchemist.Api.Sources.User
 {
     public interface IUserSource
     {
-        bool userExists(string recivingUser);
-        string getUIDByName(string recivingUser);
+        bool UserExists(string recivingUser);
+        string GetUIDByName(string recivingUser);
     }
 }

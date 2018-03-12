@@ -23,18 +23,18 @@ namespace DeckAlchemist.Api.Sources.Collection
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoCollection>(MongoCollection);
         }
-        public bool addCardToCollection(string uId, IEnumerable<string> cardName)
+        public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
         {
             throw new NotImplementedException();
         }
-        public bool removeCardFromCollection(string uId, IEnumerable<string> cardName){
+        public bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName){
             throw new NotImplementedException();
         }
-        public bool markCardAsLent(string uId, IEnumerable<string> cardName)
+        public bool MarkCardAsLent(string uId, IEnumerable<string> cardName)
         {
             throw new NotImplementedException();
         }
-        public bool addCardAsLent(string uId, IEnumerable<string> cardName)
+        public bool AddCardAsLent(string uId, IEnumerable<string> cardName)
         {
             throw new NotImplementedException();
         }

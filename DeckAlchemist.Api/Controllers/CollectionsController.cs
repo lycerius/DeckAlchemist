@@ -36,7 +36,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = HttpContext.User.FindFirst("sub").Value;
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.addCardToCollection(uId, cardnames);
+                bool result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -54,7 +54,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = HttpContext.User.FindFirst("sub").Value;
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.removeCardFromCollection(uId, cardnames);
+                bool result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -69,11 +69,11 @@ namespace DeckAlchemist.Api.Controllers
             try
             {
                 var uId = HttpContext.User.FindFirst("sub").Value;
-                bool reciverExists = _userSource.userExists(reciver);
+                bool reciverExists = _userSource.UserExists(reciver);
                 if (!reciverExists) return StatusCode(401);
-                bool markAsLent = _collectionSource.markCardAsLent(uId, cardsnames);
-                var uIdOfRevicer = _userSource.getUIDByName(reciver);
-                bool reciveCard = _collectionSource.addCardAsLent(uIdOfRevicer,cardsnames);
+                bool markAsLent = _collectionSource.MarkCardAsLent(uId, cardsnames);
+                var uIdOfRevicer = _userSource.GetUIDByName(reciver);
+                bool reciveCard = _collectionSource.AddCardAsLent(uIdOfRevicer,cardsnames);
                 if (markAsLent && reciveCard) return StatusCode(200);
                 return StatusCode(500);
 
