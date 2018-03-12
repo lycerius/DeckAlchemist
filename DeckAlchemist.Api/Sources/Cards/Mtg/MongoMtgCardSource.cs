@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Support.Objects.Cards;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Cards.Mtg

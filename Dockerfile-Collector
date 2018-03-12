@@ -1,0 +1,20 @@
+FROM microsoft/aspnetcore-build:2.0 AS build-env
+WORKDIR /app
+
+# Copy csproj and restore as distinct layers
+COPY ./DeckAlchemist.Collector/*.csproj ./DeckAlchemist.Collector/
+COPY ./DeckAlchemist.Support/*.csproj ./DeckAlchemist.Support/
+RUN cd ./DeckAlchemist.Collector && dotnet restore && cd ..
+RUN cd ./DeckAlchemist.Support && dotnet restore && cd ..
+
+# Copy everything else and build
+COPY ./DeckAlchemist.Collector ./DeckAlchemist.Collector
+COPY ./DeckAlchemist.Support ./DeckAlchemist.Support
+RUN cd ./DeckAlchemist.Collector && dotnet publish -c Release -o out && cd ..
+
+# Build runtime image
+FROM microsoft/aspnetcore:2.0
+WORKDIR /app
+COPY --from=build-env /app/DeckAlchemist.Collector/out .
+EXPOSE 80
+ENTRYPOINT ["dotnet", "DeckAlchemist.Collector.dll"]

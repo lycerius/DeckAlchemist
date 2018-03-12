@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using DeckAlchemist.Collector.Objects.Cards;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
+using DeckAlchemist.Support.Objects.Cards;
 
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
 {

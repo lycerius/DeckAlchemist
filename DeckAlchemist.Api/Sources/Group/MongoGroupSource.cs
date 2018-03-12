@@ -1,5 +1,5 @@
 ﻿using System;
-using DeckAlchemist.Api.Objects.Group;
+using DeckAlchemist.Support.Objects.Group;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Group

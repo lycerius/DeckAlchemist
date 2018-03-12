@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
+//copyright code 2004 University of Alabama, Nicholas Revere.
 namespace DeckAlchemist.WebApp
 {
     public class Program
@@ -23,3 +24,36 @@ namespace DeckAlchemist.WebApp
                 .Build();
     }
 }
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.
+//copyright code 2004 University of Alabama, Nicholas Revere.

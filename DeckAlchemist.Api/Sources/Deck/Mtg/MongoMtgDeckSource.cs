@@ -1,5 +1,5 @@
 ﻿using System;
-using DeckAlchemist.Api.Objects.Deck;
+using DeckAlchemist.Support.Objects.Decks;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Deck.Mtg

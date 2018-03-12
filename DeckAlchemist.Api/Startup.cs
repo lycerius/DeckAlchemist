@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Api.Auth;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Api.Sources.Group;
 using DeckAlchemist.Api.Sources.User;
+using DeckAlchemist.Support.Objects.Cards;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 
@@ -31,11 +27,10 @@ namespace DeckAlchemist.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
             services.AddCors();
             ConfigureAuthentication(services);
             ConfigureSources(services);
+            services.AddMvc();
         }
 
         public void ConfigureSources(IServiceCollection services)
@@ -45,6 +40,9 @@ namespace DeckAlchemist.Api
             services.AddTransient<ICollectionSource, MongoCollectionSource>();
             services.AddTransient<IGroupSource, MongoGroupSource>();
             services.AddTransient<IUserSource, MongoUserSource>();
+            services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
+            services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
+            services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -95,6 +93,13 @@ namespace DeckAlchemist.Api
                     };
                     options.SaveToken = true;
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Email", policy => {
+                    policy.AddRequirements(new EmailVerificationRequirement());
+                });
+            });
+            
         }
     }
 }

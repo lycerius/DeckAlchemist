@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DeckAlchemist.Collector.Objects.Cards;
-using DeckAlchemist.Collector.Objects.Decks;
 using DeckAlchemist.Collector.Schedulers;
 using DeckAlchemist.Collector.Services;
 using DeckAlchemist.Collector.Sources.Cards.Mtg;
@@ -11,12 +6,12 @@ using DeckAlchemist.Collector.Sources.Cards.Mtg.External;
 using DeckAlchemist.Collector.Sources.Cards.Mtg.Internal;
 using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
 using DeckAlchemist.Collector.Sources.Decks.Mtg.Internal;
+using DeckAlchemist.Support.Objects.Cards;
+using DeckAlchemist.Support.Objects.Decks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization;
 
 namespace DeckAlchemist.Collector
