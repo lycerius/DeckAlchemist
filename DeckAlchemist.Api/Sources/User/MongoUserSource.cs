@@ -52,9 +52,11 @@ namespace DeckAlchemist.Api.Sources.User
             var query = _filter.Eq("UserId", mongoUser.UserId);
             collection.FindOneAndReplace(query, mongoUser);
         }
-        public bool UserExists(string recivingUser)
+
+        public bool UserExists(string userId)
         {
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", userId);
+            return collection.Find(query).Any();
         }
 
         public string GetUIDByName(string recivingUser){

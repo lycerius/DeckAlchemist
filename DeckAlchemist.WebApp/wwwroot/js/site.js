@@ -15,13 +15,13 @@
     // Login Form
     //----------------------------------------------
     // Validation
-    $("#login-form").validate({
+    /*$("#login-form").validate({
         rules: {
             lg_username: "required",
             lg_password: "required",
         },
         errorClass: "form-invalid"
-    });
+    });*/
 
     // Form Submission
     $("#login-form").submit(function(e) {
@@ -35,6 +35,7 @@
     // Register Form
     //----------------------------------------------
     // Validation
+    /*
     $("#register-form").validate({
         rules: {
             reg_username: "required",
@@ -63,7 +64,7 @@
             }
         }
     });
-
+    */
     // Form Submission
     $("#register-form").submit(function() {
         e.preventDefault();
@@ -76,13 +77,14 @@
     // Forgot Password Form
     //----------------------------------------------
     // Validation
+    /*
     $("#forgot-password-form").validate({
         rules: {
             fp_email: "required",
         },
         errorClass: "form-invalid"
     });
-
+    */
     // Form Submission
     $("#forgot-password-form").submit(function() {
         remove_loading($(this));
@@ -117,7 +119,7 @@
         $form.find('[type=submit]').addClass('success').html(options['btn-success']);
         $form.find('.login-form-main-message').addClass('show success').html(options['msg-success']);
 
-        document.location.href = "decks.html";
+        //document.location.href = "decks.html";
     }
 
     function form_failed($form, msg)
@@ -131,16 +133,25 @@
     // This is just a dummy form submission. You should use your AJAX function or remove this function if you are not using AJAX.
     function login($form)
     {
-        if($form.valid())
-        {
-            form_loading($form);
+        //if($form.valid())
+        //{
+            //form_loading($form);
 
             var email = $('#username').val();
             var password = $('#password').val();
 
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then(function() {
-                    form_success($form);
+                    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
+                        fetch("http://localhost:5000/api/login", {
+                            headers: {
+                                'Authorization': "Bearer "+idToken
+                            }
+                        })
+                    }).then(function(){
+                        alert("Done")
+                    })
+                    //form_success($form);
                 })
                 .catch(function(error) {
                     // Handle Errors here.
@@ -149,7 +160,7 @@
 
                     form_failed($form, errorMessage);
                 });
-        }
+        //}
     }
 
     function register($form) {

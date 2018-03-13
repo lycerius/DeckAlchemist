@@ -27,18 +27,15 @@ namespace DeckAlchemist.Api.Controllers
             _collectionSource = collectionSource;
             _userSource = userSource;
         }
-        [HttpGet]
-        public string Login()
+
+        [HttpGet("")]
+        public void Login()
         {
             var userInfo = HttpContext.User;
-
             //Check to see if the user is created (first time login)
             CreateUserIfNotExist(userInfo);
-
-
             //Check to see if the user's collection is create
             CreateCollectionIfNotExist(userInfo);
-            return null;
         }
 
         void CreateUserIfNotExist(ClaimsPrincipal user)
@@ -51,7 +48,9 @@ namespace DeckAlchemist.Api.Controllers
                 {
                     UserId = userId,
                     Email = email,
-                    UserName = email
+                    UserName = email,
+                    Groups = new List<string>(),
+                    Decks = new List<string>()
                 };
                 _userSource.Create(newUser);
             }

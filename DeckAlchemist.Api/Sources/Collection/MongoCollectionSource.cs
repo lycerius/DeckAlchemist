@@ -72,7 +72,8 @@ namespace DeckAlchemist.Api.Sources.Collection
 
         public bool ExistsForUser(string userId)
         {
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", userId);
+            return collection.Find(query).Any();
         }
     }
 }
