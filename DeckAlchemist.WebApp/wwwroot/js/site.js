@@ -1,4 +1,6 @@
-﻿window.onload = function() {
+﻿
+
+window.onload = function() {
     "use strict";
 
     // Options for Message
@@ -15,13 +17,13 @@
     // Login Form
     //----------------------------------------------
     // Validation
-    /*$("#login-form").validate({
+    $("#login-form").validate({
         rules: {
             lg_username: "required",
             lg_password: "required",
         },
         errorClass: "form-invalid"
-    });*/
+    });
 
     // Form Submission
     $("#login-form").submit(function(e) {
@@ -35,7 +37,7 @@
     // Register Form
     //----------------------------------------------
     // Validation
-    /*
+    
     $("#register-form").validate({
         rules: {
             reg_username: "required",
@@ -64,9 +66,9 @@
             }
         }
     });
-    */
+    
     // Form Submission
-    $("#register-form").submit(function() {
+    $("#register-form").submit(function(e) {
         e.preventDefault();
 
         remove_loading($(this));
@@ -77,14 +79,14 @@
     // Forgot Password Form
     //----------------------------------------------
     // Validation
-    /*
+    
     $("#forgot-password-form").validate({
         rules: {
             fp_email: "required",
         },
         errorClass: "form-invalid"
     });
-    */
+    
     // Form Submission
     $("#forgot-password-form").submit(function() {
         remove_loading($(this));
@@ -133,9 +135,9 @@
     // This is just a dummy form submission. You should use your AJAX function or remove this function if you are not using AJAX.
     function login($form)
     {
-        //if($form.valid())
-        //{
-            //form_loading($form);
+        if($form.valid()) 
+        {
+            form_loading($form);
 
             var email = $('#username').val();
             var password = $('#password').val();
@@ -160,7 +162,7 @@
 
                     form_failed($form, errorMessage);
                 });
-        //}
+        }
     }
 
     function register($form) {
