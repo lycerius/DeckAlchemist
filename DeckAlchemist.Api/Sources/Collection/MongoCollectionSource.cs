@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.User;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 
@@ -10,7 +12,7 @@ namespace DeckAlchemist.Api.Sources.Collection
     {
         readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
         const string MongoDatabase = "UserData";
-        const string MongoCollection = "Collection";
+        const string collectionName = "Collection";
 
         readonly IMongoDatabase database;
         readonly IMongoCollection<MongoCollection> collection;
@@ -21,9 +23,42 @@ namespace DeckAlchemist.Api.Sources.Collection
         {
             var client = new MongoClient(MongoConnectionString);
             database = client.GetDatabase(MongoDatabase);
-            collection = database.GetCollection<MongoCollection>(MongoCollection);
+            collection = database.GetCollection<MongoCollection>(collectionName);
         }
+<<<<<<< HEAD
         public bool AddCardToCollection(string uId, IList<string> cardName)
+=======
+
+        public void Init()
+        {
+            var filter = new BsonDocument("name", collectionName);
+            //filter by collection name
+            var collections = database.ListCollections(new ListCollectionsOptions { Filter = filter });
+            //check for existence
+            var exists = collections.Any();
+
+            if (!exists)
+                database.CreateCollection(collectionName);    
+        }
+
+        public string Create(ICollection collec)
+        {
+            var mongoCollection = MongoCollection.FromCollection(collec);
+            var collectionId = Guid.NewGuid();
+            mongoCollection.CollectionId = collectionId.ToString();
+            collection.InsertOne(mongoCollection);
+            return collectionId.ToString();
+        }
+
+        public void Update(ICollection collec)
+        {
+            var mongoCollection = collec as MongoCollection;
+            var query = _filter.Eq("CollectionId", mongoCollection.CollectionId);
+            collection.FindOneAndReplace(query, mongoCollection);
+        }
+
+        public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
+>>>>>>> 72020bae85c7c42372a692fb430fc49a77091d08
         {
             throw new NotImplementedException();
         }
@@ -37,6 +72,12 @@ namespace DeckAlchemist.Api.Sources.Collection
         public bool AddCardAsLent(string uId, IList<string> cardName)
         {
             throw new NotImplementedException();
+        }
+
+        public bool ExistsForUser(string userId)
+        {
+            var query = _filter.Eq("UserId", userId);
+            return collection.Find(query).Any();
         }
     }
 }
