@@ -26,7 +26,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             collection = database.GetCollection<MongoCollection>(collectionName);
         }
 
-        public void Initialize() 
+        public void Init()
         {
             var filter = new BsonDocument("name", collectionName);
             //filter by collection name
@@ -66,11 +66,6 @@ namespace DeckAlchemist.Api.Sources.Collection
             throw new NotImplementedException();
         }
         public bool AddCardAsLent(string uId, IEnumerable<string> cardName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Create(IUser user)
         {
             throw new NotImplementedException();
         }

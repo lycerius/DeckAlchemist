@@ -1,7 +1,3 @@
-﻿using System;
-﻿using System.Collections.Generic;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -15,7 +11,10 @@ namespace DeckAlchemist.Support.Objects.Collection
         {
             return new MongoCollection
             {
-
+                BorrowedCards = collec.BorrowedCards,
+                CollectionId = collec.CollectionId,
+                OwnedCards = collec.OwnedCards,
+                UserId = collec.UserId
             };
         }
         

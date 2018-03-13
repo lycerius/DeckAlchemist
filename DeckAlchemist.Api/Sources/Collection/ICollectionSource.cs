@@ -7,8 +7,8 @@ namespace DeckAlchemist.Api.Sources.Collection
 {
     public interface ICollectionSource
     {
-        void Initialize();
-        string Create(IUser user);
+        void Init();
+        string Create(ICollection collec);
         void Update(ICollection collection);
         bool AddCardToCollection(string uId, IEnumerable<string> cardName);
         bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName);

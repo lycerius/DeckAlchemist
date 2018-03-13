@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DeckAlchemist.Api.Auth;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.User;
+using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +47,13 @@ namespace DeckAlchemist.Api.Controllers
             if (!_userSource.UserExists(userId))
             {
                 var email = UserInfo.Email(user);
-                //_userSource.Create(userId, email);
+                var newUser = new User
+                {
+                    UserId = userId,
+                    Email = email,
+                    UserName = email
+                };
+                _userSource.Create(newUser);
             }
         }
 
@@ -55,8 +63,13 @@ namespace DeckAlchemist.Api.Controllers
             if(!_collectionSource.ExistsForUser(userId))
             {
                 var user = _userSource.Get(userId);
-                var collectionId = _collectionSource.Create(user);
-                user.CollectionId = collectionId;
+                var collection = new Collection
+                {
+                    UserId = userId,
+                    CollectionId = Guid.NewGuid().ToString()
+                };
+                _collectionSource.Create(collection);
+                user.CollectionId = collection.CollectionId;
                 _userSource.Update(user);
             }
         }

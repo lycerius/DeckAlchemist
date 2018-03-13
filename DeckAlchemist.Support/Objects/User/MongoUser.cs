@@ -2,9 +2,6 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-﻿using System.Collections.Generic;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 
 namespace DeckAlchemist.Support.Objects.User
@@ -15,9 +12,15 @@ namespace DeckAlchemist.Support.Objects.User
         {
             return new MongoUser
             {
-
+                CollectionId = user.CollectionId,
+                Decks = user.Decks,
+                Email = user.Email,
+                Groups = user.Groups,
+                UserId = user.UserId,
+                UserName = user.UserName,
             };
         }
+
         [BsonId]
         public ObjectId _id { get; set; }
         public string UserId { get; set; }
