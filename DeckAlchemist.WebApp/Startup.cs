@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeckAlchemist.WebApp
 {
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -44,6 +45,9 @@ namespace DeckAlchemist.WebApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
+
     }
 }
