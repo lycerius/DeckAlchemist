@@ -10,5 +10,10 @@ namespace DeckAlchemist.Api.Sources.Collection
         void Initialize();
         string Create(IUser user);
         void Update(ICollection collection);
+        bool AddCardToCollection(string uId, IEnumerable<string> cardName);
+        bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName);
+        bool MarkCardAsLent(string uId, IEnumerable<string> cardName);
+        bool AddCardAsLent(string uId, IEnumerable<string> cardName);
+        bool ExistsForUser(string userId);
     }
 }

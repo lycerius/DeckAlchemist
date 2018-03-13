@@ -20,6 +20,11 @@ namespace DeckAlchemist.Api.Controllers
         ICollectionSource _collectionSource;
         IUserSource _userSource;
 
+        public LoginController(ICollectionSource collectionSource, IUserSource userSource)
+        {
+            _collectionSource = collectionSource;
+            _userSource = userSource;
+        }
         [HttpGet]
         public string Login()
         {
@@ -31,25 +36,26 @@ namespace DeckAlchemist.Api.Controllers
 
             //Check to see if the user's collection is create
             CreateCollectionIfNotExist(userInfo);
+            return null;
         }
 
         void CreateUserIfNotExist(ClaimsPrincipal user)
         {
-            var userId = UserInfo.Id(userInfo);
+            var userId = UserInfo.Id(user);
             if (!_userSource.UserExists(userId))
             {
-                var email = UserInfo.Email(userInfo);
-                _userSource.CreateUser(userId, email);
+                var email = UserInfo.Email(user);
+                //_userSource.Create(userId, email);
             }
         }
 
-        void CreateCollectionIfNotExist(ClaimsPrincipal user)
+        void CreateCollectionIfNotExist(ClaimsPrincipal userInfo)
         {
-            var userId = UserInfo.Id(user);
+            var userId = UserInfo.Id(userInfo);
             if(!_collectionSource.ExistsForUser(userId))
             {
-                var user = _userSource.GetUser(userId);
-                var collectionId = _collectionSource.CreateCollection(userId);
+                var user = _userSource.Get(userId);
+                var collectionId = _collectionSource.Create(user);
                 user.CollectionId = collectionId;
                 _userSource.Update(user);
             }

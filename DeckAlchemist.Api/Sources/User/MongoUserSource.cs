@@ -1,5 +1,6 @@
 ﻿using System;
 using DeckAlchemist.Support.Objects.User;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.User
@@ -19,9 +20,8 @@ namespace DeckAlchemist.Api.Sources.User
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoUser>(MongoCollection);
         }
-<<<<<<< HEAD
 
-        public void Initialize()
+        public void Init()
         {
             var filter = new BsonDocument("name", MongoCollection);
             //filter by collection name
@@ -51,7 +51,7 @@ namespace DeckAlchemist.Api.Sources.User
             var mongoUser = user as MongoUser;
             var query = _filter.Eq("UserId", mongoUser.UserId);
             collection.FindOneAndReplace(query, mongoUser);
-=======
+        }
         public bool UserExists(string recivingUser)
         {
             throw new NotImplementedException();
@@ -59,7 +59,8 @@ namespace DeckAlchemist.Api.Sources.User
 
         public string GetUIDByName(string recivingUser){
             throw new NotImplementedException();
->>>>>>> 853fd09c8ff411564306df816fab2c75416da9ce
         }
+
+
     }
 }

@@ -42,7 +42,7 @@ namespace DeckAlchemist.Api.Sources.Collection
         {
             var mongoCollection = MongoCollection.FromCollection(collec);
             var collectionId = Guid.NewGuid();
-            mongoCollection.CollectionId = collectionId;
+            mongoCollection.CollectionId = collectionId.ToString();
             collection.InsertOne(mongoCollection);
             return collectionId.ToString();
         }
@@ -53,6 +53,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("CollectionId", mongoCollection.CollectionId);
             collection.FindOneAndReplace(query, mongoCollection);
         }
+
         public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
         {
             throw new NotImplementedException();
@@ -65,6 +66,16 @@ namespace DeckAlchemist.Api.Sources.Collection
             throw new NotImplementedException();
         }
         public bool AddCardAsLent(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Create(IUser user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ExistsForUser(string userId)
         {
             throw new NotImplementedException();
         }
