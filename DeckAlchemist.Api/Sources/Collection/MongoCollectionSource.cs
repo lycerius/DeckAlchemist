@@ -3,6 +3,8 @@ using DeckAlchemist.Support.Objects.Collection;
 using DeckAlchemist.Support.Objects.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Collections.Generic;
+
 
 namespace DeckAlchemist.Api.Sources.Collection
 {
@@ -50,6 +52,21 @@ namespace DeckAlchemist.Api.Sources.Collection
             var mongoCollection = collec as MongoCollection;
             var query = _filter.Eq("CollectionId", mongoCollection.CollectionId);
             collection.FindOneAndReplace(query, mongoCollection);
+        }
+        public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName){
+            throw new NotImplementedException();
+        }
+        public bool MarkCardAsLent(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public bool AddCardAsLent(string uId, IEnumerable<string> cardName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

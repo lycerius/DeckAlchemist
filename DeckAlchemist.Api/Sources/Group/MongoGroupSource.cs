@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Group.DeckAlchemist.Support.Objects.Group;
 using DeckAlchemist.Support.Objects.Group;
 using DeckAlchemist.Support.Objects.User;
 using MongoDB.Driver;
