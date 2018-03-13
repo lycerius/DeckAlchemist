@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeckAlchemist.WebApp
 {
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)

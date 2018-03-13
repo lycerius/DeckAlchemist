@@ -8,11 +8,13 @@ using DeckAlchemist.WebApp.Models;
 
 namespace DeckAlchemist.WebApp.Controllers
 {
+    //copyright code 2004 University of Alabama, Nicholas Revere.
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            //Do auth code
+            return View("Login");
         }
 
         public IActionResult About()
