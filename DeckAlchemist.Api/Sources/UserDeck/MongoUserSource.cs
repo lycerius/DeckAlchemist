@@ -2,30 +2,22 @@
 using DeckAlchemist.Support.Objects.User;
 using MongoDB.Driver;
 
-namespace DeckAlchemist.Api.Sources.User
+namespace DeckAlchemist.Api.Sources.UserDeck
 {
-    public class MongoUserSource : IUserSource
+    public class MongoUserDeckSource:IUserDeckSource
     {
         readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
         const string MongoDatabase = "UserData";
-        const string MongoCollection = "Users";
+        const string MongoCollection = "UserDecks";
         readonly IMongoDatabase database;
         readonly IMongoCollection<MongoUser> collection;
         readonly FilterDefinitionBuilder<MongoUser> _filter = Builders<MongoUser>.Filter;
 
-        public MongoUserSource()
+        public MongoUserDeckSource()
         {
             var client = new MongoClient(MongoConnectionString);
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoUser>(MongoCollection);
-        }
-        public bool UserExists(string recivingUser)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUIDByName(string recivingUser){
-            throw new NotImplementedException();
         }
     }
 }

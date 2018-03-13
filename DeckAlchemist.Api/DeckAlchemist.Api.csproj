@@ -12,6 +12,7 @@
     <Folder Include="Sources\User\" />
     <Folder Include="Sources\Group\" />
     <Folder Include="Sources\Collection\" />
+    <Folder Include="Sources\UserDeck\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
