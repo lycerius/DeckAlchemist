@@ -1,6 +1,4 @@
-﻿
-
-window.onload = function() {
+﻿$(document).ready(function(){
     "use strict";
 
     // Options for Message
@@ -186,4 +184,4 @@ window.onload = function() {
                 });
         }
     }
-}
+});
