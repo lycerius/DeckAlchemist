@@ -176,17 +176,6 @@
                     }
                     else {
                         fetchWithAuth("http://localhost:5000/api/login").then(form_success($form))
-                        /*
-                        firebase.auth().currentUser.getIdToken(true).then(function (idToken) {
-                            fetch("http://localhost:5000/api/login", {
-                                headers: {
-                                    'Authorization': "Bearer " + idToken
-                                }
-                            })
-                        }).then(function () {
-                            form_success($form);
-                        })
-                        */
                     }
                 })
                 .catch(function(error) {
