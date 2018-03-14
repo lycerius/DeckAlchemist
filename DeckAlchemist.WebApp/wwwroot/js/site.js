@@ -131,6 +131,34 @@
     // Dummy Submit Form (Remove this)
     //----------------------------------------------
     // This is just a dummy form submission. You should use your AJAX function or remove this function if you are not using AJAX.
+
+    /*
+    * Fetches a resource from and endpoint that expects authorization.
+    * Achieves this by automatically appending the firebase id token
+    * for the currently signed in user to the request header. Returns a promise
+    * .then(function(result)): result=response
+    * .catch(function(error)): error = either firebase error or fetch error
+    * Params: [url] = authenticated endpoint, [fetchProps] = optional properties to use with the fetch call
+    * For more information on how to use fetch: "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+    */
+    function fetchWithAuth(url, fetchProps = {}) {
+        return new Promise(function (resolve, reject) {
+            try {
+                firebase.auth().currentUser.getIdToken(true).then(function (idToken) {
+                    if (!fetchProps.headers) fetchProps.headers = {};
+                    fetchProps.headers['Authorization'] = "Bearer " + idToken;
+                    fetch(url, fetchProps).then(function (result) {
+                        resolve(result);
+                    }).catch(function (error) {
+                        reject(error);
+                    });
+                })
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
     function login($form)
     {
         if($form.valid()) 
@@ -141,17 +169,14 @@
             var password = $('#password').val();
 
             firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(function() {
-                    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-                        fetch("http://localhost:5000/api/login", {
-                            headers: {
-                                'Authorization': "Bearer "+idToken
-                            }
-                        })
-                    }).then(function(){
-                        alert("Done")
-                    })
-                    //form_success($form);
+                .then(function () {
+                    if (!firebase.auth().currentUser.emailVerified) {
+                        firebase.auth().signOut()
+                        form_failed($form, "Email must be verified")
+                    }
+                    else {
+                        fetchWithAuth("http://localhost:5000/api/login").then(form_success($form))
+                    }
                 })
                 .catch(function(error) {
                     // Handle Errors here.
@@ -172,8 +197,11 @@
             var password = $('#reg_password').val();
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then(function() {
-                    form_success($form);
+                .then(function () {
+                    firebase.auth().currentUser.sendEmailVerification().then(function () {
+                        form_success($form);
+                        firebase.auth().signOut()
+                    });
                 })
                 .catch(function(error) {
                     // Handle Errors here.
