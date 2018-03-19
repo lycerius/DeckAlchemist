@@ -24,6 +24,7 @@ body {
     background: #efefef;
     padding: 10px;
     font-family: 'Varela Round';
+    height: 100%;
 }
 /*=== 2. Anchor Link ===*/
 a {
@@ -289,4 +290,44 @@ label:hover:before {
     font-size: 25px;
     color: #aaaaaa;
     font-weight: bold;
+}
+
+
+.sidebar {
+    max-width: 15%;
+    width: 15%;
+    height: 45%;
+    position: absolute;
+    /* float: left; */
+    background-color: #ffffff;
+    border-radius: 3px;
+    /* box-shadow: 5px 10px #888888; */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.content {
+    max-width: 80%;
+    height: 100%;
+}
+
+.sidebar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    /* width: 60px; */
+}
+
+ul.sidebar-nav li {
+    width: 100%;
+}
+
+.navbar-brand {
+    margin-left: 15%;
+}
+
+.navbar-header {
+    width: 100%;
+    border-bottom: #e4e4e4 2px solid;
+    text-align: center;
 }

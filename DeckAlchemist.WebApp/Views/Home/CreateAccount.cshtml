@@ -1,6 +1,6 @@
 ﻿@section Style {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <link href="css/site.css" rel="stylesheet">
+        <link href="../css/site.css" rel="stylesheet">
         <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
     }
 
@@ -39,9 +39,11 @@
         </environment>
     }
 
-<body>
-<!-- Where all the magic happens -->
-<!-- LOGIN FORM -->
+@section SidebarOptions {
+	<li>@Html.ActionLink("Login", "Index")</li>
+	<li><a href="#">Create Account</a></li>
+}
+
 <div class="text-center" style="padding:50px 0">
 	<div class="logo">Deck Alchemist</div>
 	<!-- Main Form -->
@@ -76,5 +78,3 @@
 		</form>
 	</div>
 </div>
-</body>
-</html>
