@@ -12,7 +12,7 @@ namespace DeckAlchemist.Api.Sources.Collection
         bool MarkCardAsLent(string uId, IList<string> cardName);
         bool AddCardAsLent(string uId, IList<string> cardName);
         void Init();
-        string Create(ICollection collec);
+        void Create(ICollection collec);
         void Update(ICollection collection);
         bool ExistsForUser(string userId);
         ICollection GetCollection(string userId);

@@ -37,13 +37,10 @@ namespace DeckAlchemist.Api.Sources.Collection
                 database.CreateCollection(collectionName);    
         }
 
-        public string Create(ICollection collec)
+        public void Create(ICollection collec)
         {
             var mongoCollection = MongoCollection.FromCollection(collec);
-            var collectionId = Guid.NewGuid();
-            mongoCollection.CollectionId = collectionId.ToString();
             collection.InsertOne(mongoCollection);
-            return collectionId.ToString();
         }
 
         public void Update(ICollection collec)

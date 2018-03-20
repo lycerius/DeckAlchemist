@@ -17,6 +17,11 @@ namespace DeckAlchemist.WebApp.Controllers
             return View("Login");
         }
 
+        public IActionResult CreateAccount()
+        {
+            return View("CreateAccount");
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

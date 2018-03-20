@@ -1,10 +1,14 @@
 ﻿using System;
+using DeckAlchemist.Support.Objects.UserDeck;
 namespace DeckAlchemist.Api.Sources.UserDeck
 {
-    public class IUserDeckSource
+    public interface IUserDeckSource
     {
-        public IUserDeckSource()
-        {
-        }
+        bool CreateDeck(string uId, string deckName);
+        bool DeleteDeck(string uId, string deckName);
+        bool AddCardToDeck(string uId, string deckName, string cardName);
+        bool RemoveCardFromDeck(string uId, string deckName, string cardName);
+        IUserDeck GetDeckByName(string uId, string deckName);
     }
+
 }

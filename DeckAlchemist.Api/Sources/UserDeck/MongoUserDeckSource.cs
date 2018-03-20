@@ -1,5 +1,6 @@
 ﻿using System;
 using DeckAlchemist.Support.Objects.User;
+using DeckAlchemist.Support.Objects.UserDeck;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.UserDeck
@@ -19,5 +20,26 @@ namespace DeckAlchemist.Api.Sources.UserDeck
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoUser>(MongoCollection);
         }
+        public bool CreateDeck(string uId, string deckName){
+            throw new NotImplementedException();
+        }
+        public bool DeleteDeck(string uId, string deckName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddCardToDeck(string uId, string deckName, string cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public bool RemoveCardFromDeck(string uId, string deckName, string cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public IUserDeck GetDeckByName(string uId, string deckName){
+            throw new NotImplementedException();
+
+        }
+
     }
 }

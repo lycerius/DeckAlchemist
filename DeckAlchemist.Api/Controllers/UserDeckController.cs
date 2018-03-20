@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DeckAlchemist.Api.Controllers
 {
     [Authorize(Policy = "Email")]
-    [Route("api/[controller]")]
+    [Route("api/UserDeck")]
     public class UserDeckController : Controller
     {
 
@@ -19,5 +19,50 @@ namespace DeckAlchemist.Api.Controllers
         {
             _source = source;
         }
+        [HttpGet("deck")]
+        public IActionResult GetDeckByName([FromBody] string deckName)
+        {
+            var uId = Auth.UserInfo.Id(HttpContext.User);
+            var email = Auth.UserInfo.Email(HttpContext.User);
+            var result  = _source.GetDeckByName(uId, deckName);
+            throw new System.NotImplementedException();
+        }
+        [HttpPut("deck")]
+        public IActionResult CreateDeck([FromBody] string deckName)
+        {
+            var uId = Auth.UserInfo.Id(HttpContext.User);
+            var email = Auth.UserInfo.Email(HttpContext.User);
+            bool result = _source.CreateDeck(uId, deckName);
+            if (!result) return StatusCode(500);
+            return StatusCode(200);
+        }
+        [HttpDelete("deck")]
+        public IActionResult DeleteDeck([FromBody] string deckName){
+            var uId = Auth.UserInfo.Id(HttpContext.User);
+            var email = Auth.UserInfo.Email(HttpContext.User);
+            bool result = _source.DeleteDeck(uId, deckName);
+            if (!result) return StatusCode(500);
+            return StatusCode(200);
+        }
+
+        [HttpPut("deck/card")]
+        public IActionResult AddCardToDeck([FromBody] string deckName, [FromBody] string cardName)
+        {
+            var uId = Auth.UserInfo.Id(HttpContext.User);
+            var email = Auth.UserInfo.Email(HttpContext.User);
+            bool result = _source.AddCardToDeck(uId, deckName,cardName);
+            if (!result) return StatusCode(500);
+            return StatusCode(200);
+        }
+        [HttpDelete("deck/card")]
+        public IActionResult RemoveCardfromDeck([FromBody] string deckName, [FromBody] string cardName)
+        {
+            var uId = Auth.UserInfo.Id(HttpContext.User);
+            var email = Auth.UserInfo.Email(HttpContext.User);
+            bool result = _source.RemoveCardFromDeck(uId, deckName, cardName);
+            if (!result) return StatusCode(500);
+            return StatusCode(200);
+        }
+
     }
 }
