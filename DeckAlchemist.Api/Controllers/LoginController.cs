@@ -5,8 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using DeckAlchemist.Api.Auth;
 using DeckAlchemist.Api.Sources.Collection;
+using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Api.Sources.User;
 using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.Messages;
 using DeckAlchemist.Support.Objects.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +23,13 @@ namespace DeckAlchemist.Api.Controllers
     {
         ICollectionSource _collectionSource;
         IUserSource _userSource;
+        IMessageSource _messageSource;
 
-        public LoginController(ICollectionSource collectionSource, IUserSource userSource)
+        public LoginController(ICollectionSource collectionSource, IUserSource userSource, IMessageSource messageSource)
         {
             _collectionSource = collectionSource;
             _userSource = userSource;
+            _messageSource = messageSource;
         }
 
         [HttpGet("")]
@@ -36,6 +40,8 @@ namespace DeckAlchemist.Api.Controllers
             CreateUserIfNotExist(userInfo);
             //Check to see if the user's collection is create
             CreateCollectionIfNotExist(userInfo);
+            //Create the mailbox
+            CreateMailboxIfNotExist(userInfo);
         }
 
         void CreateUserIfNotExist(ClaimsPrincipal user)
@@ -72,6 +78,22 @@ namespace DeckAlchemist.Api.Controllers
                 _userSource.Update(user);
             }
         }
+
+        void CreateMailboxIfNotExist(ClaimsPrincipal userInfo)
+        {
+            var userId = UserInfo.Id(userInfo);
+            if(!_messageSource.ExistsForUser(userId))
+            {
+                var user = _userSource.Get(userId);
+                var box = new MessageBox
+                {
+                    UserId = userId,
+                    Messages = new List<IMessage>()
+                };
+                _messageSource.Create(box);
+            }
+        }
+
 
     }
 }

@@ -3,8 +3,10 @@ using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Api.Sources.Group;
+using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Api.Sources.User;
 using DeckAlchemist.Support.Objects.Cards;
+using DeckAlchemist.Support.Objects.Messages;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +45,7 @@ namespace DeckAlchemist.Api
             services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
             services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
             services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
+            services.AddTransient<IMessageSource, MongoMessageSource>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -74,6 +77,21 @@ namespace DeckAlchemist.Api
                 cm.SetDiscriminator("MtgDeckCard");
             });
             */
+            BsonClassMap.RegisterClassMap<UserMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("UserMessage");
+            });
+            BsonClassMap.RegisterClassMap<LoanRequestMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("LoanRequestMessage");
+            });
+            BsonClassMap.RegisterClassMap<GroupInviteMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("GroupInviteMessage");
+            });
         }
 
         void ConfigureAuthentication(IServiceCollection services)
