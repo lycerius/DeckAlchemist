@@ -19,6 +19,10 @@ namespace DeckAlchemist.Api.Auth
             return email.First.Value<string>();
       
         }
+        public static bool AuthenticUser(string userId, ClaimsPrincipal requestingUser)
+        {
+            return Id(requestingUser) == userId;
+        }
         
     }
 }
