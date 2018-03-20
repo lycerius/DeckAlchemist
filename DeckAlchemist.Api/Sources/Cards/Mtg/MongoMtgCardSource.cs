@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.Cards;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Cards.Mtg
@@ -29,6 +30,12 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
         bool IMtgCardSource.CheckExistance(IEnumerable<string> cardNames)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<IMtgCard> SearchByName(string byName)
+        {
+            var searchQuery = _filter.Regex("Name", new BsonRegularExpression($".*{byName}.*", "i"));
+            return collection.Find(searchQuery).ToList();
         }
     }
 }
