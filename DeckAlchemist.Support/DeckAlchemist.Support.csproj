@@ -9,6 +9,7 @@
     <Folder Include="Objects\User\" />
     <Folder Include="Objects\Cards\" />
     <Folder Include="Objects\UserDeck\" />
+    <Folder Include="Objects\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Objects\Cards\MongoMtgLegality.cs" />
