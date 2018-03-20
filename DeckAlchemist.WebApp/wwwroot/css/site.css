@@ -294,6 +294,7 @@ label:hover:before {
 
 
 .sidebar {
+    min-height: 320px;
     max-width: 15%;
     width: 15%;
     height: 45%;
@@ -330,4 +331,17 @@ ul.sidebar-nav li {
     width: 100%;
     border-bottom: #e4e4e4 2px solid;
     text-align: center;
+}
+
+.home-content {
+    float: right;
+    width: 80%;
+}
+
+#table {
+    width: 80%;
+}
+
+.set-style {
+    min-width: 125px;
 }

@@ -1,15 +1,19 @@
 ﻿@using System.Collections.Specialized
 @{
-    ViewData["Title"] = "Login Page";
+    ViewData["Title"] = "Home Page";
 }
 
 @section Style {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link href="css/site.css" rel="stylesheet" >
 	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+	
 }
 
 @section Scripts {
+	<script src="js/home.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
 	<script>
 		// Initialize Firebase
@@ -46,41 +50,21 @@
 
 
 @section SidebarOptions {
-	<li><a href="#">Login</a></li>
-	<li>@Html.ActionLink("Create Account", "CreateAccount")</li>
+	<li><a href="#">My Collections</a></li>
+	<li><a href="#">Decks</a></li>
+	<li><a href="#">Social</a></li>
+	<li><a href="#">Meta Analytics</a></li>
+	<li><a href="#">Settings</a></li>
 }
 
 
-<div class="container body-content content">
-	<div class="text-center" style="padding:50px 0">
-		<div class="logo">Deck Alchemist</div>
-		<!-- Main Form -->
-		<div class="login-form-1">
-			<form id="login-form" class="text-left">
-				<div class="login-form-main-message"></div>
-				<div class="main-login-form">
-					<div class="login-group">
-						<div class="form-group">
-							<label for="lg_username" class="sr-only">Email</label>
-							<input type="text" class="form-control" id="username" name="lg_username" placeholder="email@example.com">
-						</div>
-						<div class="form-group">
-							<label for="lg_password" class="sr-only">Password</label>
-							<input type="password" class="form-control" id="password" name="lg_password" placeholder="password">
-						</div>
-						<div class="form-group login-group-checkbox">
-							<input type="checkbox" id="lg_remember" name="lg_remember">
-							<label for="lg_remember">remember</label>
-						</div>
-					</div>
-					<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
-				</div>
-				<div class="etc-login-form">
-                
-					<p>new user? @Html.ActionLink("register here", "CreateAccount")</p>
-				</div>
-			</form>
+<div class="home-content container">
+	<div class="row" style="padding: 50px 0">
+		<div class="col col-lg-9">
+			
+			<!-- This table can't be styled because it's removed at runtime -->
+			<table id="table"></table>
 		</div>
-		<!-- end:Main Form -->
+		<img class="col" src="#" id="card-img"/>
 	</div>
 </div>
