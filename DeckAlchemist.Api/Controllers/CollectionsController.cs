@@ -26,6 +26,20 @@ namespace DeckAlchemist.Api.Controllers
             _cardSource = cardSource;
             _userSource = userSource;
         }
+        [HttpGet]
+        public IActionResult GetCollection(){
+            try
+            {
+                var uId = Auth.UserInfo.Id(HttpContext.User);
+                var userEmail = Auth.UserInfo.Email(HttpContext.User);
+                Support.Objects.Collection.ICollection result = _collectionSource.GetCollection(uId);
+                if (result!=null) return Json(result);
+                return StatusCode(500);
+            }catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        } 
 
         //add one or many cards
         [HttpPut("cards")]

@@ -25,10 +25,6 @@ namespace DeckAlchemist.Api.Sources.Collection
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoCollection>(collectionName);
         }
-<<<<<<< HEAD
-        public bool AddCardToCollection(string uId, IList<string> cardName)
-=======
-
         public void Init()
         {
             var filter = new BsonDocument("name", collectionName);
@@ -56,9 +52,11 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("CollectionId", mongoCollection.CollectionId);
             collection.FindOneAndReplace(query, mongoCollection);
         }
+        public ICollection GetCollection(string uId){
+            throw new NotImplementedException();
+        }
 
         public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
->>>>>>> 72020bae85c7c42372a692fb430fc49a77091d08
         {
             throw new NotImplementedException();
         }
@@ -78,6 +76,11 @@ namespace DeckAlchemist.Api.Sources.Collection
         {
             var query = _filter.Eq("UserId", userId);
             return collection.Find(query).Any();
+        }
+
+        public bool AddCardToCollection(string uId, IList<string> cardName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
