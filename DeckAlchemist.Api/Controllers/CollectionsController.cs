@@ -26,14 +26,29 @@ namespace DeckAlchemist.Api.Controllers
             _cardSource = cardSource;
             _userSource = userSource;
         }
+        [HttpGet]
+        public IActionResult GetCollection(){
+            try
+            {
+                var uId = Auth.UserInfo.Id(HttpContext.User);
+                var userEmail = Auth.UserInfo.Email(HttpContext.User);
+                Support.Objects.Collection.ICollection result = _collectionSource.GetCollection(uId);
+                if (result!=null) return Json(result);
+                return StatusCode(500);
+            }catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        } 
 
         //add one or many cards
         [HttpPut("cards")]
-        public IActionResult AddCardsToCollection([FromBody]IEnumerable<string> cardnames)
+        public IActionResult AddCardsToCollection([FromBody]IList<string> cardnames)
         {
             try
             {
-                var uId = HttpContext.User.FindFirst("sub").Value;
+                var uId = Auth.UserInfo.Id(HttpContext.User);
+                var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
                 bool result = _collectionSource.AddCardToCollection(uId, cardnames);
@@ -51,7 +66,8 @@ namespace DeckAlchemist.Api.Controllers
         {
             try
             {
-                var uId = HttpContext.User.FindFirst("sub").Value;
+                var uId = Auth.UserInfo.Id(HttpContext.User);
+                var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
                 bool result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
@@ -68,7 +84,8 @@ namespace DeckAlchemist.Api.Controllers
         public IActionResult LendcardsTo([FromBody] string reciver, string[] cardsnames){
             try
             {
-                var uId = HttpContext.User.FindFirst("sub").Value;
+                var uId = Auth.UserInfo.Id(HttpContext.User);
+                var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool reciverExists = _userSource.UserExists(reciver);
                 if (!reciverExists) return StatusCode(401);
                 bool markAsLent = _collectionSource.MarkCardAsLent(uId, cardsnames);

@@ -159,6 +159,35 @@
         })
     }
 
+    /*
+    * Returns a promise that finds a list of image links for the given card name.
+    * result will be a json Object containing the following properties:
+    * {
+    *   small: string,
+        normal: string,
+        large: string,
+        png: string,
+        art_crop: string,
+        border_crop: string
+    * }
+    */
+    function getCardImage(cardName) {
+        const scryImageSearchURI = "https://api.scryfall.com/cards/named?exact=";
+        return new Promise(function (resolve, reject) {
+            try {
+                fetch(scryImageSearchURI+cardName).then(function(result) {
+                    return result.json()
+                }).then(function(json){
+                    resolve(json.image_uris)
+                }).catch(function(error){
+                    reject(error)
+                })
+            } catch(error) {
+                reject(error)
+            }
+        })
+    }
+
     function login($form)
     {
         if($form.valid()) 
