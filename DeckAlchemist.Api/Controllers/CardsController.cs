@@ -18,10 +18,17 @@ namespace DeckAlchemist.Api.Controllers
             _source = source;
         }
 
+        [HttpGet("search/{byName}")]
+        public IEnumerable<IMtgCard> Search(string byName)
+        {
+            return _source.SearchByName(byName).Select(card => MtgCard.FromMtg(card));
+        }
+
+
         [HttpPost("names")]
         public IEnumerable<IMtgCard> GetCardsByName([FromBody] string[] names)
         {
-            var result = _source.GetCardsByNames(names).Select(card => MtgCard.FromMtg(card));
+            var result = _source.GetCardsByNames(names).Select(MtgCard.FromMtg);
             return result;
         }
 
