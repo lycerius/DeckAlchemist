@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using DeckAlchemist.Api.Auth;
+using System.Net.Http;
+using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Api.Sources.Messages;
+using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Support.Objects.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
 
 namespace DeckAlchemist.Api.Controllers
 {
@@ -60,7 +62,17 @@ namespace DeckAlchemist.Api.Controllers
         [HttpPost]
         public void AcceptGroupInvite([FromBody] string messageId)
         {
-            //TODO: Should add user to group in message
+            var userId = UserInfo.Id(HttpContext.User);
+            var message = _messageSource.GetMessageById(userId, messageId);
+            if (message.Type != "Group") return;
+            var groupInvite = message as GroupInviteMessage;
+            var groupId = groupInvite.GroupId;
+            var client = new HttpClient();
+            var task = client.UseAuthToken(UserInfo.GetIdToken(HttpContext)).PutObject($"http://localhost:5000/api/group/{groupId}/member", userId);
+            task.Wait();
+            task.Result.EnsureSuccessStatusCode();
+            groupInvite.Accepted = true;
+            _messageSource.Update(userId, groupInvite);
         }
 
         [Route("accept/loan")]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace DeckAlchemist.Api.Auth
+namespace DeckAlchemist.Api.Utility
 {
     public class EmailVerificationRequirement : IAuthorizationRequirement
     {

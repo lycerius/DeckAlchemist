@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Auth;
+using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Api.Sources.User;
@@ -88,7 +88,7 @@ namespace DeckAlchemist.Api.Controllers
                 var box = new MessageBox
                 {
                     UserId = userId,
-                    Messages = new List<IMessage>()
+                    Messages = new Dictionary<string, IMessage>()
                 };
                 _messageSource.Create(box);
             }
