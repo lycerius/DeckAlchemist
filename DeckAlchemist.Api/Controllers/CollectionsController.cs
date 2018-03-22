@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DeckAlchemist.Api.Controllers
 {
     [Authorize(Policy = "Email")]
-    [Route("api/collection")]
+    [Route("car")]
     public class CollectionsController : Controller
     {
         readonly ICollectionSource _collectionSource;
@@ -51,7 +51,7 @@ namespace DeckAlchemist.Api.Controllers
                 var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.AddCardToCollection(uId, cardnames);
+                bool result = _collectionSource.AddCardsToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -70,7 +70,7 @@ namespace DeckAlchemist.Api.Controllers
                 var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
+                bool result = _collectionSource.RemoveCardsFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }

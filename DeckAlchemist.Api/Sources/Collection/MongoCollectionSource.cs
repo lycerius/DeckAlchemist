@@ -4,7 +4,7 @@ using DeckAlchemist.Support.Objects.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
-
+using DeckAlchemist.Support.Objects.Cards;
 
 namespace DeckAlchemist.Api.Sources.Collection
 {
@@ -53,11 +53,11 @@ namespace DeckAlchemist.Api.Sources.Collection
             throw new NotImplementedException();
         }
 
-        public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
+        public bool AddCardsToCollection(string uId, IEnumerable<string> cardName)
         {
             throw new NotImplementedException();
         }
-        public bool RemoveCardFromCollection(string uId, IList<string> cardName){
+        public bool RemoveCardsFromCollection(string uId, IList<string> cardName){
             throw new NotImplementedException();
         }
         public bool MarkCardAsLent(string uId, IList<string> cardName)
@@ -76,6 +76,14 @@ namespace DeckAlchemist.Api.Sources.Collection
         }
 
         public bool AddCardToCollection(string uId, IList<string> cardName)
+        {
+            throw new NotImplementedException();
+        }
+        public IList<IMtgCard> GetCardListFromCollection(string userId){
+            throw new NotImplementedException();
+        }
+
+        public bool AddCardsToCollection(string uId, IList<string> cardNames)
         {
             throw new NotImplementedException();
         }
