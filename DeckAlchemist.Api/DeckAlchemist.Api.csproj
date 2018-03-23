@@ -3,7 +3,6 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\" />
     <Folder Include="Sources\" />
     <Folder Include="Sources\Cards\" />
     <Folder Include="Sources\Deck\" />
@@ -14,6 +13,7 @@
     <Folder Include="Sources\Collection\" />
     <Folder Include="Sources\UserDeck\" />
     <Folder Include="Sources\Messages\" />
+    <Folder Include="Contracts\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />

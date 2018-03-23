@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace DeckAlchemist.Api.Utility
 {
     public static class UserInfo
     {
-        public static string Id(ClaimsPrincipal user) => user.FindFirst("user_id")?.Value;
+        public static string Id(this ClaimsPrincipal user) => user.FindFirst("user_id")?.Value;
 
-        public static string Email(ClaimsPrincipal user)
+        public static string Email(this ClaimsPrincipal user)
         {
             var firebase = user.FindFirst("firebase")?.Value;
             if (firebase == null) return null;
@@ -23,12 +19,12 @@ namespace DeckAlchemist.Api.Utility
       
         }
 
-        public static bool AuthenticUser(string userId, ClaimsPrincipal requestingUser)
+        public static bool AuthenticUser(this ClaimsPrincipal requestingUser, string userId)
         {
             return Id(requestingUser) == userId;
         }
 
-        public static string GetIdToken(HttpContext context)
+        public static string GetIdToken(this HttpContext context)
         {
             var result = context.Request.Headers["Authorization"];
             return result;

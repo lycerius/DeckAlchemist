@@ -3,7 +3,7 @@ namespace DeckAlchemist.Support.Objects.Messages
 {
     public class UserMessage : IMessage
     {
-        public string Type { get => "User";  set{}}
+        public string Type { get => "User"; set { } }
         public string MessageId { get; set; }
         public bool UnRead { get; set; }
         public string SenderId { get; set; }

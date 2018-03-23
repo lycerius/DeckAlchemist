@@ -38,14 +38,14 @@ namespace DeckAlchemist.Collector.Controllers
                         {
                             case ("deck"):
                                 try { deckService.Trigger(); serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.OK }); }
-                                catch (OperationInProgressException oip)
+                                catch (OperationInProgressException)
                                 {
                                     serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
                                 }
                                 continue;
                             case ("card"):
                                 try { cardService.Trigger(); serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.OK }); }
-                                catch (OperationInProgressException oip)
+                                catch (OperationInProgressException)
                                 {
                                     serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
                                 }
@@ -55,7 +55,7 @@ namespace DeckAlchemist.Collector.Controllers
                                 continue;
                         }
                     }
-                    catch (Exception e)
+                    catch
                     {
                         serviceTriggers.Add(new ServiceStatusMessage { ServiceName = serviceName, ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
                     }
@@ -77,11 +77,11 @@ namespace DeckAlchemist.Collector.Controllers
                 cardService.Trigger();
                 servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.OK });
             }
-            catch (OperationInProgressException oip)
+            catch (OperationInProgressException)
             {
                 servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
             }
@@ -92,11 +92,11 @@ namespace DeckAlchemist.Collector.Controllers
                 deckService.Trigger();
                 servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.OK });
             }
-            catch (OperationInProgressException oip)
+            catch (OperationInProgressException)
             {
                 servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
             }

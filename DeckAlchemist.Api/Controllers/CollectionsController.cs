@@ -7,6 +7,7 @@ using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DeckAlchemist.Api.Contracts;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -80,16 +81,16 @@ namespace DeckAlchemist.Api.Controllers
             }
         }
         //lend one ore menay cards
-        [HttpPost("cards")]
-        public IActionResult LendcardsTo([FromBody] string reciver, string[] cardsnames){
+        [HttpPost("lend")]
+        public IActionResult LendcardsTo([FromBody] LendContract lendContract){
             try
             {
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
-                bool reciverExists = _userSource.UserExists(reciver);
+                bool reciverExists = _userSource.UserExists(lendContract.Lender);
                 if (!reciverExists) return StatusCode(401);
-                bool markAsLent = _collectionSource.MarkCardAsLent(uId, cardsnames);
-                var uIdOfRevicer = _userSource.GetUIDByName(reciver);
+                bool markAsLent = _collectionSource.MarkCardAsLent(uId, lendContract.CardNames.ToList());
+                var uIdOfRevicer = _userSource.GetUIDByName(lendContract.Lendee);
                 bool reciveCard = _collectionSource.AddCardAsLent(uIdOfRevicer,cardsnames);
                 if (markAsLent && reciveCard) return StatusCode(200);
                 return StatusCode(500);

@@ -15,18 +15,18 @@ namespace DeckAlchemist.Api.Utility
             public JsonContent(object obj) : base(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json"){}
         }
 
-        public static HttpClient UseAuthToken(this HttpClient client, string idToken)
+        public static HttpClient Auth(this HttpClient client, string idToken)
         {
             client.DefaultRequestHeaders.Add("Authorization", idToken);
             return client;
         }
 
-        public static Task<HttpResponseMessage> PutObject(this HttpClient client, string requestUri, object obj)
+        public static Task<HttpResponseMessage> PutAsync(this HttpClient client, string requestUri, object obj)
         {
             return client.PutAsync(requestUri, new JsonContent(obj));
         }
 
-        public static Task<HttpResponseMessage> PostObject(this HttpClient client, string requestUri, object obj)
+        public static Task<HttpResponseMessage> PostAsync(this HttpClient client, string requestUri, object obj)
         {
             return client.PostAsync(requestUri, new JsonContent(obj));
         }
