@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DeckAlchemist.Support.Objects.Messages;
 using MongoDB.Driver;
 
@@ -37,7 +38,7 @@ namespace DeckAlchemist.Api.Sources.Messages
         {
             var query = _filter.Eq("UserId", uId);
             var messageBox = collection.Find(query).FirstOrDefault();
-            if (messageBox != null) return messageBox.Messages;
+            if (messageBox != null) return messageBox.Messages.Values;
             return null;
         }
 
@@ -46,7 +47,7 @@ namespace DeckAlchemist.Api.Sources.Messages
             var boxQuery = _filter.Eq("UserId", message.RecipientId);
             var box = collection.Find(boxQuery).FirstOrDefault();
             if (box == null) return;
-            box.Messages.Add(message);
+            box.Messages.Add(message.MessageId, message);
             collection.FindOneAndReplace(boxQuery, box);
         }
 
@@ -60,15 +61,29 @@ namespace DeckAlchemist.Api.Sources.Messages
             collection.InsertOne(MongoMessageBox.FromMessageBox(box));
         }
 
-        public void Update(IMessageBox box)
+        public void Update(IMessage message)
         {
+            var messageBoxQuery = _filter.Eq("UserId", message.RecipientId);
+            var messageBox = collection.Find(messageBoxQuery).FirstOrDefault();
             
+
         }
 
         public bool ExistsForUser(string uId)
         {
             var query = _filter.Eq("UserId", uId);
             return collection.Find(query).FirstOrDefault() != null;
+        }
+
+        public IMessage GetMessageById(string userId, string messageId)
+        {
+            var userBoxQuery = _filter.Eq("UserId", userId);
+            return collection.Find(userBoxQuery).FirstOrDefault()?.Messages[messageId];
+        }
+
+        public void Update(string userId, IMessage message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

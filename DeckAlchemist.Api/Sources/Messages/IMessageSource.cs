@@ -6,12 +6,13 @@ namespace DeckAlchemist.Api.Sources.Messages
     public interface IMessageSource
     {
         IEnumerable<IMessage> GetMessagesForUser(string uId);
+        IMessage GetMessageById(string userId, string messageId);
         void SendMessage(IMessage message);
         void SetMessageRead(string messageId, bool read);
         void AcceptGroupInvite(string messageId);
         void AcceptLoanRequest(string messageId);
         void Create(IMessageBox box);
         bool ExistsForUser(string uId);
-        void Update(IMessageBox box);
+        void Update(string userId, IMessage message);
     }
 }

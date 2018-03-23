@@ -45,7 +45,7 @@ namespace DeckAlchemist.Collector.Schedulers
                 {
                     UpdateDatabase(); 
                 }
-                catch(Exception e)
+                catch
                 {
                     //TODO: Log
                 }

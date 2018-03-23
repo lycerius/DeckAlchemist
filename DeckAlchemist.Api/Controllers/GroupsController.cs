@@ -3,6 +3,9 @@ using DeckAlchemist.Support.Objects.User;
 using DeckAlchemist.Api.Sources.Group;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using DeckAlchemist.Support.Objects.Group;
+using DeckAlchemist.Api.Utility;
+using System;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -56,6 +59,29 @@ namespace DeckAlchemist.Api.Controllers
             {
                 return StatusCode(500);
             }
+        }
+
+        [HttpPost("{groupName}/create")]
+        public IActionResult CreateGroup(string groupName)
+        {
+            try
+            {
+                var group = new Group
+                {
+                    GroupName = groupName,
+                    Members = new List<string>(),
+                    Owner = UserInfo.Id(HttpContext.User),
+                    GroupId = Guid.NewGuid().ToString()
+                };
+
+                _source.CreateGroup(group);
+
+                return Ok();
+            }catch
+            {
+                return StatusCode(500);
+            }
+            
         }
 
     }
