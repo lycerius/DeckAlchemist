@@ -75,30 +75,30 @@ namespace DeckAlchemist.Collector.Controllers
             try
             {
                 cardService.Trigger();
-                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.OK });
+                servicesTriggered.Add(new ServiceStatusMessage { ServiceName = "card", ServiceStatus = ServiceStatusMessage.OK });
             }
             catch (OperationInProgressException)
             {
-                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
+                servicesTriggered.Add(new ServiceStatusMessage { ServiceName = "card", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
             }
             catch (Exception)
             {
-                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "card", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
+                servicesTriggered.Add(new ServiceStatusMessage { ServiceName = "card", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
             }
 
             //Deck Service
             try
             {
                 deckService.Trigger();
-                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.OK });
+                servicesTriggered.Add(new ServiceStatusMessage { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.OK });
             }
             catch (OperationInProgressException)
             {
-                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
+                servicesTriggered.Add(new ServiceStatusMessage { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.IN_PROGRESS });
             }
             catch (Exception)
             {
-                servicesTriggered.Add(new ServiceStatusMessage() { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
+                servicesTriggered.Add(new ServiceStatusMessage { ServiceName = "deck", ServiceStatus = ServiceStatusMessage.SERVER_ERROR });
             }
 
             return servicesTriggered;

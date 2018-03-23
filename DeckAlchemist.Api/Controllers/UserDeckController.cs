@@ -32,7 +32,7 @@ namespace DeckAlchemist.Api.Controllers
         {
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
-            bool result = _source.CreateDeck(uId, deckName);
+            var result = _source.CreateDeck(uId, deckName);
             if (!result) return StatusCode(500);
             return StatusCode(200);
         }
@@ -40,7 +40,7 @@ namespace DeckAlchemist.Api.Controllers
         public IActionResult DeleteDeck([FromBody] string deckName){
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
-            bool result = _source.DeleteDeck(uId, deckName);
+            var result = _source.DeleteDeck(uId, deckName);
             if (!result) return StatusCode(500);
             return StatusCode(200);
         }
@@ -50,7 +50,7 @@ namespace DeckAlchemist.Api.Controllers
         {
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
-            bool result = _source.AddCardToDeck(uId, deckName,cardName);
+            var result = _source.AddCardToDeck(uId, deckName,cardName);
             if (!result) return StatusCode(500);
             return StatusCode(200);
         }
@@ -59,7 +59,7 @@ namespace DeckAlchemist.Api.Controllers
         {
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
-            bool result = _source.RemoveCardFromDeck(uId, deckName, cardName);
+            var result = _source.RemoveCardFromDeck(uId, deckName, cardName);
             if (!result) return StatusCode(500);
             return StatusCode(200);
         }

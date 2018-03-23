@@ -14,7 +14,7 @@ namespace DeckAlchemist.Api.Controllers
     [Route("api/message")]
     public class MessageController : Controller
     {
-        IMessageSource _messageSource;
+        readonly IMessageSource _messageSource;
 
         public MessageController(IMessageSource messageSource)
         {
@@ -26,7 +26,7 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet]
         public IEnumerable<IMessage> GetUserMessages()
         {
-            var userId = UserInfo.Id(HttpContext.User);
+            var userId = HttpContext.User.Id();
             return _messageSource.GetMessagesForUser(userId);
         }
 
@@ -62,13 +62,13 @@ namespace DeckAlchemist.Api.Controllers
         [HttpPost]
         public void AcceptGroupInvite([FromBody] string messageId)
         {
-            var userId = UserInfo.Id(HttpContext.User);
+            var userId = HttpContext.User.Id();
             var message = _messageSource.GetMessageById(userId, messageId);
             if (message.Type != "Group") return;
             var groupInvite = message as GroupInviteMessage;
             var groupId = groupInvite.GroupId;
             var client = new HttpClient();
-            var task = client.Auth(UserInfo.GetIdToken(HttpContext)).PutAsync($"http://localhost:5000/api/group/{groupId}/member", userId);
+            var task = client.Auth(HttpContext.GetIdToken()).PutAsync($"http://localhost:5000/api/group/{groupId}/member", userId);
             task.Wait();
             task.Result.EnsureSuccessStatusCode();
             groupInvite.Accepted = true;
@@ -79,13 +79,13 @@ namespace DeckAlchemist.Api.Controllers
         [HttpPost]
         public void AcceptLoanRequest([FromBody] string messageId)
         {
-            var userId = UserInfo.Id(HttpContext.User);
+            var userId = HttpContext.User.Id();
             var message = _messageSource.GetMessageById(userId, messageId);
             if (message.Type != "Loan") return;
             var loanRequest = message as LoanRequestMessage;
 
             var client = new HttpClient();
-            client.Auth(UserInfo.GetIdToken(HttpContext));
+            client.Auth(HttpContext.GetIdToken());
 
             var loanTask = client.PostAsync("http://localhost/api/collection/lend", 
                                             new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardNames = loanRequest.RequestedRecipientCardIds });

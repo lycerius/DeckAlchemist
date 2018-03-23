@@ -33,7 +33,7 @@ namespace DeckAlchemist.Api.Controllers
             {
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
-                Support.Objects.Collection.ICollection result = _collectionSource.GetCollection(uId);
+                var result = _collectionSource.GetCollection(uId);
                 if (result!=null) return Json(result);
                 return StatusCode(500);
             }catch (Exception)
@@ -50,9 +50,9 @@ namespace DeckAlchemist.Api.Controllers
             {
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
-                bool cardExists = _cardSource.CheckExistance(cardnames);
+                var cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.AddCardToCollection(uId, cardnames);
+                var result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -69,9 +69,9 @@ namespace DeckAlchemist.Api.Controllers
             {
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
-                bool cardExists = _cardSource.CheckExistance(cardnames);
+                var cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
+                var result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -87,11 +87,11 @@ namespace DeckAlchemist.Api.Controllers
             {
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
-                bool reciverExists = _userSource.UserExists(lendContract.Lender);
+                var reciverExists = _userSource.UserExists(lendContract.Lender);
                 if (!reciverExists) return StatusCode(401);
-                bool markAsLent = _collectionSource.MarkCardAsLent(uId, lendContract.CardNames.ToList());
+                var markAsLent = _collectionSource.MarkCardAsLent(uId, lendContract.CardNames.ToList());
                 var uIdOfRevicer = _userSource.GetUIDByName(lendContract.Lendee);
-                bool reciveCard = _collectionSource.AddCardAsLent(uIdOfRevicer,lendContract.CardNames.ToList());
+                var reciveCard = _collectionSource.AddCardAsLent(uIdOfRevicer,lendContract.CardNames.ToList());
                 if (markAsLent && reciveCard) return StatusCode(200);
                 return StatusCode(500);
 

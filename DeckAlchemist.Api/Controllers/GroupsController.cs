@@ -70,7 +70,7 @@ namespace DeckAlchemist.Api.Controllers
                 {
                     GroupName = groupName,
                     Members = new List<string>(),
-                    Owner = UserInfo.Id(HttpContext.User),
+                    Owner = HttpContext.User.Id(),
                     GroupId = Guid.NewGuid().ToString()
                 };
 

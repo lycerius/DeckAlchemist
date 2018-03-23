@@ -27,7 +27,7 @@ namespace DeckAlchemist.Api.Controllers
             return null;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IMtgDeck GetByName([FromBody]string deckname)
         {
             return null;

@@ -123,16 +123,16 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
             return false;
         }
 
-        void EnsureCollectionExists(IMongoDatabase database)
+        void EnsureCollectionExists(IMongoDatabase db)
         {
             var filter = new BsonDocument("name", MongoCollection);
             //filter by collection name
-            var collections = database.ListCollections(new ListCollectionsOptions { Filter = filter });
+            var collections = db.ListCollections(new ListCollectionsOptions { Filter = filter });
             //check for existence
             var exists = collections.Any();
 
             if (!exists)
-                database.CreateCollection(MongoCollection);
+                db.CreateCollection(MongoCollection);
         }
     }
 }

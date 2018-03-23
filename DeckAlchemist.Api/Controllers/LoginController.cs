@@ -21,9 +21,9 @@ namespace DeckAlchemist.Api.Controllers
     [Route("api/login")]
     public class LoginController : Controller
     {
-        ICollectionSource _collectionSource;
-        IUserSource _userSource;
-        IMessageSource _messageSource;
+        readonly ICollectionSource _collectionSource;
+        readonly IUserSource _userSource;
+        readonly IMessageSource _messageSource;
 
         public LoginController(ICollectionSource collectionSource, IUserSource userSource, IMessageSource messageSource)
         {
@@ -46,10 +46,10 @@ namespace DeckAlchemist.Api.Controllers
 
         void CreateUserIfNotExist(ClaimsPrincipal user)
         {
-            var userId = UserInfo.Id(user);
+            var userId = user.Id();
             if (!_userSource.UserExists(userId))
             {
-                var email = UserInfo.Email(user);
+                var email = user.Email();
                 var newUser = new User
                 {
                     UserId = userId,
@@ -64,7 +64,7 @@ namespace DeckAlchemist.Api.Controllers
 
         void CreateCollectionIfNotExist(ClaimsPrincipal userInfo)
         {
-            var userId = UserInfo.Id(userInfo);
+            var userId = userInfo.Id();
             if(!_collectionSource.ExistsForUser(userId))
             {
                 var user = _userSource.Get(userId);
@@ -81,7 +81,7 @@ namespace DeckAlchemist.Api.Controllers
 
         void CreateMailboxIfNotExist(ClaimsPrincipal userInfo)
         {
-            var userId = UserInfo.Id(userInfo);
+            var userId = userInfo.Id();
             if(!_messageSource.ExistsForUser(userId))
             {
                 var user = _userSource.Get(userId);
