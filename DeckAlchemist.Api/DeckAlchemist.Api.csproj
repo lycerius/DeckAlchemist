@@ -37,4 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DeckAlchemist.Support\DeckAlchemist.Support.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\AuthHelloController.cs" />
+  </ItemGroup>
 </Project>
