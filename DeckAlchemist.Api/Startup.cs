@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace DeckAlchemist.Api
 {
@@ -33,6 +34,11 @@ namespace DeckAlchemist.Api
             ConfigureAuthentication(services);
             ConfigureSources(services);
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Deck Alchemist Web Api", Version = "v1" });
+            });
         }
 
         public void ConfigureSources(IServiceCollection services)
@@ -60,6 +66,12 @@ namespace DeckAlchemist.Api
                 builder.AllowAnyMethod();
             });
             app.UseAuthentication();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseMvc();
 
