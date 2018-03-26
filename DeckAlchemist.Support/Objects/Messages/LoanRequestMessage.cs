@@ -12,7 +12,7 @@ namespace DeckAlchemist.Support.Objects.Messages
         public string Subject { get; set; }
         public string Body { get; set; }
         public bool Accepted { get; set; }
-        public IEnumerable<string> RequestedRecipientCardIds { get; set; }
+        public IDictionary<string, int> RequestedCardsAndAmounts { get; set; }
         public string RecipientId { get; set; }
     }
 }

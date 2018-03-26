@@ -88,7 +88,7 @@ namespace DeckAlchemist.Api.Controllers
             client.Auth(HttpContext.GetIdToken());
 
             var loanTask = client.PostAsync("http://localhost/api/collection/lend", 
-                                            new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardNames = loanRequest.RequestedRecipientCardIds });
+                                            new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardsAndAmounts = loanRequest.RequestedCardsAndAmounts });
             loanTask.Wait();
             loanTask.Result.EnsureSuccessStatusCode();
         }
