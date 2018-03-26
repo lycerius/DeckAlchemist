@@ -89,9 +89,9 @@ namespace DeckAlchemist.Api.Controllers
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
                 var reciverExists = _userSource.UserExists(lendContract.Lender);
                 if (!reciverExists) return StatusCode(401);
-                var markAsLent = _collectionSource.MarkCardAsLent(uId, lendContract.CardNames.ToList());
+                var markAsLent = _collectionSource.MarkCardAsLent(uId, lendContract.Lendee, lendContract.CardsAndAmounts);
                 var uIdOfRevicer = _userSource.GetUIDByName(lendContract.Lendee);
-                var reciveCard = _collectionSource.AddCardAsLent(uIdOfRevicer,lendContract.CardNames.ToList());
+                var reciveCard = _collectionSource.AddCardAsLent(uId, lendContract.Lendee, lendContract.CardsAndAmounts);
                 if (markAsLent && reciveCard) return StatusCode(200);
                 return StatusCode(500);
 

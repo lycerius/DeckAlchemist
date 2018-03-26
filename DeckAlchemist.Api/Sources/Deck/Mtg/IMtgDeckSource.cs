@@ -6,5 +6,8 @@ namespace DeckAlchemist.Api.Sources.Deck.Mtg
 {
     public interface IMtgDeckSource
     {
+        IEnumerable<IMtgDeck> GetAllDecks();
+        IMtgDeck GetDeckByName(string name);
+        IEnumerable<IMtgDeck> SearchDecks(string name);
     }
 }

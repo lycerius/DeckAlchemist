@@ -1,45 +1,87 @@
 ﻿using System;
-using DeckAlchemist.Support.Objects.User;
+using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.UserDeck;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.UserDeck
 {
-    public class MongoUserDeckSource:IUserDeckSource
+    public class MongoUserDeckSource : IUserDeckSource
     {
         readonly string MongoConnectionString = Environment.GetEnvironmentVariable("MONGO_URI") ?? "mongodb://localhost:27017";
         const string MongoDatabase = "UserData";
         const string MongoCollection = "UserDecks";
         readonly IMongoDatabase database;
-        readonly IMongoCollection<MongoUser> collection;
-        readonly FilterDefinitionBuilder<MongoUser> _filter = Builders<MongoUser>.Filter;
+        readonly IMongoCollection<MongoUserDeck> collection;
+        readonly FilterDefinitionBuilder<MongoUserDeck> _filter = Builders<MongoUserDeck>.Filter;
 
         public MongoUserDeckSource()
         {
             var client = new MongoClient(MongoConnectionString);
             database = client.GetDatabase(MongoDatabase);
-            collection = database.GetCollection<MongoUser>(MongoCollection);
+            collection = database.GetCollection<MongoUserDeck>(MongoCollection);
         }
-        public bool CreateDeck(string uId, string deckName){
-            throw new NotImplementedException();
-        }
+
         public bool DeleteDeck(string uId, string deckName)
         {
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", uId);
+            collection.DeleteOne(query);
+            return true;
         }
 
         public bool AddCardToDeck(string uId, string deckName, string cardName)
         {
-            throw new NotImplementedException();
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            var userDeck = collection.Find(query).FirstOrDefault();
+
+            if(userDeck.CardsAndAmounts.ContainsKey(cardName))
+            {
+                userDeck.CardsAndAmounts[cardName]++;
+            }
+            else
+            {
+                userDeck.CardsAndAmounts[cardName] = 1;
+            }
+
+            collection.FindOneAndReplace(query, userDeck);
+            return true;
+
         }
+
         public bool RemoveCardFromDeck(string uId, string deckName, string cardName)
         {
-            throw new NotImplementedException();
-        }
-        public IUserDeck GetDeckByName(string uId, string deckName){
-            throw new NotImplementedException();
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            var userDeck = collection.Find(query).FirstOrDefault();
+            if (userDeck == null) return false;
 
+            if (userDeck.CardsAndAmounts.ContainsKey(cardName))
+            {
+                userDeck.CardsAndAmounts[cardName]--;
+                if (userDeck.CardsAndAmounts[cardName] <= 0)
+                    userDeck.CardsAndAmounts.Remove(cardName);
+            }
+
+            collection.FindOneAndReplace(query, userDeck);
+            return true;
         }
 
+        public IUserDeck GetDeckByName(string uId, string deckName)
+        {
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            return collection.Find(query).FirstOrDefault();
+        }
+
+        public bool CreateDeck(string uId, string deckName)
+        {
+            var newDeck = new MongoUserDeck
+            {
+                CardsAndAmounts = new Dictionary<string, int>(),
+                DeckId = Guid.NewGuid().ToString(),
+                DeckName = deckName,
+                UserId = uId
+            };
+
+            collection.InsertOne(newDeck);
+            return true;
+        }
     }
 }

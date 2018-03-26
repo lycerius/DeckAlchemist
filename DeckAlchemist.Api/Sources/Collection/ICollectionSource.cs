@@ -7,10 +7,10 @@ namespace DeckAlchemist.Api.Sources.Collection
 {
     public interface ICollectionSource
     {
-        bool AddCardToCollection(string uId, IList<string> cardName);
-        bool RemoveCardFromCollection(string uId, IList<string> cardName);
-        bool MarkCardAsLent(string uId, IList<string> cardName);
-        bool AddCardAsLent(string uId, IList<string> cardName);
+        bool AddCardToCollection(string uId, IEnumerable<string> cardName);
+        bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName);
+        bool MarkCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
+        bool AddCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         void Init();
         void Create(ICollection collec);
         void Update(ICollection collection);

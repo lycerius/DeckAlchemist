@@ -50,23 +50,107 @@ namespace DeckAlchemist.Api.Sources.Collection
             collection.FindOneAndReplace(query, mongoCollection);
         }
         public ICollection GetCollection(string uId){
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", uId);
+            var userCollection = collection.Find(query).FirstOrDefault();
+            return userCollection;
         }
 
         public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
         {
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", uId);
+            var userCollection = collection.Find(query).FirstOrDefault();
+            if (userCollection == null) return false;
+            foreach(var card in cardName)
+            {
+                if(userCollection.OwnedCards.ContainsKey(card))
+                {
+                    userCollection.OwnedCards[card].TotalAmount++;
+                }
+                else
+                {
+                    userCollection.OwnedCards[card] = new OwnedCard
+                    {
+                        Available = 1,
+                        CardId = card,
+                        InDecks = new Dictionary<string, int>(),
+                        LentTo = new Dictionary<string, int>(),
+                        TotalAmount = 1
+                    };
+                }
+            }
+            collection.FindOneAndReplace(query, userCollection);
+            return true;
         }
-        public bool RemoveCardFromCollection(string uId, IList<string> cardName){
-            throw new NotImplementedException();
-        }
-        public bool MarkCardAsLent(string uId, IList<string> cardName)
+
+        public bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName)
         {
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", uId);
+            var userCollection = collection.Find(query).FirstOrDefault();
+            if (userCollection == null) return false;
+            foreach (var card in cardName)
+            {
+                if (userCollection.OwnedCards.ContainsKey(card))
+                {
+                    userCollection.OwnedCards[card].TotalAmount--;
+                    if(userCollection.OwnedCards[card].TotalAmount == 0)
+                    {
+                        userCollection.OwnedCards.Remove(card);
+                    }
+                }
+            }
+            collection.FindOneAndReplace(query, userCollection);
+            return true;
         }
-        public bool AddCardAsLent(string uId, IList<string> cardName)
+
+        public bool MarkCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts)
         {
-            throw new NotImplementedException();
+            var query = _filter.Eq("UserId", lender);
+            var userCollection = collection.Find(query).FirstOrDefault();
+            if (userCollection == null) return false;
+            foreach(var nameAndAmount in namesAndAmounts)
+            {
+                var cardName = nameAndAmount.Key;
+                var amount = nameAndAmount.Value;
+                if (!userCollection.OwnedCards.ContainsKey(cardName)) return false;
+
+                var card = userCollection.OwnedCards[cardName];
+                if (card.TotalAmount < amount) return false;
+
+                card.LentTo[lendee] = amount;
+                card.TotalAmount -= amount;
+                collection.FindOneAndReplace(query, userCollection);
+            }
+            return true;
+
+        }
+
+        public bool AddCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts)
+        {
+            var query = _filter.Eq("UserId", lendee);
+            var userCollection = collection.Find(query).FirstOrDefault();
+            if (userCollection == null) return false;
+
+            foreach(var nameAndAmount in namesAndAmounts)
+            {
+                var amount = nameAndAmount.Value;
+                var cardName = nameAndAmount.Key;
+
+                if (userCollection.BorrowedCards.ContainsKey(lender))
+                {
+                    userCollection.BorrowedCards[lender].AmountBorrowed += amount;
+                }
+                else
+                {
+                    userCollection.BorrowedCards[lender] = new BorrowedCard
+                    {
+                        AmountBorrowed = amount,
+                        CardId = cardName,
+                        Lender = lender
+                    };
+                }
+                collection.FindOneAndReplace(query, userCollection);
+            }
+            return true;
         }
 
         public bool ExistsForUser(string userId)
@@ -75,9 +159,5 @@ namespace DeckAlchemist.Api.Sources.Collection
             return collection.Find(query).Any();
         }
 
-        public bool AddCardToCollection(string uId, IList<string> cardName)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

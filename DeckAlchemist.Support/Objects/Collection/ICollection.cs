@@ -6,7 +6,7 @@ namespace DeckAlchemist.Support.Objects.Collection
     {
         string UserId { get; set; }
         string CollectionId { get; set; }
-        List<IOwnedCard> OwnedCards { get; set; }
-        List<IBorrowedCard> BorrowedCards { get; set; }
+        IDictionary<string, IOwnedCard> OwnedCards { get; set; }
+        IDictionary<string, IBorrowedCard> BorrowedCards { get; set; }
     }
 }
