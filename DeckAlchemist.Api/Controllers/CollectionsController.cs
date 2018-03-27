@@ -26,6 +26,7 @@ namespace DeckAlchemist.Api.Controllers
             _cardSource = cardSource;
             _userSource = userSource;
         }
+        
         [HttpGet]
         public IActionResult GetCollection(){
             try

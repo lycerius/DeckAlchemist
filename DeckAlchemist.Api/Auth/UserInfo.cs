@@ -9,6 +9,7 @@ namespace DeckAlchemist.Api.Auth
 {
     public static class UserInfo
     {
+        public static bool IsLoggedIn(ClaimsPrincipal user) => Id(user) != null;
         public static string Id(ClaimsPrincipal user) => user.FindFirst("user_id")?.Value;
         public static string Email(ClaimsPrincipal user) {
             var firebase = user.FindFirst("firebase")?.Value;

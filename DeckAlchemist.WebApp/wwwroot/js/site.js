@@ -1,6 +1,60 @@
-﻿$(document).ready(function(){
+﻿promiseQueue = [];
+
+/*
+    * Fetches a resource from an endpoint that expects authorization.
+    * Achieves this by automatically appending the firebase id token
+    * for the currently signed in user to the request header. Returns a promise
+    * .then(function(result)): result=response
+    * .catch(function(error)): error = either firebase error or fetch error
+    * Params: [url] = authenticated endpoint, [fetchProps] = optional properties to use with the fetch call
+    * For more information on how to use fetch: "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+    */
+function fetchWithAuth(url, fetchProps = {}) {
+    return new Promise(function (resolve, reject) {
+        try {
+            var u = firebase.auth().currentUser;
+            
+            var toRum = function doAuth(currentUser) {
+                try {
+                    currentUser.getIdToken(true).then(function (idToken) {
+                        if (!fetchProps.headers) fetchProps.headers = {};
+                        fetchProps.headers['Authorization'] = "Bearer " + idToken;
+                        fetch(url, fetchProps).then(function (result) {
+                            resolve(result);
+                        }).catch(function (error) {
+                            reject(error);
+                        });
+                    });
+                } catch (error) {
+                    reject(error);
+                }
+            };
+            
+            if (u == null) {
+                promiseQueue.push(toRum);
+            } else {
+                toRum(u);
+            }
+            
+            
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+$(document).ready(function(){
     "use strict";
 
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            //Flush
+            promiseQueue.forEach(function (f) {
+                f(user);
+            })
+        }
+    });
+    
     // Options for Message
     //----------------------------------------------
     var options = {
@@ -119,7 +173,7 @@
         $form.find('[type=submit]').addClass('success').html(options['btn-success']);
         $form.find('.login-form-main-message').addClass('show success').html(options['msg-success']);
 
-        //document.location.href = "decks.html";
+        document.location.href = "Home";
     }
 
     function form_failed($form, msg)
@@ -132,32 +186,7 @@
     //----------------------------------------------
     // This is just a dummy form submission. You should use your AJAX function or remove this function if you are not using AJAX.
 
-    /*
-    * Fetches a resource from and endpoint that expects authorization.
-    * Achieves this by automatically appending the firebase id token
-    * for the currently signed in user to the request header. Returns a promise
-    * .then(function(result)): result=response
-    * .catch(function(error)): error = either firebase error or fetch error
-    * Params: [url] = authenticated endpoint, [fetchProps] = optional properties to use with the fetch call
-    * For more information on how to use fetch: "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
-    */
-    function fetchWithAuth(url, fetchProps = {}) {
-        return new Promise(function (resolve, reject) {
-            try {
-                firebase.auth().currentUser.getIdToken(true).then(function (idToken) {
-                    if (!fetchProps.headers) fetchProps.headers = {};
-                    fetchProps.headers['Authorization'] = "Bearer " + idToken;
-                    fetch(url, fetchProps).then(function (result) {
-                        resolve(result);
-                    }).catch(function (error) {
-                        reject(error);
-                    });
-                })
-            } catch (error) {
-                reject(error);
-            }
-        })
-    }
+    
 
     /*
     * Returns a promise that finds a list of image links for the given card name.
