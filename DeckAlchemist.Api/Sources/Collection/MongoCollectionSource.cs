@@ -135,17 +135,35 @@ namespace DeckAlchemist.Api.Sources.Collection
                 var amount = nameAndAmount.Value;
                 var cardName = nameAndAmount.Key;
 
-                if (userCollection.BorrowedCards.ContainsKey(lender))
+                //Card borrowed before
+                if (userCollection.BorrowedCards.ContainsKey(cardName))
                 {
-                    userCollection.BorrowedCards[lender].AmountBorrowed += amount;
+                    var borrowedEntry = userCollection.BorrowedCards[cardName];
+                    //Card borrowed by lender before
+                    if (borrowedEntry.ContainsKey(lender))
+                        borrowedEntry[lender].AmountBorrowed += amount;
+                    else //Card borrowed by new lender
+                        borrowedEntry[lender] = new BorrowedCard
+                        {
+                            AmountBorrowed = amount,
+                            CardId = cardName,
+                            Lender = lender
+                        };
+
                 }
-                else
+                else //Card not borrowed before
                 {
-                    userCollection.BorrowedCards[lender] = new BorrowedCard
+                    userCollection.BorrowedCards[cardName] = new Dictionary<string, IBorrowedCard>
                     {
-                        AmountBorrowed = amount,
-                        CardId = cardName,
-                        Lender = lender
+                        {
+                            lender,
+                            new BorrowedCard
+                            {
+                                AmountBorrowed = amount,
+                                CardId = cardName,
+                                Lender = lender
+                            }
+                        }
                     };
                 }
                 collection.FindOneAndReplace(query, userCollection);

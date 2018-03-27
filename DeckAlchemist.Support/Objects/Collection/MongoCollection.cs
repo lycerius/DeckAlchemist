@@ -23,6 +23,6 @@ namespace DeckAlchemist.Support.Objects.Collection
         public string UserId { get; set; }
         public string CollectionId { get; set; }
         public IDictionary<string, IOwnedCard> OwnedCards { get; set; }
-        public IDictionary<string, IBorrowedCard> BorrowedCards { get; set; }
+        public IDictionary<string, IDictionary<string, IBorrowedCard>> BorrowedCards { get; set; }
     }
 }

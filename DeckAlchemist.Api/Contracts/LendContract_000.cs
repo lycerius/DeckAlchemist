@@ -6,6 +6,6 @@ namespace DeckAlchemist.Api.Contracts
     {
         public string Lender { get; set; }
         public string Lendee { get; set; }
-        public IEnumerable<string> CardNames { get; set; }
+        public IDictionary<string, int> CardsAndAmounts { get; set; }
     }
 }

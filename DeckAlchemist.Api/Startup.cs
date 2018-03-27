@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using DeckAlchemist.Support.Objects.Collection;
 
 namespace DeckAlchemist.Api
 {
@@ -103,6 +104,16 @@ namespace DeckAlchemist.Api
             {
                 cm.AutoMap();
                 cm.SetDiscriminator("GroupInviteMessage");
+            });
+            BsonClassMap.RegisterClassMap<BorrowedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("BorrowedCard");
+            });
+            BsonClassMap.RegisterClassMap<OwnedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("OwnedCard");
             });
         }
 
