@@ -24,13 +24,13 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("all")]
         public IEnumerable<IMtgDeck> GetAllDecks()
         {
-            return null;
+            return _source.GetAllDecks();
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IMtgDeck GetByName([FromBody]string deckname)
         {
-            return null;
+            return _source.GetDeckByName(deckname);
         }
 
     }

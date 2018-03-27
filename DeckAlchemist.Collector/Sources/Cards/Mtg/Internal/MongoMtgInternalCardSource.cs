@@ -97,7 +97,7 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.Internal
             if (legalitySet1.Count() != legalitySet2.Count()) return true;
             foreach(var legality in legalitySet1)
             {
-                if (!legalitySet2.Where(legality2 => legality2.Format == legality.Format && legality.Legality == legality2.Legality).Any())
+                if (!legalitySet2.Any(legality2 => legality2.Format == legality.Format && legality.Legality == legality2.Legality))
                     return true;
             }
 

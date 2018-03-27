@@ -21,7 +21,7 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("search/{byName}")]
         public IEnumerable<IMtgCard> Search(string byName)
         {
-            return _source.SearchByName(byName).Select(card => MtgCard.FromMtg(card));
+            return _source.SearchByName(byName).Select(MtgCard.FromMtg);
         }
 
 

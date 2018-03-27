@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DeckAlchemist.Api.Auth;
+using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Api.Sources.Collection;
+using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Api.Sources.User;
 using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.Messages;
 using DeckAlchemist.Support.Objects.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +21,15 @@ namespace DeckAlchemist.Api.Controllers
     [Route("api/login")]
     public class LoginController : Controller
     {
-        ICollectionSource _collectionSource;
-        IUserSource _userSource;
+        readonly ICollectionSource _collectionSource;
+        readonly IUserSource _userSource;
+        readonly IMessageSource _messageSource;
 
-        public LoginController(ICollectionSource collectionSource, IUserSource userSource)
+        public LoginController(ICollectionSource collectionSource, IUserSource userSource, IMessageSource messageSource)
         {
             _collectionSource = collectionSource;
             _userSource = userSource;
+            _messageSource = messageSource;
         }
 
         [HttpGet("")]
@@ -36,14 +40,16 @@ namespace DeckAlchemist.Api.Controllers
             CreateUserIfNotExist(userInfo);
             //Check to see if the user's collection is create
             CreateCollectionIfNotExist(userInfo);
+            //Create the mailbox
+            CreateMailboxIfNotExist(userInfo);
         }
 
         void CreateUserIfNotExist(ClaimsPrincipal user)
         {
-            var userId = UserInfo.Id(user);
+            var userId = user.Id();
             if (!_userSource.UserExists(userId))
             {
-                var email = UserInfo.Email(user);
+                var email = user.Email();
                 var newUser = new User
                 {
                     UserId = userId,
@@ -58,7 +64,7 @@ namespace DeckAlchemist.Api.Controllers
 
         void CreateCollectionIfNotExist(ClaimsPrincipal userInfo)
         {
-            var userId = UserInfo.Id(userInfo);
+            var userId = userInfo.Id();
             if(!_collectionSource.ExistsForUser(userId))
             {
                 var user = _userSource.Get(userId);
@@ -72,6 +78,22 @@ namespace DeckAlchemist.Api.Controllers
                 _userSource.Update(user);
             }
         }
+
+        void CreateMailboxIfNotExist(ClaimsPrincipal userInfo)
+        {
+            var userId = userInfo.Id();
+            if(!_messageSource.ExistsForUser(userId))
+            {
+                var user = _userSource.Get(userId);
+                var box = new MessageBox
+                {
+                    UserId = userId,
+                    Messages = new Dictionary<string, IMessage>()
+                };
+                _messageSource.Create(box);
+            }
+        }
+
 
     }
 }

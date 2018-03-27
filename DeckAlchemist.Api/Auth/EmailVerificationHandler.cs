@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DeckAlchemist.Api.Auth
+namespace DeckAlchemist.Api.Utility
 {
     public class EmailVerificationHandler : AuthorizationHandler<EmailVerificationRequirement>
     {

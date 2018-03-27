@@ -8,6 +8,7 @@ using DeckAlchemist.Collector.Sources.Decks.Mtg.External;
 using DeckAlchemist.Collector.Sources.Decks.Mtg.Internal;
 using DeckAlchemist.Support.Objects.Cards;
 using DeckAlchemist.Support.Objects.Decks;
+using DeckAlchemist.Support.Objects.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

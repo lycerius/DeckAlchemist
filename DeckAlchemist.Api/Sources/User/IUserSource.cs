@@ -10,6 +10,5 @@ namespace DeckAlchemist.Api.Sources.User
         void Update(IUser user);
         void Create(IUser user);
         bool UserExists(string recivingUser);
-        string GetUIDByName(string recivingUser);
     }
 }
