@@ -33,5 +33,10 @@ namespace DeckAlchemist.Support.Objects.Decks
             var space = DeckCompare.FeatureSpaceFor(this);
             return space.GetHashCode();
         }
-    }
+
+		public static explicit operator MtgDeck(MongoMtgDeck v)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

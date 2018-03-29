@@ -34,7 +34,7 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("ID")]
         public IActionResult GetByID([FromBody] string deckId)
         {
-
+            return Json(_deckSource.GetById(deckId));
         }
 
         [HttpGet("name")]
@@ -45,11 +45,15 @@ namespace DeckAlchemist.Api.Controllers
         }
         private IMtgDeck GetByNameInternal(string deckname)
         {
-            return null;
+            return _deckSource.GetByName(deckname);
         }
         private List<IMtgDeck> GetMultipleByName(List<string> deckNames)
         {
-            return null;
+            List<IMtgDeck> result = new List<IMtgDeck>();
+            foreach(var deck in deckNames){
+                result.Add(GetByNameInternal(deck));
+            }
+            return result;
         }
         [HttpGet("search")]
         public IActionResult Search([FromBody] List<string> decks)
@@ -60,12 +64,19 @@ namespace DeckAlchemist.Api.Controllers
             var collection = _collectionSource.GetCardListFromCollection(uId);
 
             List<string> buildable = new List<string>();
-
+            bool status;
             foreach (var deck in deckLists)
             {
+                status = true;
                 var decklist = deck.Cards;
-                if (collection.Contains(decklist))
-                {
+                foreach(var card in decklist){
+                    if(!collection.Contains((card.Value.Name))){
+                        status = false;
+                        break;
+                    }
+                }
+
+                if(status){
                     buildable.Add(deck.id);
                 }
             }

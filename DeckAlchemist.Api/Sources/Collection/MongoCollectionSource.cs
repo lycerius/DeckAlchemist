@@ -79,7 +79,7 @@ namespace DeckAlchemist.Api.Sources.Collection
         {
             throw new NotImplementedException();
         }
-        public IList<IMtgCard> GetCardListFromCollection(string userId){
+        public List<string> GetCardListFromCollection(string userId){
             throw new NotImplementedException();
         }
 

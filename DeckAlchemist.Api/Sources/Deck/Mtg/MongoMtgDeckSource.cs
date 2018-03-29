@@ -20,5 +20,17 @@ namespace DeckAlchemist.Api.Sources.Deck.Mtg
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoMtgDeck>(MongoCollection);
         }
+
+        public IMtgDeck GetById(string deckID)
+        {
+            var query = _filter.Eq("DeckID", deckID);
+            return collection.Find(query).First();
+        }
+
+        public IMtgDeck GetByName(string deckName)
+        {
+            var query = _filter.Eq("Name", deckName);
+            return collection.Find(query).First();
+        }
     }
 }

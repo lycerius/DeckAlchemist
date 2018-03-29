@@ -6,5 +6,7 @@ namespace DeckAlchemist.Api.Sources.Deck.Mtg
 {
     public interface IMtgDeckSource
     {
+        IMtgDeck GetById(string deckID);
+        IMtgDeck GetByName(string deckName);
     }
 }
