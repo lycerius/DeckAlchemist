@@ -34,7 +34,8 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("ID")]
         public IActionResult GetByID([FromBody] string deckId)
         {
-            return Json(_deckSource.GetById(deckId));
+            var result = GetByIDInternal(deckId);
+            return Json(result);
         }
 
         [HttpGet("name")]
@@ -55,13 +56,39 @@ namespace DeckAlchemist.Api.Controllers
             }
             return result;
         }
-        [HttpGet("search")]
-        public IActionResult Search([FromBody] List<string> decks)
+        private IMtgDeck GetByIDInternal(string deckId)
         {
+            return _deckSource.GetById(deckId);
+        }
+        private List<IMtgDeck> GetMultipleByID(List<string> deckIDs)
+        {
+            List<IMtgDeck> result = new List<IMtgDeck>();
+            foreach (var deck in deckIDs)
+            {
+                result.Add(GetByIDInternal(deck));
+            }
+            return result;
+        }
+
+        [HttpGet("search")]
+        public IActionResult Search([FromBody] string typeOfSearch, List<string> decks)
+        {
+            if(!(typeOfSearch == "ID" || typeOfSearch == "Name")){
+                return StatusCode(400);
+            }
+
             var uId = Auth.UserInfo.Id(HttpContext.User);
             var userEmail = Auth.UserInfo.Email(HttpContext.User);
-            var deckLists = GetMultipleByName(decks);
-            var collection = _collectionSource.GetCardListFromCollection(uId);
+            List<IMtgDeck> deckLists;
+            if (typeOfSearch == "ID")
+            {
+                deckLists = GetMultipleByName(decks);
+            }
+            else{
+                deckLists = GetMultipleByID(decks);
+            }
+            var collection = _collectionSource.GetCollection(uId);
+            var cardlist = collection.BorrowedCards;
 
             List<string> buildable = new List<string>();
             bool status;
@@ -70,7 +97,7 @@ namespace DeckAlchemist.Api.Controllers
                 status = true;
                 var decklist = deck.Cards;
                 foreach(var card in decklist){
-                    if(!collection.Contains((card.Value.Name))){
+                    if(!cardlist.Contains((card.Value.Name))){
                         status = false;
                         break;
                     }

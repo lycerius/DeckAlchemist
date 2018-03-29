@@ -79,9 +79,6 @@ namespace DeckAlchemist.Api.Sources.Collection
         {
             throw new NotImplementedException();
         }
-        public List<string> GetCardListFromCollection(string userId){
-            throw new NotImplementedException();
-        }
 
         public bool AddCardsToCollection(string uId, IList<string> cardNames)
         {

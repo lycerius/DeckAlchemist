@@ -17,6 +17,5 @@ namespace DeckAlchemist.Api.Sources.Collection
         void Update(ICollection collection);
         bool ExistsForUser(string userId);
         ICollection GetCollection(string userId);
-        List<string> GetCardListFromCollection(string userId);
     }
 }
