@@ -71,7 +71,9 @@ namespace DeckAlchemist.Api.Controllers
                 var collection = new Collection
                 {
                     UserId = userId,
-                    CollectionId = Guid.NewGuid().ToString()
+                    CollectionId = Guid.NewGuid().ToString(),
+                    BorrowedCards = new Dictionary<string, IBorrowedCard>(),
+                    OwnedCards = new Dictionary<string, IOwnedCard>()
                 };
                 _collectionSource.Create(collection);
                 user.CollectionId = collection.CollectionId;

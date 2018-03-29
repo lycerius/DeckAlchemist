@@ -31,5 +31,17 @@ namespace DeckAlchemist.Api.Utility
             return client.PostAsync(requestUri, new JsonContent(obj));
         }
 
+        public static Task<T> ReadAsAsync<T>(this HttpContent content)
+        {
+            var task = new Task<T>(() =>
+            {
+                var str = content.ReadAsStringAsync();
+                str.Wait();
+                return JsonConvert.DeserializeObject<T>(str.Result);
+            });
+            task.Start();
+            return task;
+        }
+
     }
 }

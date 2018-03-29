@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using DeckAlchemist.Support.Objects.Collection;
 
 namespace DeckAlchemist.Api
 {
@@ -83,12 +84,6 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("MtgLegality");
             });
-            /* Uncomment when MtgDeckCard is Added
-            BsonClassMap.RegisterClassMap<MtgDeckCard>(cm => {
-                cm.AutoMap();
-                cm.SetDiscriminator("MtgDeckCard");
-            });
-            */
             BsonClassMap.RegisterClassMap<UserMessage>(cm =>
             {
                 cm.AutoMap();
@@ -104,6 +99,17 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("GroupInviteMessage");
             });
+            BsonClassMap.RegisterClassMap<OwnedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("OwnedCard");
+            });
+            BsonClassMap.RegisterClassMap<BorrowedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("BorrowedCard");
+            });
+
         }
 
         void ConfigureAuthentication(IServiceCollection services)
