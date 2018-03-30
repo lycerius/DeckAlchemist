@@ -177,5 +177,30 @@ namespace DeckAlchemist.Api.Sources.Collection
             return collection.Find(query).Any();
         }
 
+        public bool AddCardToCollection(string uId, IDictionary<string, int> cardsAndAmounts)
+        {
+            var query = _filter.Eq("UserId", uId);
+            var userCollection = collection.Find(query).FirstOrDefault();
+            if (userCollection == null) return false;
+
+            foreach(var entry in cardsAndAmounts)
+            {
+                var cardName = entry.Key;
+                var amount = entry.Value;
+                if (userCollection.OwnedCards.ContainsKey(cardName))
+                    userCollection.OwnedCards[cardName].TotalAmount += amount;
+                else
+                    userCollection.OwnedCards.Add(cardName, new OwnedCard
+                    {
+                        CardId = cardName,
+                        InDecks = new Dictionary<string, int>(),
+                        LentTo = new Dictionary<string, int>(),
+                        TotalAmount = amount
+                    });
+            }
+
+            collection.FindOneAndReplace(query, userCollection);
+            return true;
+        }
     }
 }

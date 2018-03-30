@@ -12,6 +12,9 @@ using System.Net.Http;
 using DeckAlchemist.Api.Utility;
 using Newtonsoft.Json;
 using DeckAlchemist.Support.Objects.Cards;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -140,6 +143,49 @@ namespace DeckAlchemist.Api.Controllers
             {
                 return StatusCode(500);
             }
-        } 
+        }
+
+        [HttpPost("csv")]
+        public void AddCardsFromCsv()
+        {
+            var csv = Request.Form.Files.FirstOrDefault();
+            //CSV Must be less than 5MB
+            if (csv == null) return;
+            if(csv.Length > 5242880) {
+                return;
+            }
+            var uId = HttpContext.User.Id();
+            var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
+            var entries = GetCsvEntries(tempFile);
+            var toDict = new Dictionary<string, int>(entries.Select(entry => new KeyValuePair<string, int>(entry.CardName, entry.Amount)));
+            _collectionSource.AddCardToCollection(uId, toDict);
+        }
+
+        string CreateTempFileAndAcceptUpload(Stream upload)
+        {
+            var tempFilePath = Path.GetTempFileName();
+
+            using(var writer = new FileStream(tempFilePath, FileMode.OpenOrCreate))
+            {
+                upload.CopyTo(writer);
+                writer.Flush();
+            }
+                
+            //Streams stored in local memory, attempt to release
+            upload.Close();
+            upload.Dispose();
+            return tempFilePath;
+        }
+
+        IEnumerable<CollectionCsvEntry> GetCsvEntries(string path)
+        {
+            IEnumerable<CollectionCsvEntry> entries = null;
+            using (var csvReader = new CsvHelper.CsvReader(new StreamReader(new FileStream(path, FileMode.Open))))
+            {
+                entries = csvReader.GetRecords<CollectionCsvEntry>().ToList();
+            }
+            System.IO.File.Delete(path);
+            return entries;
+        }
     }
 }
