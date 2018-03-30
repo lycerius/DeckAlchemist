@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DeckAlchemist.Api.Controllers
 {
     [Authorize(Policy = "Email")]
-    [Route("car")]
+    [Route("api/collection")]
     public class CollectionsController : Controller
     {
         readonly ICollectionSource _collectionSource;
