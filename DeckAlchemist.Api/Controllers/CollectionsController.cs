@@ -73,14 +73,7 @@ namespace DeckAlchemist.Api.Controllers
 
         IDictionary<string, IMtgCard> GetCardInfo(IEnumerable<string> cardNames) 
         {
-            var client = new HttpClient().Auth(HttpContext.GetIdToken());
-            var url = $"http://localhost:5000/api/card/names";
-            var result = client.PostAsync(url, cardNames);
-            result.Wait();
-            result.Result.EnsureSuccessStatusCode();
-            var cardsTask = result.Result.Content.ReadAsAsync<List<MtgCard>>();
-            cardsTask.Wait();
-            var cardsResult = cardsTask.Result;
+            var cardsResult = _cardSource.GetCardsByNames(cardNames.ToArray());
             var index = new Dictionary<string, IMtgCard>();
             foreach(var card in cardsResult) 
             {
