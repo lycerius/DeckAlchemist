@@ -7,6 +7,7 @@ using DeckAlchemist.Api.Sources.Deck.Mtg;
 using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.Api.Sources.Collection;
 using Microsoft.AspNetCore.Authorization;
+using DeckAlchemist.Api.Sources.Cards.Mtg;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +19,13 @@ namespace DeckAlchemist.Api.Controllers
     {
         readonly IMtgDeckSource _deckSource;
         readonly ICollectionSource _collectionSource;
+        readonly IMtgCardSource _mtgCardSource;
 
-        public DecksController(IMtgDeckSource deckSource, ICollectionSource collectionSource)
+        public DecksController(IMtgDeckSource deckSource, ICollectionSource collectionSource, IMtgCardSource mtgCardSource)
         {
             _deckSource = deckSource;
             _collectionSource = collectionSource;
+            _mtgCardSource = mtgCardSource;
         }
 
         // GET: api/values
@@ -80,6 +83,7 @@ namespace DeckAlchemist.Api.Controllers
             var uId = Auth.UserInfo.Id(HttpContext.User);
             var userEmail = Auth.UserInfo.Email(HttpContext.User);
             List<IMtgDeck> deckLists;
+
             if (typeOfSearch == "ID")
             {
                 deckLists = GetMultipleByName(decks);
@@ -87,17 +91,32 @@ namespace DeckAlchemist.Api.Controllers
             else{
                 deckLists = GetMultipleByID(decks);
             }
+
             var collection = _collectionSource.GetCollection(uId);
-            var cardlist = collection.BorrowedCards;
+            Dictionary<string, int> usableCards = new Dictionary<string, int>();
+
+
+            foreach( var card in collection.BorrowedCards){
+                usableCards.Add(card.CardId, card.AmountBorrowed);
+            }
+            foreach (var card in collection.OwnedCards){
+                usableCards.Add(card.CardId, card.Available);
+            }
 
             List<string> buildable = new List<string>();
             bool status;
+
             foreach (var deck in deckLists)
             {
                 status = true;
                 var decklist = deck.Cards;
                 foreach(var card in decklist){
-                    if(!cardlist.Contains((card.Value.Name))){
+                    if(usableCards.ContainsKey((card.Value.Name))){
+                        if (usableCards[card.Value.Name] < card.Value.Count ){
+                            status = false;
+                            break;
+                        }
+                    }else{
                         status = false;
                         break;
                     }
