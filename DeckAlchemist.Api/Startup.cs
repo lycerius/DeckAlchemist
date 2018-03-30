@@ -16,8 +16,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+<<<<<<< HEAD
 using DeckAlchemist.Support.Objects.Collection;
 
+=======
+using DeckAlchemist.Support.Objects.Collection;
+
+>>>>>>> b2af04b35582a3a69a9a43f2963f12fb7556ffb8
 namespace DeckAlchemist.Api
 {
     public class Startup
@@ -84,12 +89,6 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("MtgLegality");
             });
-            /* Uncomment when MtgDeckCard is Added
-            BsonClassMap.RegisterClassMap<MtgDeckCard>(cm => {
-                cm.AutoMap();
-                cm.SetDiscriminator("MtgDeckCard");
-            });
-            */
             BsonClassMap.RegisterClassMap<UserMessage>(cm =>
             {
                 cm.AutoMap();
@@ -105,6 +104,7 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("GroupInviteMessage");
             });
+<<<<<<< HEAD
             BsonClassMap.RegisterClassMap<BorrowedCard>(cm =>
             {
                 cm.AutoMap();
@@ -115,6 +115,19 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("OwnedCard");
             });
+=======
+            BsonClassMap.RegisterClassMap<OwnedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("OwnedCard");
+            });
+            BsonClassMap.RegisterClassMap<BorrowedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("BorrowedCard");
+            });
+
+>>>>>>> b2af04b35582a3a69a9a43f2963f12fb7556ffb8
         }
 
         void ConfigureAuthentication(IServiceCollection services)

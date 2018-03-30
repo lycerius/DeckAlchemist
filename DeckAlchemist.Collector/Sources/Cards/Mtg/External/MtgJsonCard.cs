@@ -44,7 +44,7 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
             };
         }
 
-        public static IMtgLegality ToMtgLegality(MtgJsonLegality legal)
+        public static MtgLegality ToMtgLegality(MtgJsonLegality legal)
         {
             return new MtgLegality
             {

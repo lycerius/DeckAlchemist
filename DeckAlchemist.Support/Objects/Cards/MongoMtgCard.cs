@@ -23,7 +23,7 @@ namespace DeckAlchemist.Support.Objects.Cards
         public string Name { get; set; }
         [BsonIgnoreIfNull]
 
-        public IEnumerable<IMtgLegality> Legality { get; set; }
+        public IEnumerable<MtgLegality> Legality { get; set; }
 
         public static MongoMtgCard FromMtgCard(IMtgCard card)
         {

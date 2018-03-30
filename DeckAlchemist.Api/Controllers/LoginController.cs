@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -72,7 +72,11 @@ namespace DeckAlchemist.Api.Controllers
                 {
                     UserId = userId,
                     CollectionId = Guid.NewGuid().ToString(),
+<<<<<<< HEAD
                     BorrowedCards = new Dictionary<string, IDictionary<string,IBorrowedCard>>(),
+=======
+                    BorrowedCards = new Dictionary<string, IBorrowedCard>(),
+>>>>>>> b2af04b35582a3a69a9a43f2963f12fb7556ffb8
                     OwnedCards = new Dictionary<string, IOwnedCard>()
                 };
                 _collectionSource.Create(collection);
