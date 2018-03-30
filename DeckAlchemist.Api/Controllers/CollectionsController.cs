@@ -12,6 +12,9 @@ using System.Net.Http;
 using DeckAlchemist.Api.Utility;
 using Newtonsoft.Json;
 using DeckAlchemist.Support.Objects.Cards;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -140,6 +143,54 @@ namespace DeckAlchemist.Api.Controllers
             {
                 return StatusCode(500);
             }
-        } 
+        }
+
+        [HttpPost("csv")]
+        public async Task<IActionResult> AddCardsFromCsv()
+        {
+            var csv = Request.Form.Files.FirstOrDefault();
+            var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
+            var uId = HttpContext.User.Id();
+            using(var reader = new StreamReader(new FileStream(tempFile, FileMode.Open)))
+            {
+                using(var csvReader = new CsvHelper.CsvReader(reader))
+                {
+                    var cardEntry = new 
+                    {
+                        CardName = default(string),
+                        Amount = default(int)
+                    };
+                    var entries = csvReader.GetRecords(cardEntry);
+                    var toDict = new Dictionary<string, int>(entries.Select(entry => new KeyValuePair<string, int>(entry.CardName, entry.Amount)));
+                    System.IO.File.Delete(tempFile);
+                    _collectionSource.AddCardToCollection(uId, toDict);
+                    return StatusCode(200);
+
+                }
+            }
+
+        }
+
+        string CreateTempFileAndAcceptUpload(Stream upload)
+        {
+            var tempFilePath = Path.GetTempFileName();
+
+            using (var reader = new StreamReader(upload))
+            {
+
+                using (var fileStream = new FileStream(tempFilePath, FileMode.OpenOrCreate))
+                {
+                    var line = "";
+                    using (var writer = new StreamWriter(fileStream))
+                    {
+                        while ((line = reader.ReadLine()) != null)
+                            writer.WriteLine(line);
+                    }
+
+                }
+            }
+
+            return tempFilePath;
+        }
     }
 }
