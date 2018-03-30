@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace DeckAlchemist.Support.Objects.Collection
 {
+    [BsonIgnoreExtraElements]
     public class OwnedCard : IOwnedCard
     {
         public string CardId { get; set; }
