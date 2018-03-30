@@ -99,15 +99,15 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("GroupInviteMessage");
             });
-            BsonClassMap.RegisterClassMap<OwnedCard>(cm =>
-            {
-                cm.AutoMap();
-                cm.SetDiscriminator("OwnedCard");
-            });
             BsonClassMap.RegisterClassMap<BorrowedCard>(cm =>
             {
                 cm.AutoMap();
                 cm.SetDiscriminator("BorrowedCard");
+            });
+            BsonClassMap.RegisterClassMap<OwnedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("OwnedCard");
             });
 
         }

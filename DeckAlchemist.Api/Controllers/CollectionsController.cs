@@ -37,7 +37,7 @@ namespace DeckAlchemist.Api.Controllers
             var uId = HttpContext.User.Id();
             var result = _collectionSource.GetCollection(uId);
             if (result == null) return null;
-            var uniqueCardNames = GetUniqueCardNames(result.OwnedCards, result.BorrowedCards);
+            var uniqueCardNames = GetUniqueCardNames(result.OwnedCards.Keys, result.BorrowedCards.Keys);
             var cardInfo = GetCardInfo(uniqueCardNames);
             var model = new CollectionModel
             {
@@ -60,13 +60,13 @@ namespace DeckAlchemist.Api.Controllers
             return model;
         }
 
-        IEnumerable<string> GetUniqueCardNames(IDictionary<string, IOwnedCard> owned, IDictionary<string, IBorrowedCard> borrowed)
+        IEnumerable<string> GetUniqueCardNames(IEnumerable<string> owned, IEnumerable<string> borrowed)
         {
             var cardNames = new HashSet<string>();
-            if(owned != null) foreach (var card in owned.Select(own => own.Value))
-                cardNames.Add(card.CardId);
-            if(borrowed != null) foreach (var card in borrowed.Select(bor => bor.Value))
-                cardNames.Add(card.CardId);
+            if(owned != null) foreach (var card in owned)
+                cardNames.Add(card);
+            if(borrowed != null) foreach (var card in borrowed)
+                cardNames.Add(card);
 
             return cardNames;
         }
