@@ -146,51 +146,46 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         [HttpPost("csv")]
-        public async Task<IActionResult> AddCardsFromCsv()
+        public void AddCardsFromCsv()
         {
             var csv = Request.Form.Files.FirstOrDefault();
-            var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
-            var uId = HttpContext.User.Id();
-            using(var reader = new StreamReader(new FileStream(tempFile, FileMode.Open)))
-            {
-                using(var csvReader = new CsvHelper.CsvReader(reader))
-                {
-                    var cardEntry = new 
-                    {
-                        CardName = default(string),
-                        Amount = default(int)
-                    };
-                    var entries = csvReader.GetRecords(cardEntry);
-                    var toDict = new Dictionary<string, int>(entries.Select(entry => new KeyValuePair<string, int>(entry.CardName, entry.Amount)));
-                    System.IO.File.Delete(tempFile);
-                    _collectionSource.AddCardToCollection(uId, toDict);
-                    return StatusCode(200);
-
-                }
+            //CSV Must be less than 5MB
+            if (csv == null) return;
+            if(csv.Length > 5242880) {
+                return;
             }
-
+            var uId = HttpContext.User.Id();
+            var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
+            var entries = GetCsvEntries(tempFile);
+            var toDict = new Dictionary<string, int>(entries.Select(entry => new KeyValuePair<string, int>(entry.CardName, entry.Amount)));
+            _collectionSource.AddCardToCollection(uId, toDict);
         }
 
         string CreateTempFileAndAcceptUpload(Stream upload)
         {
             var tempFilePath = Path.GetTempFileName();
 
-            using (var reader = new StreamReader(upload))
+            using(var writer = new FileStream(tempFilePath, FileMode.OpenOrCreate))
             {
-
-                using (var fileStream = new FileStream(tempFilePath, FileMode.OpenOrCreate))
-                {
-                    var line = "";
-                    using (var writer = new StreamWriter(fileStream))
-                    {
-                        while ((line = reader.ReadLine()) != null)
-                            writer.WriteLine(line);
-                    }
-
-                }
+                upload.CopyTo(writer);
+                writer.Flush();
             }
-
+                
+            //Streams stored in local memory, attempt to release
+            upload.Close();
+            upload.Dispose();
             return tempFilePath;
+        }
+
+        IEnumerable<CollectionCsvEntry> GetCsvEntries(string path)
+        {
+            IEnumerable<CollectionCsvEntry> entries = null;
+            using (var csvReader = new CsvHelper.CsvReader(new StreamReader(new FileStream(path, FileMode.Open))))
+            {
+                entries = csvReader.GetRecords<CollectionCsvEntry>().ToList();
+            }
+            System.IO.File.Delete(path);
+            return entries;
         }
     }
 }
