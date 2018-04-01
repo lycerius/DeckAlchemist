@@ -29,7 +29,7 @@ namespace DeckAlchemist.Api.Controllers
         }
         
         [HttpGet]
-        public IActionResult GetCollection(){
+        public IActionResult GetCollection() {
             try
             {
                 var uId = Utility.UserInfo.Id(HttpContext.User);
