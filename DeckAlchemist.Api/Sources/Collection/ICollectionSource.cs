@@ -8,6 +8,7 @@ namespace DeckAlchemist.Api.Sources.Collection
     public interface ICollectionSource
     {
         bool AddCardToCollection(string uId, IEnumerable<string> cardName);
+        bool AddCardToCollection(string uId, IDictionary<string, int> cardsAndAmounts);
         bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName);
         bool MarkCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         bool AddCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);

@@ -16,6 +16,6 @@ namespace DeckAlchemist.Support.Objects.Cards
         string Layout { get; set; }
         string ImageName { get; set; }
         string Name { get; set; }
-        IEnumerable<IMtgLegality> Legality { get; set; }
+        IEnumerable<MtgLegality> Legality { get; set; }
     }
 }
