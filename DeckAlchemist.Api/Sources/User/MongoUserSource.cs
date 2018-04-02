@@ -59,10 +59,6 @@ namespace DeckAlchemist.Api.Sources.User
             return collection.Find(query).Any();
         }
 
-        public string GetUIDByName(string recivingUser){
-            throw new NotImplementedException();
-        }
-
 
     }
 }

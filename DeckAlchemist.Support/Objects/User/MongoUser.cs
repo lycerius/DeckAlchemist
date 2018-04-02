@@ -17,7 +17,7 @@ namespace DeckAlchemist.Support.Objects.User
                 Email = user.Email,
                 Groups = user.Groups,
                 UserId = user.UserId,
-                UserName = user.UserName,
+                UserName = user.UserName
             };
         }
 

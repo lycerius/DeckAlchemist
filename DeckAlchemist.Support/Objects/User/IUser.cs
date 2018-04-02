@@ -10,5 +10,6 @@ namespace DeckAlchemist.Support.Objects.User
         string CollectionId { get; set; }
         List<string> Groups { get; set; }
         List<string> Decks { get; set; }
+
     }
 }

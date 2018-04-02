@@ -1,10 +1,12 @@
-using DeckAlchemist.Api.Auth;
+using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Api.Sources.Group;
+using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Api.Sources.User;
 using DeckAlchemist.Support.Objects.Cards;
+using DeckAlchemist.Support.Objects.Messages;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace DeckAlchemist.Api
 {
@@ -31,6 +34,11 @@ namespace DeckAlchemist.Api
             ConfigureAuthentication(services);
             ConfigureSources(services);
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Deck Alchemist Web Api", Version = "v1" });
+            });
         }
 
         public void ConfigureSources(IServiceCollection services)
@@ -43,6 +51,7 @@ namespace DeckAlchemist.Api
             services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
             services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
             services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
+            services.AddTransient<IMessageSource, MongoMessageSource>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -57,6 +66,12 @@ namespace DeckAlchemist.Api
                 builder.AllowAnyMethod();
             });
             app.UseAuthentication();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseMvc();
 
@@ -74,6 +89,21 @@ namespace DeckAlchemist.Api
                 cm.SetDiscriminator("MtgDeckCard");
             });
             */
+            BsonClassMap.RegisterClassMap<UserMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("UserMessage");
+            });
+            BsonClassMap.RegisterClassMap<LoanRequestMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("LoanRequestMessage");
+            });
+            BsonClassMap.RegisterClassMap<GroupInviteMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("GroupInviteMessage");
+            });
         }
 
         void ConfigureAuthentication(IServiceCollection services)

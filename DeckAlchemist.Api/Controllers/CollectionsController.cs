@@ -7,6 +7,7 @@ using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using DeckAlchemist.Api.Contracts;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,9 +31,9 @@ namespace DeckAlchemist.Api.Controllers
         public IActionResult GetCollection(){
             try
             {
-                var uId = Auth.UserInfo.Id(HttpContext.User);
-                var userEmail = Auth.UserInfo.Email(HttpContext.User);
-                Support.Objects.Collection.ICollection result = _collectionSource.GetCollection(uId);
+                var uId = Utility.UserInfo.Id(HttpContext.User);
+                var userEmail = Utility.UserInfo.Email(HttpContext.User);
+                var result = _collectionSource.GetCollection(uId);
                 if (result!=null) return Json(result);
                 return StatusCode(500);
             }catch (Exception)
@@ -47,11 +48,11 @@ namespace DeckAlchemist.Api.Controllers
         {
             try
             {
-                var uId = Auth.UserInfo.Id(HttpContext.User);
-                var userEmail = Auth.UserInfo.Email(HttpContext.User);
-                bool cardExists = _cardSource.CheckExistance(cardnames);
+                var uId = Utility.UserInfo.Id(HttpContext.User);
+                var userEmail = Utility.UserInfo.Email(HttpContext.User);
+                var cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.AddCardToCollection(uId, cardnames);
+                var result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -66,11 +67,11 @@ namespace DeckAlchemist.Api.Controllers
         {
             try
             {
-                var uId = Auth.UserInfo.Id(HttpContext.User);
-                var userEmail = Auth.UserInfo.Email(HttpContext.User);
-                bool cardExists = _cardSource.CheckExistance(cardnames);
+                var uId = Utility.UserInfo.Id(HttpContext.User);
+                var userEmail = Utility.UserInfo.Email(HttpContext.User);
+                var cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
+                var result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -80,17 +81,17 @@ namespace DeckAlchemist.Api.Controllers
             }
         }
         //lend one ore menay cards
-        [HttpPost("cards")]
-        public IActionResult LendcardsTo([FromBody] string reciver, string[] cardsnames){
+        [HttpPost("lend")]
+        public IActionResult LendcardsTo([FromBody] LendContract lendContract){
             try
             {
-                var uId = Auth.UserInfo.Id(HttpContext.User);
-                var userEmail = Auth.UserInfo.Email(HttpContext.User);
-                bool reciverExists = _userSource.UserExists(reciver);
+                var uId = Utility.UserInfo.Id(HttpContext.User);
+                var userEmail = Utility.UserInfo.Email(HttpContext.User);
+                var reciverExists = _userSource.UserExists(lendContract.Lender);
                 if (!reciverExists) return StatusCode(401);
-                bool markAsLent = _collectionSource.MarkCardAsLent(uId, cardsnames);
-                var uIdOfRevicer = _userSource.GetUIDByName(reciver);
-                bool reciveCard = _collectionSource.AddCardAsLent(uIdOfRevicer,cardsnames);
+                var markAsLent = _collectionSource.MarkCardAsLent(uId, lendContract.Lendee, lendContract.CardsAndAmounts);
+                var uIdOfRevicer = lendContract.Lendee;
+                var reciveCard = _collectionSource.AddCardAsLent(uId, lendContract.Lendee, lendContract.CardsAndAmounts);
                 if (markAsLent && reciveCard) return StatusCode(200);
                 return StatusCode(500);
 

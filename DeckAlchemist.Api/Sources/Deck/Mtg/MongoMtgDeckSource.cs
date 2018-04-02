@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.Decks;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Deck.Mtg
@@ -19,6 +21,23 @@ namespace DeckAlchemist.Api.Sources.Deck.Mtg
             var client = new MongoClient(MongoConnectionString);
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoMtgDeck>(MongoCollection);
+        }
+
+        public IEnumerable<IMtgDeck> GetAllDecks()
+        {
+            return collection.Find(_filter.Empty).ToList();
+        }
+
+        public IMtgDeck GetDeckByName(string name)
+        {
+            var query = _filter.Eq("Name", name);
+            return collection.Find(query).FirstOrDefault();
+        }
+
+        public IEnumerable<IMtgDeck> SearchDecks(string name)
+        {
+            var query = _filter.Regex("Name", new BsonRegularExpression($".*{name}.*", "i"));
+            return collection.Find(query).ToList();
         }
 
         public IMtgDeck GetById(string deckID)

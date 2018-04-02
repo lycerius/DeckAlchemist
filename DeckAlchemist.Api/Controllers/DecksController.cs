@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,15 +37,13 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("ID")]
         public IActionResult GetByID([FromBody] string deckId)
         {
-            var result = GetByIDInternal(deckId);
-            return Json(result);
+            return _source.GetAllDecks();
         }
 
-        [HttpGet("name")]
-        public IActionResult GetByName([FromBody]string deckname)
+        [HttpGet]
+        public IMtgDeck GetByName([FromBody]string deckname)
         {
-            var result = GetByNameInternal(deckname);
-            return Json(result);
+            return _source.GetDeckByName(deckname);
         }
         private IMtgDeck GetByNameInternal(string deckname)
         {
