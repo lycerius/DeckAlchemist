@@ -53,11 +53,11 @@ namespace DeckAlchemist.Api.Sources.Collection
             throw new NotImplementedException();
         }
 
-        public bool AddCardsToCollection(string uId, IEnumerable<string> cardName)
+        public bool AddCardToCollection(string uId, IEnumerable<string> cardName)
         {
             throw new NotImplementedException();
         }
-        public bool RemoveCardsFromCollection(string uId, IList<string> cardName){
+        public bool RemoveCardFromCollection(string uId, IList<string> cardName){
             throw new NotImplementedException();
         }
         public bool MarkCardAsLent(string uId, IList<string> cardName)

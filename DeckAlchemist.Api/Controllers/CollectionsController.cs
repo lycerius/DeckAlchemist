@@ -43,7 +43,7 @@ namespace DeckAlchemist.Api.Controllers
 
         //add one or many cards
         [HttpPut("cards")]
-        public IActionResult AddCardsToCollection([FromBody]IList<string> cardnames)
+        public IActionResult AddCardToCollection([FromBody]IList<string> cardnames)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace DeckAlchemist.Api.Controllers
                 var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.AddCardsToCollection(uId, cardnames);
+                bool result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
@@ -70,7 +70,7 @@ namespace DeckAlchemist.Api.Controllers
                 var userEmail = Auth.UserInfo.Email(HttpContext.User);
                 bool cardExists = _cardSource.CheckExistance(cardnames);
                 if (!cardExists) return StatusCode(401);
-                bool result = _collectionSource.RemoveCardsFromCollection(uId, cardnames);
+                bool result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
