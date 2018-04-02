@@ -47,6 +47,7 @@ namespace DeckAlchemist.Api.Sources.Messages
             var boxQuery = _filter.Eq("UserId", message.RecipientId);
             var box = collection.Find(boxQuery).FirstOrDefault();
             if (box == null) return;
+            message.MessageId = Guid.NewGuid().ToString();
             box.Messages.Add(message.MessageId, message);
             collection.FindOneAndReplace(boxQuery, box);
         }

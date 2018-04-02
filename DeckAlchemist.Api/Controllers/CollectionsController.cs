@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.Api.Contracts;
+using DeckAlchemist.Support.Objects.Collection;
+using System.Net.Http;
+using DeckAlchemist.Api.Utility;
+using Newtonsoft.Json;
+using DeckAlchemist.Support.Objects.Cards;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,19 +35,55 @@ namespace DeckAlchemist.Api.Controllers
             _userSource = userSource;
         }
         [HttpGet]
-        public IActionResult GetCollection(){
-            try
+        public CollectionModel GetCollection()
+        {
+            var uId = HttpContext.User.Id();
+            var result = _collectionSource.GetCollection(uId);
+            if (result == null) return null;
+            var uniqueCardNames = GetUniqueCardNames(result.OwnedCards.Keys, result.BorrowedCards.Keys);
+            var cardInfo = GetCardInfo(uniqueCardNames);
+            var model = new CollectionModel
             {
-                var uId = Utility.UserInfo.Id(HttpContext.User);
-                var userEmail = Utility.UserInfo.Email(HttpContext.User);
-                var result = _collectionSource.GetCollection(uId);
-                if (result!=null) return Json(result);
-                return StatusCode(500);
-            }catch (Exception)
-            {
-                return StatusCode(500);
-            }
+                CardInfo = cardInfo,
+                UserCollection = result
+            };
+            return model;  
         } 
+
+        [HttpGet("slim")]
+        public CollectionModel GetCollectionSlim() 
+        {
+            var uId = HttpContext.User.Id();
+            var result = _collectionSource.GetCollection(uId);
+            if (result == null) return null;
+            var model = new CollectionModel
+            {
+                UserCollection = result
+            };
+            return model;
+        }
+
+        IEnumerable<string> GetUniqueCardNames(IEnumerable<string> owned, IEnumerable<string> borrowed)
+        {
+            var cardNames = new HashSet<string>();
+            if(owned != null) foreach (var card in owned)
+                cardNames.Add(card);
+            if(borrowed != null) foreach (var card in borrowed)
+                cardNames.Add(card);
+
+            return cardNames;
+        }
+
+        IDictionary<string, IMtgCard> GetCardInfo(IEnumerable<string> cardNames) 
+        {
+            var cardsResult = _cardSource.GetCardsByNames(cardNames.ToArray());
+            var index = new Dictionary<string, IMtgCard>();
+            foreach(var card in cardsResult) 
+            {
+                index.Add(card.Name, card);    
+            }
+            return index;
+        }
 
         //add one or many cards
         [HttpPut("cards")]
@@ -100,6 +143,49 @@ namespace DeckAlchemist.Api.Controllers
             {
                 return StatusCode(500);
             }
-        } 
+        }
+
+        [HttpPost("csv")]
+        public void AddCardsFromCsv()
+        {
+            var csv = Request.Form.Files.FirstOrDefault();
+            //CSV Must be less than 5MB
+            if (csv == null) return;
+            if(csv.Length > 5242880) {
+                return;
+            }
+            var uId = HttpContext.User.Id();
+            var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
+            var entries = GetCsvEntries(tempFile);
+            var toDict = new Dictionary<string, int>(entries.Select(entry => new KeyValuePair<string, int>(entry.CardName, entry.Amount)));
+            _collectionSource.AddCardToCollection(uId, toDict);
+        }
+
+        string CreateTempFileAndAcceptUpload(Stream upload)
+        {
+            var tempFilePath = Path.GetTempFileName();
+
+            using(var writer = new FileStream(tempFilePath, FileMode.OpenOrCreate))
+            {
+                upload.CopyTo(writer);
+                writer.Flush();
+            }
+                
+            //Streams stored in local memory, attempt to release
+            upload.Close();
+            upload.Dispose();
+            return tempFilePath;
+        }
+
+        IEnumerable<CollectionCsvEntry> GetCsvEntries(string path)
+        {
+            IEnumerable<CollectionCsvEntry> entries = null;
+            using (var csvReader = new CsvHelper.CsvReader(new StreamReader(new FileStream(path, FileMode.Open))))
+            {
+                entries = csvReader.GetRecords<CollectionCsvEntry>().ToList();
+            }
+            System.IO.File.Delete(path);
+            return entries;
+        }
     }
 }

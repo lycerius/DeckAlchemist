@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-
+using Newtonsoft.Json;
 
 namespace DeckAlchemist.Support.Objects.Collection
 {
@@ -19,10 +19,11 @@ namespace DeckAlchemist.Support.Objects.Collection
         }
         
         [BsonId]
+        [JsonIgnore]
         public ObjectId _id { get; set; }
         public string UserId { get; set; }
         public string CollectionId { get; set; }
         public IDictionary<string, IOwnedCard> OwnedCards { get; set; }
-        public IDictionary<string, IBorrowedCard> BorrowedCards { get; set; }
+        public IDictionary<string, IDictionary<string, IBorrowedCard>> BorrowedCards { get; set; }
     }
 }

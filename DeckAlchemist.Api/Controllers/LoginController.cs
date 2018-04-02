@@ -1,8 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Messages;
@@ -71,7 +69,9 @@ namespace DeckAlchemist.Api.Controllers
                 var collection = new Collection
                 {
                     UserId = userId,
-                    CollectionId = Guid.NewGuid().ToString()
+                    CollectionId = Guid.NewGuid().ToString(),
+                    BorrowedCards = new Dictionary<string, IDictionary<string,IBorrowedCard>>(),
+                    OwnedCards = new Dictionary<string, IOwnedCard>()
                 };
                 _collectionSource.Create(collection);
                 user.CollectionId = collection.CollectionId;
