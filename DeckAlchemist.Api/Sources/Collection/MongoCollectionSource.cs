@@ -61,7 +61,16 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("UserId", uId);
             var userCollection = collection.Find(query).FirstOrDefault();
             if (userCollection == null) return false;
-            if (userCollection.OwnedCards == null) userCollection.OwnedCards = new Dictionary<string, IOwnedCard>();
+
+            if (userCollection.OwnedCards == null)
+            {
+                userCollection.OwnedCards = new Dictionary<string, IOwnedCard>();
+            }
+
+            if (userCollection.BorrowedCards == null)
+            {
+                userCollection.BorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
+            }
             foreach(var card in cardName)
             {
                 

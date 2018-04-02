@@ -8,32 +8,11 @@ using DeckAlchemist.WebApp.Models;
 
 namespace DeckAlchemist.WebApp.Controllers
 {
-    //copyright code 2004 University of Alabama, Nicholas Revere.
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            //Do auth code
-            return View("Login");
-        }
-
-        public IActionResult CreateAccount()
-        {
-            return View("CreateAccount");
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return View("Home");
         }
 
         public IActionResult Error()
