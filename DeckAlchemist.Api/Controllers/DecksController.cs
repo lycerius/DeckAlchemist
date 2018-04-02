@@ -74,13 +74,23 @@ namespace DeckAlchemist.Api.Controllers
             var collection = _collectionSource.GetCollection(uId);
             Dictionary<string, int> usableCards = new Dictionary<string, int>();
 
-
-            foreach( var card in collection.BorrowedCards){
-                usableCards.Add(card.Value.CardId, card.Value.AmountBorrowed);
-            }
             foreach (var card in collection.OwnedCards){
                 usableCards.Add(card.Value.CardId, card.Value.Available);
             }
+
+
+            foreach (var card in collection.BorrowedCards)
+            {
+                if(usableCards.ContainsKey(card.Key)){
+                    usableCards[card.Key] += card.Value.Sum(borowedCard => borowedCard.Value.AmountBorrowed);
+                }else{
+                    usableCards.Add(card.Key, card.Value.Sum(borowedCard => borowedCard.Value.AmountBorrowed));
+                }
+            }
+
+
+
+
 
             List<string> buildable = new List<string>();
             bool status;
