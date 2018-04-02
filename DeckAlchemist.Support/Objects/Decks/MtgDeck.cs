@@ -33,5 +33,5 @@ namespace DeckAlchemist.Support.Objects.Decks
             var space = DeckCompare.FeatureSpaceFor(this);
             return space.GetHashCode();
         }
-    }
+	}
 }

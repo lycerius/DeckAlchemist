@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.Decks;
 using MongoDB.Bson;
@@ -38,6 +38,18 @@ namespace DeckAlchemist.Api.Sources.Deck.Mtg
         {
             var query = _filter.Regex("Name", new BsonRegularExpression($".*{name}.*", "i"));
             return collection.Find(query).ToList();
+        }
+
+        public IMtgDeck GetById(string deckID)
+        {
+            var query = _filter.Eq("DeckID", deckID);
+            return collection.Find(query).First();
+        }
+
+        public IMtgDeck GetByName(string deckName)
+        {
+            var query = _filter.Eq("Name", deckName);
+            return collection.Find(query).First();
         }
     }
 }
