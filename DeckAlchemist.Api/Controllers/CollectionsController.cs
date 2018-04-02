@@ -87,7 +87,7 @@ namespace DeckAlchemist.Api.Controllers
 
         //add one or many cards
         [HttpPut("cards")]
-        public IActionResult AddCardsToCollection([FromBody]IList<string> cardnames)
+        public IActionResult AddCardToCollection([FromBody]IList<string> cardnames)
         {
             try
             {
