@@ -1,23 +1,25 @@
 ﻿@section Style {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <link href="../css/site.css" rel="stylesheet">
+        <link href="css/login.css" rel="stylesheet">
         <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
     }
 
     @section Scripts {
         <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-        <script>
-            // Initialize Firebase
-            var config = {
-                apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
-                authDomain: "deckalchemist.firebaseapp.com",
-                databaseURL: "https://deckalchemist.firebaseio.com/",
-                projectId: "deckalchemist",
-                storageBucket: "deckalchemist.appspot.com",
-                messagingSenderId: "560047522639"
-            };
-            firebase.initializeApp(config);
-        </script>
+	    <script>
+    		// Initialize Firebase
+    		var config = {
+    			apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+    			authDomain: "deckalchemist.firebaseapp.com",
+    			databaseURL: "https://deckalchemist.firebaseio.com/",
+    			projectId: "deckalchemist",
+    			storageBucket: "deckalchemist.appspot.com",
+    			messagingSenderId: "560047522639"
+    		};
+    		firebase.initializeApp(config);
+    	</script>
+	    
+	    <script src="~/js/login.js"></script>
 
         <environment include="Development">
             <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>

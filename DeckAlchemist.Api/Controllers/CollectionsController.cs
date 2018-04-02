@@ -41,7 +41,7 @@ namespace DeckAlchemist.Api.Controllers
         {
             var uId = HttpContext.User.Id();
             var result = _collectionSource.GetCollection(uId);
-            if (result == null) return null;
+            if (result == null || result.OwnedCards == null || result.BorrowedCards == null) return null;
             var uniqueCardNames = GetUniqueCardNames(result.OwnedCards.Keys, result.BorrowedCards.Keys);
             var cardInfo = GetCardInfo(uniqueCardNames);
             var model = new CollectionModel
@@ -101,7 +101,8 @@ namespace DeckAlchemist.Api.Controllers
                 if (result) return StatusCode(200);
                 return StatusCode(500);
             }
-            catch(Exception){
+            catch(Exception e)
+            {
                 return StatusCode(500);
             }
         }

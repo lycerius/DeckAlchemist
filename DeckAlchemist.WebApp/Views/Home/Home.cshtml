@@ -27,25 +27,6 @@
 		firebase.initializeApp(config);
 	</script>
 	<script src="js/home.js"></script>
-	
-	<environment include="Development">
-		<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-		<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-	</environment>
-	<environment exclude="Development">
-		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
-		        asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
-		        asp-fallback-test="window.jQuery && window.jQuery.validator"
-		        crossorigin="anonymous"
-		        integrity="sha384-Fnqn3nxp3506LP/7Y3j/25BlWeA3PXTyT1l78LjECcPaKCV12TsZP7yyMxOe/G/k">
-		</script>
-		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"
-		        asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
-		        asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
-		        crossorigin="anonymous"
-		        integrity="sha384-JrXK+k53HACyavUKOsL+NkmSesD2P+73eDMrbTtTk0h4RmOF8hF8apPlkp26JlyH">
-		</script>
-	</environment>
 }
 
 
@@ -59,9 +40,10 @@
 
 
 <div class="home-content container">
-	<div class="row">
-		<button type="button" class="btn btn-outline-success">Add Cards</button>
-		<button type="button" class="btn btn-outline-danger">Remove Cards</button>
+	<div class="row table-actions">
+		<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
+		<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
+		<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
 	</div>
 	
 	<div class="row" style="padding: 50px 0">
@@ -70,12 +52,12 @@
 			<!-- This table can't be styled because it's removed at runtime -->
 			<table id="table"></table>
 		</div>
-		<img class="col" src="#" id="card-img"/>
+		<img class="col col-lg-3" src="#" id="card-img"/>
 	</div>
 	
 	<!-- Search Modal -->
 	<div class="modal fade" id="searchDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="searchForCards">Search for Cards</h5>
@@ -84,14 +66,48 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<input type="text" id="card-name" placeholder="Search by name..">
+					<div class="container">
+						<div class="row">
+							<input type="text" id="card-name" placeholder="Search by name..">
+							<button id="search-btn" type="button" class="btn btn-success table-btn">Search</button>
+						</div>
+					</div>
 					
 					<!-- This table can't be styled because it's removed at runtime -->
 					<table id="searchTable"></table>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary">Add Selected</button>
+					<button id="pushCards" type="button" class="btn btn-primary">Add Selected</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Upload Modal -->
+	<div class="modal fade" id="uploadDialog" tabindex="-1" role="dialog" aria-labelledby="uploadCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Upload CSV File</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="uploadForm" action="http://localhost:5000/api/collection/csv" method="post" enctype="multipart/form-data" >
+						<div class="form-group">
+							<div class="col-md-10">
+								<p>Upload one or more files using this form:</p>
+								<input type="file" name="files" multiple />
+								
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button id="uploadCards" type="button" class="btn btn-primary">Upload</button>
 				</div>
 			</div>
 		</div>
