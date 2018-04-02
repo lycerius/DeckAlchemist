@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.Api.Sources.Collection;
 using Microsoft.AspNetCore.Authorization;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
+using DeckAlchemist.Api.Utility;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,17 +38,17 @@ namespace DeckAlchemist.Api.Controllers
         [HttpGet("ID")]
         public IActionResult GetByID([FromBody] string deckId)
         {
-            return _source.GetAllDecks();
+            return Json(_deckSource.GetAllDecks());
         }
 
         [HttpGet]
         public IMtgDeck GetByName([FromBody]string deckname)
         {
-            return _source.GetDeckByName(deckname);
+            return _deckSource.GetDeckByName(deckname);
         }
         private IMtgDeck GetByNameInternal(string deckname)
         {
-            return _deckSource.GetByName(deckname);
+            return _deckSource.GetDeckByName(deckname);
         }
         private List<IMtgDeck> GetMultipleByName(List<string> deckNames)
         {
@@ -57,48 +58,28 @@ namespace DeckAlchemist.Api.Controllers
             }
             return result;
         }
-        private IMtgDeck GetByIDInternal(string deckId)
-        {
-            return _deckSource.GetById(deckId);
-        }
-        private List<IMtgDeck> GetMultipleByID(List<string> deckIDs)
-        {
-            List<IMtgDeck> result = new List<IMtgDeck>();
-            foreach (var deck in deckIDs)
-            {
-                result.Add(GetByIDInternal(deck));
-            }
-            return result;
-        }
 
         [HttpGet("search")]
-        public IActionResult Search([FromBody] string typeOfSearch, List<string> decks)
+        public IActionResult Search([FromBody] List<string> decks)
         {
-            if(!(typeOfSearch == "ID" || typeOfSearch == "Name")){
-                return StatusCode(400);
-            }
 
-            var uId = Auth.UserInfo.Id(HttpContext.User);
-            var userEmail = Auth.UserInfo.Email(HttpContext.User);
+
+            var uId = UserInfo.Id(HttpContext.User);
+            var userEmail = UserInfo.Email(HttpContext.User);
             List<IMtgDeck> deckLists;
 
-            if (typeOfSearch == "ID")
-            {
-                deckLists = GetMultipleByName(decks);
-            }
-            else{
-                deckLists = GetMultipleByID(decks);
-            }
+
+            deckLists = GetMultipleByName(decks);
 
             var collection = _collectionSource.GetCollection(uId);
             Dictionary<string, int> usableCards = new Dictionary<string, int>();
 
 
             foreach( var card in collection.BorrowedCards){
-                usableCards.Add(card.CardId, card.AmountBorrowed);
+                usableCards.Add(card.Value.CardId, card.Value.AmountBorrowed);
             }
             foreach (var card in collection.OwnedCards){
-                usableCards.Add(card.CardId, card.Available);
+                usableCards.Add(card.Value.CardId, card.Value.Available);
             }
 
             List<string> buildable = new List<string>();
