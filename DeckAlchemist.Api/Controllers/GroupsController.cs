@@ -61,6 +61,19 @@ namespace DeckAlchemist.Api.Controllers
             }
         }
 
+        [HttpGet("{groupId}")]
+        public IActionResult GetGroupInformation(string groupId)
+        {
+            try
+            {
+                return Json(_source.GetGroupInfo(groupId));
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+        }
+
         [HttpPost("{groupName}/create")]
         public IActionResult CreateGroup(string groupName)
         {

@@ -217,6 +217,28 @@ function getCardImage(cardName) {
     });
 }
 
+function getGroups() {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/user").then(function (result) {
+            return result.json();
+        }).then(function (json) {
+            resolve(json.groups)
+        }).catch(function (error) {
+            reject(error)
+        });
+    })
+}
+
+function getGroupInfo(groupId) {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/groups/" + groupId).then(function (result) {
+            resolve(result)
+        }).catch(function (error) {
+            reject(error)
+        })
+    });
+}
+
 $(document).ready(function(){
     "use strict";
 
