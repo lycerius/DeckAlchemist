@@ -23,24 +23,33 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		WebApp and Api|Any CPU = WebApp and Api|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}.WebApp and Api|Any CPU.ActiveCfg = WebApp and Api|Any CPU
+		{DAEF767E-F8F1-4B2E-839B-7CBF12D572F4}.WebApp and Api|Any CPU.Build.0 = WebApp and Api|Any CPU
 		{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}.WebApp and Api|Any CPU.ActiveCfg = WebApp and Api|Any CPU
+		{F011652F-F1FD-43CE-B5EB-0C45BDD356E9}.WebApp and Api|Any CPU.Build.0 = WebApp and Api|Any CPU
 		{77D16250-71ED-48B0-AE05-7C7D6F3041A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77D16250-71ED-48B0-AE05-7C7D6F3041A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77D16250-71ED-48B0-AE05-7C7D6F3041A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77D16250-71ED-48B0-AE05-7C7D6F3041A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77D16250-71ED-48B0-AE05-7C7D6F3041A7}.WebApp and Api|Any CPU.ActiveCfg = WebApp and Api|Any CPU
+		{77D16250-71ED-48B0-AE05-7C7D6F3041A7}.WebApp and Api|Any CPU.Build.0 = WebApp and Api|Any CPU
 		{1FF1B21E-38B6-4105-839B-31076F13C15A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FF1B21E-38B6-4105-839B-31076F13C15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FF1B21E-38B6-4105-839B-31076F13C15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FF1B21E-38B6-4105-839B-31076F13C15A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FF1B21E-38B6-4105-839B-31076F13C15A}.WebApp and Api|Any CPU.ActiveCfg = WebApp and Api|Any CPU
+		{1FF1B21E-38B6-4105-839B-31076F13C15A}.WebApp and Api|Any CPU.Build.0 = WebApp and Api|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

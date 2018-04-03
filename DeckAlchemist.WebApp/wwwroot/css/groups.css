@@ -1,11 +1,5 @@
-﻿.groupTable {
-
-}
-
-.groupTableNameHeader {
-
-}
-
-.groupTableFriend {
-
+﻿.groupInfoTable {
+    border: solid;
+    border-width: thin;
+    width: 100%
 }

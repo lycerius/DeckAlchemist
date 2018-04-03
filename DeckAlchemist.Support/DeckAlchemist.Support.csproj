@@ -2,6 +2,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'WebApp and Api|AnyCPU' ">
+    <IntermediateOutputPath>obj\WebApp and Api</IntermediateOutputPath>
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WebApp and Api</OutputPath>
+    <DefineConstants></DefineConstants>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <Folder Include="Objects\" />
     <Folder Include="Objects\Collection\" />

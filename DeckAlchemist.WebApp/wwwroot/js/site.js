@@ -232,7 +232,9 @@ function getGroups() {
 function getGroupInfo(groupId) {
     return new Promise(function (resolve, reject) {
         fetchWithAuth("http://localhost:5000/api/groups/" + groupId).then(function (result) {
-            resolve(result)
+            return result.json();
+        }).then(function(json){
+            resolve(json);
         }).catch(function (error) {
             reject(error)
         })
