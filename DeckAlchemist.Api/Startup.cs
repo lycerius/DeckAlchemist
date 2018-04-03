@@ -18,6 +18,7 @@ using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using DeckAlchemist.Support.Objects.Collection;
 using DeckAlchemist.Support.Objects.Decks;
+using DeckAlchemist.Api.Sources.UserDeck;
 
 namespace DeckAlchemist.Api
 {
@@ -54,6 +55,8 @@ namespace DeckAlchemist.Api
             services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
             services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
             services.AddTransient<IMessageSource, MongoMessageSource>();
+            services.AddTransient<IUserDeckSource, MongoUserDeckSource>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
