@@ -10,7 +10,7 @@ namespace DeckAlchemist.Api.Sources.UserDeck
         bool AddCardToDeck(string uId, string deckName, string cardName);
         bool RemoveCardFromDeck(string uId, string deckName, string cardName);
         IUserDeck GetDeckByName(string uId, string deckName);
-        IList<IUserDeck> GetAll(string userId);
+        IEnumerable<IUserDeck> GetAll(string userId);
     }
 
 }
