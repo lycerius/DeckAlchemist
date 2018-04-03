@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.Decks;
 
 namespace DeckAlchemist.Api
 {
@@ -108,6 +109,16 @@ namespace DeckAlchemist.Api
             {
                 cm.AutoMap();
                 cm.SetDiscriminator("OwnedCard");
+            });
+            BsonClassMap.RegisterClassMap<MtgDeckCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("MtgDeckCard");
+            });
+            BsonClassMap.RegisterClassMap<MtgDeck>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("MtgDeck");
             });
 
         }
