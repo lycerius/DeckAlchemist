@@ -1,6 +1,6 @@
 ﻿@using System.Collections.Specialized
 @{
-    ViewData["Title"] = "My Collection";
+    ViewData["Title"] = "Decks";
 }
 
 @section Style {
@@ -25,13 +25,13 @@
 		};
 		firebase.initializeApp(config);
 	</script>
-	<script src="js/home.js"></script>
+	<script src="~/js/decks.js"></script>
 }
 
 
 @section SidebarOptions {
-	<li><a href="#">My Collections</a></li>
-	<li>@Html.ActionLink("Deck Builder", "Decks")</li>
+	<li>@Html.ActionLink("My Collection", "Index")</li>
+	<li><a href="#">Decks</a></li>
 	<li><a href="#">Social</a></li>
 	<li><a href="#">Meta Analytics</a></li>
 	<li><a href="#">Settings</a></li>
@@ -39,21 +39,36 @@
 
 
 <div class="home-content container">
-	<div class="row table-actions">
-		<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
-		<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
-		<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
-	</div>
-	
-	<div class="row" style="padding: 50px 0">
-		<div class="col col-lg-9">
+	<div style="width: 100%; display: table;">
+		<div class="decks">
+			<div class="deck-selection">
+				<ul id="deckList">
+					<li><a href="#">Deck 1</a></li>
+					<li><a href="#">Deck 1</a></li>
+					<li><a href="#">Deck 1</a></li>
+					<li><a href="#">Deck 1</a></li>
+				</ul>
+			</div>
+			<div class="deck-card">
+				<div class="row">
+					<div class="col col-lg-9">
 
-			<!-- This table can't be styled because it's removed at runtime -->
-			<table id="table"></table>
+						<!-- This table can't be styled because it's removed at runtime -->
+						<table id="table"></table>
+					</div>
+					<img class="col col-lg-3" src="#" id="card-img"/>
+				</div>
+
+				<div class="row deck-btn-list">
+					<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
+					<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
+					<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
+				</div>
+			</div>
 		</div>
-		<img class="col col-lg-3" src="#" id="card-img"/>
 	</div>
-	
+
+
 	<!-- Search Modal -->
 	<div class="modal fade" id="searchDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
@@ -71,7 +86,7 @@
 							<button id="search-btn" type="button" class="btn btn-success table-btn">Search</button>
 						</div>
 					</div>
-					
+
 					<!-- This table can't be styled because it's removed at runtime -->
 					<table id="searchTable"></table>
 				</div>
@@ -82,7 +97,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- Upload Modal -->
 	<div class="modal fade" id="uploadDialog" tabindex="-1" role="dialog" aria-labelledby="uploadCards" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
@@ -94,12 +109,12 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form id="uploadForm" action="http://localhost:5000/api/collection/csv" method="post" enctype="multipart/form-data" >
+					<form id="uploadForm" action="http://localhost:5000/api/collection/csv" method="post" enctype="multipart/form-data">
 						<div class="form-group">
 							<div class="col-md-10">
 								<p>Upload one or more files using this form:</p>
-								<input type="file" name="files" multiple />
-								
+								<input type="file" name="files" multiple/>
+
 							</div>
 						</div>
 					</form>

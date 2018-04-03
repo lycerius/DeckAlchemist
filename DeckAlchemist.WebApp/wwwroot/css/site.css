@@ -298,3 +298,45 @@ ul.sidebar-nav li {
     width: 325.333333px;
     height: 453.333333px;
 }
+
+.decks {
+    display: flex;
+    flex-direction: row;
+}
+
+.deck-card {
+    /* display: table-cell; */
+    height: 80%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    /* box-shadow: 5px 10px #888888; */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 25px;
+    /* padding-bottom: 0; */
+}
+
+.deck-selection {
+    width: 85px;
+}
+
+.deck-selection > ul {
+    list-style: none;
+    padding: 0;
+}
+
+.deck-selection > ul > li {
+    border: 1px solid #0000;
+    border-radius: 3px;
+    margin-top: 5px;
+    height: 30px;
+    /* color: #fff !important; */
+    background: #f5f5f5;
+}
+
+li.selected {
+   background: #fff; 
+}
+
+.row.deck-btn-list {
+    margin: 10px 0 0;
+}
