@@ -131,7 +131,7 @@ $(document).ready(function () {
     var selectedDeckLi;
     
     function reloadDeckList() {
-        fetchWithAuth("http://localhost:5000/api/decks/all").then(function (result) {
+        fetchWithAuth("http://localhost:5000/api/UserDeck/all").then(function (result) {
             if (result.status == 500) {
                 swal("You don't have any decks!")
                 return;
