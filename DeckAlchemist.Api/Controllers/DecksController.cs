@@ -32,8 +32,8 @@ namespace DeckAlchemist.Api.Controllers
         // GET: api/values
         [HttpGet("all")]
         public IActionResult GetAllDecks()
-        {   //IList<IMtgDeck>
-            return Json(null);
+        {
+            return Json(_deckSource.GetAllDecks());
         }
         [HttpGet("ID")]
         public IActionResult GetByID([FromBody] string deckId)
