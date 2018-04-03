@@ -49,7 +49,7 @@ namespace DeckAlchemist.Api.Sources.UserDeck
 
         public bool RemoveCardFromDeck(string uId, string deckName, string cardName)
         {
-            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            var query = _filter.And("UserId", uId), _filter.Eq("Name", deckName));
             var userDeck = collection.Find(query).FirstOrDefault();
             if (userDeck == null) return false;
 
@@ -82,6 +82,12 @@ namespace DeckAlchemist.Api.Sources.UserDeck
 
             collection.InsertOne(newDeck);
             return true;
+        }
+
+        public IList<IUserDeck> GetAll(string userId)
+        {
+            var query = _filter.Eq("UserId", userId);
+            return (IList<IUserDeck>)collection.Find(query).ToList();
         }
     }
 }

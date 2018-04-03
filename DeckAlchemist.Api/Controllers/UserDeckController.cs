@@ -19,13 +19,22 @@ namespace DeckAlchemist.Api.Controllers
         {
             _source = source;
         }
+
+        [HttpGet("all")]
+        public IActionResult GetAllUserDecks(){
+            var uId = Utility.UserInfo.Id(HttpContext.User);
+            var email = Utility.UserInfo.Email(HttpContext.User);
+            var result = _source.GetAll(uId);
+            return Json(result);
+        }
+
         [HttpGet("deck")]
         public IActionResult GetDeckByName([FromBody] string deckName)
         {
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
             var result  = _source.GetDeckByName(uId, deckName);
-            throw new System.NotImplementedException();
+            return Json(result);
         }
         [HttpPut("deck")]
         public IActionResult CreateDeck([FromBody] string deckName)
