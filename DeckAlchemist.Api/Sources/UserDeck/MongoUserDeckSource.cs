@@ -49,7 +49,7 @@ namespace DeckAlchemist.Api.Sources.UserDeck
 
         public bool RemoveCardFromDeck(string uId, string deckName, string cardName)
         {
-            var query = _filter.And("UserId", uId), _filter.Eq("Name", deckName));
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
             var userDeck = collection.Find(query).FirstOrDefault();
             if (userDeck == null) return false;
 
