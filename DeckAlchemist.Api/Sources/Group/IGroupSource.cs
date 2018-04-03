@@ -12,6 +12,7 @@ namespace DeckAlchemist.Api.Sources.Group
         void AddUser(string groupName, string user);
         void RemoveUser(string groupName, string user);
         void CreateGroup(IGroup group);
+        IEnumerable<IGroup> GetGroups(IEnumerable<string> groupIds);
                      
     }
 }

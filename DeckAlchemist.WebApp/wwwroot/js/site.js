@@ -229,13 +229,54 @@ function getGroups() {
     })
 }
 
+function getAllUserGroups() {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/group/all").then(function(result) {
+            return result.json();
+        }).then(function(json){
+            resolve(json)
+        }).catch(function(error){
+            reject(error);
+        })
+    })
+}
+
 function getGroupInfo(groupId) {
     return new Promise(function (resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/groups/" + groupId).then(function (result) {
+        fetchWithAuth("http://localhost:5000/api/group/" + groupId).then(function (result) {
             return result.json();
         }).then(function(json){
             resolve(json);
         }).catch(function (error) {
+            reject(error)
+        })
+    });
+}
+
+function getUserNamesByUserIds(userIds) {
+    return new Promise(function(resolve, reject){
+        fetchWithAuth("http://localhost:5000/api/user/names", 
+            {
+                method: "POST", 
+                body: JSON.stringify(userIds), 
+                headers: {
+                    'content-type': "application/json"
+                }
+            }).then(function(result) {
+            return result.json();
+        }).then(function(json){
+            resolve(json);
+        }).catch(function(error){
+            reject(error)
+        })
+    });
+}
+
+function createGroup(groupName) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/group/"+groupName+"/create", {method: "POST"}).then(
+            resolve()
+        ).catch(function(error) {
             reject(error)
         })
     });

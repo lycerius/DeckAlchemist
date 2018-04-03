@@ -62,5 +62,12 @@ namespace DeckAlchemist.Api.Sources.Group
             var group = collection.Find(query).FirstOrDefault();
             return group;
         }
+
+        public IEnumerable<IGroup> GetGroups(IEnumerable<string> groupIds)
+        {
+            var query = _filter.In("GroupId", groupIds);
+            var groups = collection.Find(query);
+            return groups.ToList();
+        }
     }
 }

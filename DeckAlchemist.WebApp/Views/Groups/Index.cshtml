@@ -40,29 +40,66 @@
 }
 
 
-    <div class="home-content container">
-        <div class="row table-actions">
+    <div class="home-content container card">
+        <div class="table-actions row">
             <button id="Groups" data-toggle="groups" data-target="#groupsButton" type="button" class="btn btn-success btn-outline table-btn">Groups</button>
+           
         </div>
-        <div class="row" style="padding: 50px 0">
+        <div class="row">
             <div class="col">
-                <table class="groupInfoTable" id="groupInfoTable">
-                    <tr>
-                        <td class="groupInfoTableItem">
-                            <a style="width: 100%;" data-toggle="collapse" href="#collapseExample" role="button">
-                                Group1
-                            </a>
-                            <div class="collapse" id="collapseExample">
-                                A bunch of friends
-                            </div>
-                        </td>
-             
-                    </tr>
-                </table>
+                <hr />
             </div>
-            <div class="col">
+        </div>
+        
+        <div class="row app-content">
+            <div class="col-sm-3 groupInfo">
+                
+               <div class="row" style="height:90%;">
+                    <div class="col" style="height:100%;">
+                        <div id="groupInfoTable"></div>
+                    </div>
+
+               </div>
+               <div class="row">
+                    <div class="col new-group-content">
+                        <button type="button" id="new-group-button" data-toggle="modal" data-target="#newGroupDialog" class="btn btn-primary btn-outline table-btn">+ New Group</button>
+                    </div>
+                        
+                </div>
+               
 
             </div>
-            
+        
+            <div class="col-lg-6"></div>
+            <div class="col profile">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newGroupDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newGroupHeader">Create a New Group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="text" id="group-name" placeholder="Group Name...">
+
+                        </div>
+                    </div>
+                    
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="create-group-btn" type="button" class="btn btn-primary">Create Group</button>
+                </div>
+            </div>
         </div>
     </div>

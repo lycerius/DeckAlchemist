@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Support.Objects.User;
+using System.Collections.Generic;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,5 +28,6 @@ namespace DeckAlchemist.Api.Controllers
             var uId = HttpContext.User.Id();
             return _source.Get(uId);
         }
+
     }
 }
