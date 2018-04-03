@@ -4,7 +4,7 @@ using DeckAlchemist.Support.Objects.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
-
+using DeckAlchemist.Support.Objects.Cards;
 
 namespace DeckAlchemist.Api.Sources.Collection
 {
@@ -25,6 +25,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             database = client.GetDatabase(MongoDatabase);
             collection = database.GetCollection<MongoCollection>(collectionName);
         }
+
         public void Init()
         {
             var filter = new BsonDocument("name", collectionName);
@@ -70,9 +71,9 @@ namespace DeckAlchemist.Api.Sources.Collection
             {
                 userCollection.BorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
             }
-            
             foreach(var card in cardName)
             {
+                
                 if(userCollection.OwnedCards.ContainsKey(card))
                 {
                     userCollection.OwnedCards[card].TotalAmount++;
@@ -98,6 +99,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("UserId", uId);
             var userCollection = collection.Find(query).FirstOrDefault();
             if (userCollection == null) return false;
+            if (userCollection.OwnedCards == null) userCollection.OwnedCards = new Dictionary<string, IOwnedCard>();
             foreach (var card in cardName)
             {
                 if (userCollection.OwnedCards.ContainsKey(card))
@@ -118,6 +120,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("UserId", lender);
             var userCollection = collection.Find(query).FirstOrDefault();
             if (userCollection == null) return false;
+            if (userCollection.OwnedCards == null) userCollection.OwnedCards = new Dictionary<string, IOwnedCard>();
             foreach(var nameAndAmount in namesAndAmounts)
             {
                 var cardName = nameAndAmount.Key;
@@ -140,8 +143,12 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("UserId", lendee);
             var userCollection = collection.Find(query).FirstOrDefault();
             if (userCollection == null) return false;
+            if (userCollection.BorrowedCards == null)
+            {
+                userCollection.BorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
+            }
 
-            foreach(var nameAndAmount in namesAndAmounts)
+            foreach (var nameAndAmount in namesAndAmounts)
             {
                 var amount = nameAndAmount.Value;
                 var cardName = nameAndAmount.Key;
@@ -193,7 +200,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("UserId", uId);
             var userCollection = collection.Find(query).FirstOrDefault();
             if (userCollection == null) return false;
-
+            if (userCollection.OwnedCards == null) userCollection.OwnedCards = new Dictionary<string, IOwnedCard>();
             foreach(var entry in cardsAndAmounts)
             {
                 var cardName = entry.Key;
