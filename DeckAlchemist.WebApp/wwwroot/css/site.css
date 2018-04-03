@@ -316,7 +316,7 @@ ul.sidebar-nav li {
 }
 
 .deck-selection {
-    width: 85px;
+    width: 200px;
 }
 
 .deck-selection > ul {
@@ -328,9 +328,13 @@ ul.sidebar-nav li {
     border: 1px solid #0000;
     border-radius: 3px;
     margin-top: 5px;
-    height: 30px;
-    /* color: #fff !important; */
+    height: 33px;
+    color: #aaabb1 !important;
     background: #f5f5f5;
+    width: 200px;
+    line-height: 15px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 li.selected {

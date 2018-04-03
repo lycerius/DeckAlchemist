@@ -143,11 +143,11 @@ $(document).ready(function () {
                 list.empty();
                 
                 data.forEach(function (value) { 
-                   var newLi = list.append(
-                       $("<li />").append(
-                           $("<a />").text(value.name)
-                       )
-                   );
+                  var newLi =  $("<li />").append(
+                                  $("<a />").text(value.name)
+                              ); 
+                    
+                   list.append(newLi);
                    
                    newLi.click(function () {
                        
