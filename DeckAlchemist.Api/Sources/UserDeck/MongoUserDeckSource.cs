@@ -83,5 +83,11 @@ namespace DeckAlchemist.Api.Sources.UserDeck
             collection.InsertOne(newDeck);
             return true;
         }
+
+        public IList<IUserDeck> GetAll(string userId)
+        {
+            var query = _filter.Eq("UserId", userId);
+            return (IList<IUserDeck>)collection.Find(query).ToList();
+        }
     }
 }
