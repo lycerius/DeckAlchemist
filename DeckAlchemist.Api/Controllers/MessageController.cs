@@ -41,21 +41,27 @@ namespace DeckAlchemist.Api.Controllers
         [HttpPost]
         public void SendMessageToUser([FromBody] UserMessageContract message)
         {
-            _messageSource.SendMessage(message.ToUserMessage());
+            var m = message.ToUserMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("send/loan")]
         [HttpPost]
         public void SendLoanRequestToUser([FromBody] LoanRequestMessageContract message)
         {
-            _messageSource.SendMessage(message.ToLoanRequestMessage());
+            var m = message.ToLoanRequestMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("send/invite")]
         [HttpPost]
         public void SendGroupInviteToUser([FromBody] GroupInviteContract message)
         {
-            _messageSource.SendMessage(message.ToGroupInviteMessage());
+            var m = message.ToGroupInviteMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("accept/invite")]

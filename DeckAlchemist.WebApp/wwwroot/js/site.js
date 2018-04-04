@@ -274,12 +274,29 @@ function getUserNamesByUserIds(userIds) {
 
 function createGroup(groupName) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/group/"+groupName+"/create", {method: "POST"}).then(
+        fetchWithAuth("http://localhost:5000/api/group/"+groupName+"/create", {method: "POST"}).then(function() {
             resolve()
-        ).catch(function(error) {
+        }).catch(function(error) {
             reject(error)
         })
     });
+}
+
+function sendUserMessage(message) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/send/user", 
+            {
+                method: "POST",
+                body: JSON.stringify(message),
+                headers: {
+                    'content-type': "application/json"
+                }
+            }).then(function() {
+            resolve()
+        }).catch(function(error) {
+            reject(error)
+        })
+    })
 }
 
 $(document).ready(function(){
