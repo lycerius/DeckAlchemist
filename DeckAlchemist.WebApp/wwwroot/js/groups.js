@@ -12,17 +12,19 @@ function getGroupsAndPopulate() {
         $.each(groups, function(index) {
             var groupInfo = groups[index];
             var members = groups[index].users;
-                    var row = $("<div class='row'></div>")
-                    var cell = $("<div></td>")
+                    var row = $("<div class='row' style='width:100%;'></div>")
+                    var cell = $("<div style='width:100%'></div>")
                     var link = $("<a style='width: 100%;' data-toggle='collapse' href='#group"+index+"' role='button'>"+groupInfo.groupName+"</a>")
                     var list = $("<div class='collapse' id='group"+index+"'></div>")
                     $.each(members, function(index) {
                         var member = members[index]
                         var element = $("<a>"+member.userName+"</a><br />")
+                        var loanButton = $("<button class='form-control'>Loan</button>")
                         element.click(function(e){
                             createNewUserMessageDialog(groupInfo, member)
                         })
                         list.append(element)
+                        list.append(loanButton)
                     })
                     var newInviteLink = $("<a>+ New Member</a><br />")
                     newInviteLink.click(function(e) {
@@ -30,9 +32,12 @@ function getGroupsAndPopulate() {
                     })
                     list.append(newInviteLink)
 
+
                     cell.append(link)
                     cell.append(list)
+                    cell.append($('<hr />'))
                     row.append(cell)
+
                     groupInfoTable.append(row)
 
         })
