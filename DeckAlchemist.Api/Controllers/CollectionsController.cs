@@ -52,6 +52,20 @@ namespace DeckAlchemist.Api.Controllers
             return model;  
         } 
 
+        [HttpPost]
+        public OwnedCardsModel GetOthersOwnedCollection([FromBody] string otherUID)
+        {
+            var result = _collectionSource.GetCollection(otherUID);
+            if (result == null || result.OwnedCards == null || result.BorrowedCards == null) return null;
+            var cardInfo = GetCardInfo(result.OwnedCards.Keys);
+            var model = new OwnedCardsModel
+            {
+                CardInfo = cardInfo
+            };
+            return model;
+        }
+
+
         [HttpGet("slim")]
         public CollectionModel GetCollectionSlim() 
         {
@@ -203,5 +217,7 @@ namespace DeckAlchemist.Api.Controllers
             System.IO.File.Delete(path);
             return entries;
         }
+
+
     }
 }
