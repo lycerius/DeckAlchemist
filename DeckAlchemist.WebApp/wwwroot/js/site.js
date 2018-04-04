@@ -299,6 +299,23 @@ function sendUserMessage(message) {
     })
 }
 
+function sendGroupInvite(message) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/send/invite", 
+            {
+                method: "POST",
+                body: JSON.stringify(message),
+                headers: {
+                    'content-type': "application/json"
+                }
+            }).then(function() {
+            resolve()
+        }).catch(function(error) {
+            reject(error)
+        })
+    })
+}
+
 $(document).ready(function(){
     "use strict";
 

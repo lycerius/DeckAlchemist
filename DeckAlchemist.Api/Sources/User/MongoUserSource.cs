@@ -73,5 +73,12 @@ namespace DeckAlchemist.Api.Sources.User
 
             return userDictionary;
         }
+
+        public IUser GetUserByUserName(string userName)
+        {
+            var query = _filter.Eq("UserName", userName);
+            var result = collection.Find(query).FirstOrDefault();
+            return result;
+        }
     }
 }

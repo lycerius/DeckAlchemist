@@ -9,7 +9,7 @@ namespace DeckAlchemist.Api.Contracts
         public string GroupId { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
-        public string RecipientId { get; set; }
+        public string RecipientUserName { get; set; }
 
         public GroupInviteMessage ToGroupInviteMessage()
         {
@@ -17,7 +17,6 @@ namespace DeckAlchemist.Api.Contracts
             {
                 Body = Body,
                 GroupId = GroupId,
-                RecipientId = RecipientId,
                 Subject = Subject
             };
         }

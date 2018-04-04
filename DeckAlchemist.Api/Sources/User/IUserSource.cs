@@ -8,6 +8,7 @@ namespace DeckAlchemist.Api.Sources.User
     {
         void Init();
         IUser Get(string userId);
+        IUser GetUserByUserName(string userName);
         void Update(IUser user);
         void Create(IUser user);
         bool UserExists(string recivingUser);

@@ -18,12 +18,17 @@ function getGroupsAndPopulate() {
                     var list = $("<div class='collapse' id='group"+index+"'></div>")
                     $.each(members, function(index) {
                         var member = members[index]
-                        var element = $("<a>"+member.userName+"</a>")
+                        var element = $("<a>"+member.userName+"</a><br />")
                         element.click(function(e){
                             createNewUserMessageDialog(groupInfo, member)
                         })
                         list.append(element)
                     })
+                    var newInviteLink = $("<a>+ New Member</a><br />")
+                    newInviteLink.click(function(e) {
+                        createNewGroupInviteDialog(groupInfo)
+                    })
+                    list.append(newInviteLink)
 
                     cell.append(link)
                     cell.append(list)
@@ -61,10 +66,33 @@ function getGroupsAndPopulate() {
 
     }
 
+    function createNewGroupInviteDialog(group) {
+
+        var modal = $('#newGroupInviteDialog')
+        var sendGroupInviteBtn = $('#create-invite-btn')
+        sendGroupInviteBtn.click(function(e) {
+            var userNameTextBox = $('#invite-user')
+            var userName = userNameTextBox.val()
+            var message = {
+                "groupId": group.groupId,
+                "subject": "Invite!",
+                "body": "No Body :(",
+                "recipientUserName": userName
+            }
+            sendGroupInvite(message).then(function() {
+                modal.modal("toggle")
+            })
+        })
+
+        modal.modal("toggle")
+
+   }
+
 
 
 
 $(document).ready(function () {
+    
     $('#create-group-btn').click(function(){
         var groupName = $('#group-name').val();
         createGroup(groupName).then(function() {
