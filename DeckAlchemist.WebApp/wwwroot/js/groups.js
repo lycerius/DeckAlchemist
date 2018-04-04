@@ -18,10 +18,13 @@ function getGroupsAndPopulate() {
                     var list = $("<div class='collapse' id='group"+index+"'></div>")
                     $.each(members, function(index) {
                         var member = members[index]
-                        var element = $("<a>"+member.userName+"</a><br />")
-                        var loanButton = $("<button class='form-control'>Loan</button>")
+                        var element = $("<a>"+member.userName+"</a>")
+                        var loanButton = $("<button>Loan</button>")
                         element.click(function(e){
                             createNewUserMessageDialog(groupInfo, member)
+                        })
+                        loanButton.click(function(e) {
+                            
                         })
                         list.append(element)
                         list.append(loanButton)
@@ -93,11 +96,16 @@ function getGroupsAndPopulate() {
 
    }
 
+   function createNewLoanDialog(group, user) {
+        var userCollection = getOwnedCardsForUser(user.userId);
+        console.log(userCollection);
+        //TODO
+   }
 
 
 
 $(document).ready(function () {
-    
+    $('#newLoanDialog').modal("toggle")
     $('#create-group-btn').click(function(){
         var groupName = $('#group-name').val();
         createGroup(groupName).then(function() {

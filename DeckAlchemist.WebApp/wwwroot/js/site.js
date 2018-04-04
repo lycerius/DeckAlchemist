@@ -316,6 +316,37 @@ function sendGroupInvite(message) {
     })
 }
 
+function getOwnedCardsForUser(userId) {
+    fetchWithAuth("http://localhost:5000/api/collection", {
+        method: "POST",
+        body: JSON.stringify(userId),
+        headers: {
+            'content-type': "application/json"
+        }
+    }).then(function(result){
+        return result.json();
+    }).then(function(json){
+        resolve(json)
+    }).catch(function(error){
+        reject(error);
+    })
+}
+
+function sendLoanRequest(message) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/send/loan", {
+             method: "POST",
+             body: JSON.stringify(message),
+             headers: {
+                 'content-type': "application/json"
+             }
+        }).then(function() {
+            resolve();
+        }).catch(function(error){
+            reject(error);
+        })
+    })
+}
 $(document).ready(function(){
     "use strict";
 
