@@ -24,7 +24,7 @@ function getGroupsAndPopulate() {
                             createNewUserMessageDialog(groupInfo, member)
                         })
                         loanButton.click(function(e) {
-                            
+                            createNewLoanDialog(groupInfo.groupId, member)
                         })
                         list.append(element)
                         list.append(loanButton)
@@ -97,8 +97,12 @@ function getGroupsAndPopulate() {
    }
 
    function createNewLoanDialog(group, user) {
-        var userCollection = getOwnedCardsForUser(user.userId);
-        console.log(userCollection);
+        var userCollection = getOwnedCardsForUser(user.userId).then(function(collection){
+            console.log(collection);
+        }
+
+        );
+
         //TODO
    }
 

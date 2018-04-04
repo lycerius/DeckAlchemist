@@ -317,7 +317,8 @@ function sendGroupInvite(message) {
 }
 
 function getOwnedCardsForUser(userId) {
-    fetchWithAuth("http://localhost:5000/api/collection", {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/collection", {
         method: "POST",
         body: JSON.stringify(userId),
         headers: {
@@ -330,6 +331,9 @@ function getOwnedCardsForUser(userId) {
     }).catch(function(error){
         reject(error);
     })
+
+    })
+
 }
 
 function sendLoanRequest(message) {
