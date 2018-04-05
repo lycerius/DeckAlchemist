@@ -208,10 +208,14 @@ function getGroupsAndPopulate() {
    }
 
    function connectToIRC(user, group) {
-        var groupChatFrame = $('#group-chat')
-        var serverName = "127.0.0.1:6667";
+        var placeHolder = $('#group-chat-placehold')
+        placeHolder.empty();
+        var groupChatFrame = $("<iframe id='group-chat' class='form-control chat-window'></iframe>")
+        groupChatFrame.attr("src", "");
+        var serverName = "209.6.196.14:16667";
         var src = "https://kiwiirc.com/client/"+serverName+"/?nick="+user+"#"+group.groupName
         groupChatFrame.attr("src", src);
+        placeHolder.append(groupChatFrame)
    }
 
 
