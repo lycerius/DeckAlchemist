@@ -29,3 +29,8 @@
     padding-top: 0.3rem;
 
 }
+
+.chat-window {
+    height:100%;
+    width:100%;
+}

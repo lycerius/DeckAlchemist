@@ -15,6 +15,9 @@ function getGroupsAndPopulate() {
                     var row = $("<div class='row' style='width:100%;'></div>")
                     var cell = $("<div style='width:100%'></div>")
                     var link = $("<a style='width: 100%;' data-toggle='collapse' href='#group"+index+"' role='button'>"+groupInfo.groupName+"</a>")
+                    link.click(function(e) {
+                        connectToIRC(firebase.auth().currentUser.email,groupInfo)
+                    });
                     var list = $("<div class='collapse' id='group"+index+"'></div>")
                     $.each(members, function(index) {
                         var member = members[index]
@@ -204,10 +207,15 @@ function getGroupsAndPopulate() {
         //TODO
    }
 
+   function connectToIRC(user, group) {
+        var groupChatFrame = $('#group-chat')
+        var serverName = "127.0.0.1:6667";
+        var src = "https://kiwiirc.com/client/"+serverName+"/?nick="+user+"#"+group.groupName
+        groupChatFrame.attr("src", src);
+   }
 
 
 $(document).ready(function () {
-    $('#newLoanDialog').modal("toggle")
     $('#create-group-btn').click(function(){
         var groupName = $('#group-name').val();
         createGroup(groupName).then(function() {
