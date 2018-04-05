@@ -24,7 +24,7 @@ function getGroupsAndPopulate() {
                             createNewUserMessageDialog(groupInfo, member)
                         })
                         loanButton.click(function(e) {
-                            createNewLoanDialog(groupInfo.groupId, member)
+                            createNewLoanDialog(groupInfo, member)
                         })
                         list.append(element)
                         list.append(loanButton)
@@ -67,6 +67,7 @@ function getGroupsAndPopulate() {
                 newMessageDialog.modal("toggle")
                 subjectTextBox.val("")
                 bodyTextBox.val("")
+                swal("Message Sent", "", "success");
             })
 
         })
@@ -89,6 +90,10 @@ function getGroupsAndPopulate() {
             }
             sendGroupInvite(message).then(function() {
                 modal.modal("toggle")
+                swal("Invite Sent", userName+" was invited to "+group.groupName+"!", "success");
+            }).catch(function(error) {
+                
+                swal("Invit Failed", "Couln't invite "+userName+" (user not found)", "error");
             })
         })
 
@@ -97,8 +102,101 @@ function getGroupsAndPopulate() {
    }
 
    function createNewLoanDialog(group, user) {
-        var userCollection = getOwnedCardsForUser(user.userId).then(function(collection){
-            console.log(collection);
+        getOwnedCardsForUser(user.userId).then(function(collection){
+            collection.userCollection = {}
+            collection.userCollection.ownedCards = collection.ownedCards
+            var sendButton = $('#create-loan-btn')
+            sendButton.click(function(e) {
+                var subjectTextBox = $('#loan-sibject')
+                var bodyTextBox = $('#loan-body')
+                var modal = $('#newLoanDialog')
+                var subject = subjectTextBox.val()
+                var body = bodyTextBox.val()
+                var selectedCards = $('#collectionTable').bootstrapTable('getSelections')
+                var requestedCardsAndAmounts = {}
+                $.each(selectedCards, function(cardIndex) {
+                    var card = selectedCards[cardIndex]
+                    requestedCardsAndAmounts[card.name] = 1
+                })
+                var message = {
+                    "groupId": group.groupId,
+                    "subject": subject,
+                    "body": body,
+                    "requestedCardsAndAmounts": requestedCardsAndAmounts,
+                    "recipientId": user.userId
+                }
+                sendLoanRequest(message).then(function() {
+                    modal.modal("toggle")
+                    swal("Loan Sent", "", "success");
+                })
+            })
+            var format = buildTableFromCollection(collection)
+            var table = $('#collectionTable')
+            var modal = $('#newLoanDialog')
+            table.bootstrapTable('destroy')
+            table.bootstrapTable({
+                clickToSelect: true,
+            idField: 'id',
+            columns: [{
+                field: 'state',
+                checkbox: true
+            }, {
+                field: 'available',
+                title: 'Cards Available',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'totalAmount',
+                title: 'Total Amount',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'name',
+                title: 'Name',
+                class: 'name-style',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'cmc',
+                title: 'Converted Cost',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'manaCost',
+                title: 'Full Cost',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'colors',
+                title: 'Colors',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'power',
+                title: 'Power',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'toughness',
+                title: 'Toughness',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'type',
+                title: 'Type',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'layout',
+                title: 'Set',
+                class: 'set-style',
+                align: 'center',
+                halign: 'center'
+            }],
+            data: format
+            })
+
+            modal.modal("toggle")
         }
 
         );

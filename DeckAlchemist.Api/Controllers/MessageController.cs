@@ -59,13 +59,15 @@ namespace DeckAlchemist.Api.Controllers
 
         [Route("send/invite")]
         [HttpPost]
-        public void SendGroupInviteToUser([FromBody] GroupInviteContract message)
+        public IActionResult SendGroupInviteToUser([FromBody] GroupInviteContract message)
         {
             var user = _userSource.GetUserByUserName(message.RecipientUserName);
+            if (user == null) return StatusCode(404);
             var m = message.ToGroupInviteMessage();
             m.SenderId = HttpContext.User.Id();
             m.RecipientId = user.UserId;
             _messageSource.SendMessage(m);
+            return StatusCode(404);
         }
 
         [Route("accept/invite")]
