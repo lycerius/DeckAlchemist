@@ -60,6 +60,7 @@ namespace DeckAlchemist.Api.Controllers
             var cardInfo = GetCardInfo(result.OwnedCards.Keys);
             var model = new OwnedCardsModel
             {
+                OwnedCards = result.OwnedCards,
                 CardInfo = cardInfo
             };
             return model;

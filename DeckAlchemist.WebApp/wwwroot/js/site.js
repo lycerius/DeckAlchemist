@@ -217,6 +217,140 @@ function getCardImage(cardName) {
     });
 }
 
+function getGroups() {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/user").then(function (result) {
+            return result.json();
+        }).then(function (json) {
+            resolve(json.groups)
+        }).catch(function (error) {
+            reject(error)
+        });
+    })
+}
+
+function getAllUserGroups() {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/group/all").then(function(result) {
+            return result.json();
+        }).then(function(json){
+            resolve(json)
+        }).catch(function(error){
+            reject(error);
+        })
+    })
+}
+
+function getGroupInfo(groupId) {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/group/" + groupId).then(function (result) {
+            return result.json();
+        }).then(function(json){
+            resolve(json);
+        }).catch(function (error) {
+            reject(error)
+        })
+    });
+}
+
+function getUserNamesByUserIds(userIds) {
+    return new Promise(function(resolve, reject){
+        fetchWithAuth("http://localhost:5000/api/user/names", 
+            {
+                method: "POST", 
+                body: JSON.stringify(userIds), 
+                headers: {
+                    'content-type': "application/json"
+                }
+            }).then(function(result) {
+            return result.json();
+        }).then(function(json){
+            resolve(json);
+        }).catch(function(error){
+            reject(error)
+        })
+    });
+}
+
+function createGroup(groupName) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/group/"+groupName+"/create", {method: "POST"}).then(function() {
+            resolve()
+        }).catch(function(error) {
+            reject(error)
+        })
+    });
+}
+
+function sendUserMessage(message) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/send/user", 
+            {
+                method: "POST",
+                body: JSON.stringify(message),
+                headers: {
+                    'content-type': "application/json"
+                }
+            }).then(function() {
+            resolve()
+        }).catch(function(error) {
+            reject(error)
+        })
+    })
+}
+
+function sendGroupInvite(message) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/send/invite", 
+            {
+                method: "POST",
+                body: JSON.stringify(message),
+                headers: {
+                    'content-type': "application/json"
+                }
+            }).then(function() {
+            resolve()
+        }).catch(function(error) {
+            reject(error)
+        })
+    })
+}
+
+function getOwnedCardsForUser(userId) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/collection", {
+        method: "POST",
+        body: JSON.stringify(userId),
+        headers: {
+            'content-type': "application/json"
+        }
+    }).then(function(result){
+        return result.json();
+    }).then(function(json){
+        resolve(json)
+    }).catch(function(error){
+        reject(error);
+    })
+
+    })
+
+}
+
+function sendLoanRequest(message) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/send/loan", {
+             method: "POST",
+             body: JSON.stringify(message),
+             headers: {
+                 'content-type': "application/json"
+             }
+        }).then(function() {
+            resolve();
+        }).catch(function(error){
+            reject(error);
+        })
+    })
+}
 $(document).ready(function(){
     "use strict";
 

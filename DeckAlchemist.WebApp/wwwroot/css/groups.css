@@ -1,0 +1,31 @@
+﻿.groupInfoTable {
+    border: solid;
+    border-width: thin;
+    width: 100%;
+    height: 100%;
+}
+
+.row.app-content {
+    height: 100%;
+    width:100%;
+    margin-left: 1px;
+
+}
+
+.home-content {
+    height: 100%;
+}
+
+.groupInfo {
+    border-right: solid;
+    border-width: thin
+
+}
+
+.new-group-content {
+    border-width: thin;
+    border-top-style: solid;
+    margin-right: 0.2rem;
+    padding-top: 0.3rem;
+
+}

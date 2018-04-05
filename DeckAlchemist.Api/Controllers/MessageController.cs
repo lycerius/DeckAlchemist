@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using DeckAlchemist.Api.Contracts;
+using DeckAlchemist.Api.Sources.User;
 
 namespace DeckAlchemist.Api.Controllers
 {
@@ -15,11 +16,12 @@ namespace DeckAlchemist.Api.Controllers
     public class MessageController : Controller
     {
         readonly IMessageSource _messageSource;
+        readonly IUserSource _userSource;
 
-        public MessageController(IMessageSource messageSource)
+        public MessageController(IMessageSource messageSource, IUserSource userSource)
         {
             _messageSource = messageSource;
-           
+            _userSource = userSource;
         }
 
         [Route("all")]
@@ -41,21 +43,31 @@ namespace DeckAlchemist.Api.Controllers
         [HttpPost]
         public void SendMessageToUser([FromBody] UserMessageContract message)
         {
-            _messageSource.SendMessage(message.ToUserMessage());
+            var m = message.ToUserMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("send/loan")]
         [HttpPost]
         public void SendLoanRequestToUser([FromBody] LoanRequestMessageContract message)
         {
-            _messageSource.SendMessage(message.ToLoanRequestMessage());
+            var m = message.ToLoanRequestMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("send/invite")]
         [HttpPost]
-        public void SendGroupInviteToUser([FromBody] GroupInviteContract message)
+        public IActionResult SendGroupInviteToUser([FromBody] GroupInviteContract message)
         {
-            _messageSource.SendMessage(message.ToGroupInviteMessage());
+            var user = _userSource.GetUserByUserName(message.RecipientUserName);
+            if (user == null) return StatusCode(404);
+            var m = message.ToGroupInviteMessage();
+            m.SenderId = HttpContext.User.Id();
+            m.RecipientId = user.UserId;
+            _messageSource.SendMessage(m);
+            return StatusCode(404);
         }
 
         [Route("accept/invite")]
