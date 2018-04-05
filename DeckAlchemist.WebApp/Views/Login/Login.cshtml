@@ -48,8 +48,11 @@
 
 
 @section SidebarOptions {
-	<li><a href="#">Login</a></li>
-	<li>@Html.ActionLink("Create Account", "CreateAccount")</li>
+	<li>@Html.ActionLink("My Collection", "Index", "Home")</li>
+    <li><a href="#">Decks</a></li>
+    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+    <li>@Html.ActionLink("Login", "Index", "Login")</li>
+    <li><a href="#">Meta Analytics</a></li>
 }
 
 

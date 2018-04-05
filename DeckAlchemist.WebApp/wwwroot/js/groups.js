@@ -19,10 +19,15 @@ function getGroupsAndPopulate() {
                         connectToIRC(firebase.auth().currentUser.email,groupInfo)
                     });
                     var list = $("<div class='collapse' id='group"+index+"'></div>")
+                    var newInviteLink = $("<button class='loan-button btn btn-outline btn-primary'>+Invite<br />")
+                    newInviteLink.click(function(e) {
+                        createNewGroupInviteDialog(groupInfo)
+                    })
+
                     $.each(members, function(index) {
                         var member = members[index]
-                        var element = $("<a>"+member.userName+"</a>")
-                        var loanButton = $("<button>Loan</button>")
+                        var element = $("<a class='group-member-name'>"+member.userName+"</a>")
+                        var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
                         element.click(function(e){
                             createNewUserMessageDialog(groupInfo, member)
                         })
@@ -32,15 +37,14 @@ function getGroupsAndPopulate() {
                         list.append(element)
                         list.append(loanButton)
                     })
-                    var newInviteLink = $("<a>+ New Member</a><br />")
-                    newInviteLink.click(function(e) {
-                        createNewGroupInviteDialog(groupInfo)
-                    })
-                    list.append(newInviteLink)
+
+
 
 
                     cell.append(link)
+                    cell.append(newInviteLink);
                     cell.append(list)
+                    //list.append(newInviteLink)
                     cell.append($('<hr />'))
                     row.append(cell)
 
