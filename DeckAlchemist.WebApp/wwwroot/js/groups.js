@@ -1,4 +1,6 @@
-﻿var groupsModel = {}
+﻿authorizeOrLogin();
+var groupsModel = {}
+
 function getGroupsAndPopulate() {
         getAllUserGroups().then(function (result) {
             groupsModel = result;
@@ -15,28 +17,45 @@ function getGroupsAndPopulate() {
                     var row = $("<div class='row' style='width:100%;'></div>")
                     var cell = $("<div style='width:100%'></div>")
                     var link = $("<a style='width: 100%;' data-toggle='collapse' href='#group"+index+"' role='button'>"+groupInfo.groupName+"</a>")
-                    var list = $("<div class='collapse' id='group"+index+"'></div>")
+                    link.click(function(e) {
+                        $(".group-header").collapse("hide")
+                        connectToIRC(firebase.auth().currentUser.email,groupInfo)
+                    });
+
+                    var list = $("<div class='collapse group-header' id='group"+index+"'></div>")
+                    var newInviteLink = $("<button class='loan-button btn btn-outline btn-primary'>+Invite<br />")
+                    newInviteLink.click(function(e) {
+                        createNewGroupInviteDialog(groupInfo)
+                    })
+                    list.append($('<hr />'))
                     $.each(members, function(index) {
+                        var container = $("<div class='container' ></div>")
+                        var row = $("<div class='row group-user-row'></div>")
+                        var col = $("<div class='col'></div>")
                         var member = members[index]
-                        var element = $("<a>"+member.userName+"</a>")
-                        var loanButton = $("<button>Loan</button>")
+                        var element = $("<a class='group-member-name'>"+member.userName+"</a>")
+                        col.append(element)
+                        row.append(col)
+                        col = $("<div class='col-sm-3'></div>")
+                        var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
                         element.click(function(e){
                             createNewUserMessageDialog(groupInfo, member)
                         })
                         loanButton.click(function(e) {
                             createNewLoanDialog(groupInfo, member)
                         })
-                        list.append(element)
-                        list.append(loanButton)
+                        col.append(loanButton)
+                        row.append(col)
+                        container.append(row)
+                        list.append(container)
+                       
                     })
-                    var newInviteLink = $("<a>+ New Member</a><br />")
-                    newInviteLink.click(function(e) {
-                        createNewGroupInviteDialog(groupInfo)
-                    })
-                    list.append(newInviteLink)
+
+
 
 
                     cell.append(link)
+                    cell.append(newInviteLink);
                     cell.append(list)
                     cell.append($('<hr />'))
                     row.append(cell)
@@ -107,7 +126,7 @@ function getGroupsAndPopulate() {
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')
             sendButton.click(function(e) {
-                var subjectTextBox = $('#loan-sibject')
+                var subjectTextBox = $('#loan-subject')
                 var bodyTextBox = $('#loan-body')
                 var modal = $('#newLoanDialog')
                 var subject = subjectTextBox.val()
@@ -204,10 +223,25 @@ function getGroupsAndPopulate() {
         //TODO
    }
 
+   function connectToIRC(user, group) {
+        var placeHolder = $('#group-chat-placehold')
+        placeHolder.empty();
+        var groupChatFrame = $("<iframe id='group-chat' class='form-control chat-window'></iframe>")
+        groupChatFrame.attr("src", "");
+        var serverName = "209.6.196.14:16667";
+        var src = "https://kiwiirc.com/client/"+serverName+"/?theme=mini&nick="+sanitizeUserName(user)+"#"+group.groupName
+        groupChatFrame.attr("src", src);
+        placeHolder.append(groupChatFrame)
+   }
+
+   function sanitizeUserName(userName) {
+       var emailExtraction = userName.replace(/@[^@]+$/, '')
+       return emailExtraction
+   }
 
 
 $(document).ready(function () {
-    $('#newLoanDialog').modal("toggle")
+    
     $('#create-group-btn').click(function(){
         var groupName = $('#group-name').val();
         createGroup(groupName).then(function() {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeckAlchemist.Api.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeckAlchemist.WebApp.Controllers
@@ -10,6 +11,7 @@ namespace DeckAlchemist.WebApp.Controllers
     {
         public IActionResult Index()
         {
+            
             return View();
         }
     }

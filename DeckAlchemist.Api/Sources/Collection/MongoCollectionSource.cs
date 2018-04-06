@@ -50,6 +50,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("CollectionId", mongoCollection.CollectionId);
             collection.FindOneAndReplace(query, mongoCollection);
         }
+
         public ICollection GetCollection(string uId){
             var query = _filter.Eq("UserId", uId);
             var userCollection = collection.Find(query).FirstOrDefault();
@@ -71,9 +72,9 @@ namespace DeckAlchemist.Api.Sources.Collection
             {
                 userCollection.BorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
             }
-            foreach(var card in cardName)
+            foreach(var cardA in cardName)
             {
-                
+                var card = cardA.Replace("\\\"", "\"");
                 if(userCollection.OwnedCards.ContainsKey(card))
                 {
                     userCollection.OwnedCards[card].TotalAmount++;

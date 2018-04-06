@@ -9,6 +9,7 @@
     <link href="css/site.css" rel="stylesheet">
     <link href="css/groups.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link href="css/kiwi.css" rel="stylesheet" type="text/css">
 
 }
 
@@ -28,19 +29,21 @@
 		firebase.initializeApp(config);
     </script>
     <script src="~/js/groups.js"></script>
+    <script name="kiwiconfig">window.kiwiConfig = function(){return {"startupScreen": "customServer"}}</script>
 }
 
 
 @section SidebarOptions {
-    <li><a href="#">My Collections</a></li>
+    <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
     <li><a href="#">Decks</a></li>
-    <li><a href="#">Social</a></li>
+    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+    <li>@Html.ActionLink("Login", "Index", "Login")</li>
     <li><a href="#">Meta Analytics</a></li>
-    <li><a href="#">Settings</a></li>
 }
 
 
-    <div class="home-content container card">
+    
+    <div class="home-content container">
         <div class="table-actions row">
             <button id="Groups" data-toggle="groups" data-target="#groupsButton" type="button" class="btn btn-success btn-outline table-btn">Groups</button>
            
@@ -52,7 +55,7 @@
         </div>
         
         <div class="row app-content">
-            <div class="col-sm-3 groupInfo">
+            <div class="col-sm-4 groupInfo">
                 
                <div class="row" style="height:90%;">
                     <div class="col" style="height:100%;">
@@ -70,16 +73,19 @@
 
             </div>
         
-            <div class="col-lg-6"></div>
-            <div class="col profile">
+            <div class="col">
+                <div id="group-chat-placehold">
                 
+                </div>
+
             </div>
+
         </div>
     </div>
 
     <!-- New Group Modal -->
     <div class="modal fade" id="newGroupDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newGroupHeader">Create a New Group</h5>
@@ -90,7 +96,7 @@
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
-                            <input type="text" id="group-name" placeholder="Group Name...">
+                            <input type="text" id="group-name" class="form-control" placeholder="Group Name...">
 
                         </div>
                     </div>
@@ -145,7 +151,7 @@
 
     <!-- New Group Invite Modal -->
     <div class="modal fade" id="newGroupInviteDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="composeGroupInviteDialogHeader">Invite Member</h5>
@@ -154,13 +160,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
-                            <form>
-                                <div class="form-group">
+                    
                                     <input type="text" class="form-control" id="invite-user" placeholder="User Name...">
-                                </div>
-                            </form>
-                     </div>
                 </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

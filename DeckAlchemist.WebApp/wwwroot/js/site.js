@@ -351,6 +351,11 @@ function sendLoanRequest(message) {
         })
     })
 }
+
+function authorizeOrLogin() {
+    //if(firebase.auth().currentUser == null) window.location = "/"
+}
+
 $(document).ready(function(){
     "use strict";
 
