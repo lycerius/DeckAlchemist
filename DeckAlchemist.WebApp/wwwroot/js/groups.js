@@ -1,4 +1,6 @@
-﻿var groupsModel = {}
+﻿authorizeOrLogin();
+var groupsModel = {}
+
 function getGroupsAndPopulate() {
         getAllUserGroups().then(function (result) {
             groupsModel = result;
@@ -16,17 +18,25 @@ function getGroupsAndPopulate() {
                     var cell = $("<div style='width:100%'></div>")
                     var link = $("<a style='width: 100%;' data-toggle='collapse' href='#group"+index+"' role='button'>"+groupInfo.groupName+"</a>")
                     link.click(function(e) {
+                        $(".group-header").collapse("hide")
                         connectToIRC(firebase.auth().currentUser.email,groupInfo)
                     });
-                    var list = $("<div class='collapse' id='group"+index+"'></div>")
+
+                    var list = $("<div class='collapse group-header' id='group"+index+"'></div>")
                     var newInviteLink = $("<button class='loan-button btn btn-outline btn-primary'>+Invite<br />")
                     newInviteLink.click(function(e) {
                         createNewGroupInviteDialog(groupInfo)
                     })
-
+                    list.append($('<hr />'))
                     $.each(members, function(index) {
+                        var container = $("<div class='container' ></div>")
+                        var row = $("<div class='row group-user-row'></div>")
+                        var col = $("<div class='col'></div>")
                         var member = members[index]
                         var element = $("<a class='group-member-name'>"+member.userName+"</a>")
+                        col.append(element)
+                        row.append(col)
+                        col = $("<div class='col-sm-3'></div>")
                         var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
                         element.click(function(e){
                             createNewUserMessageDialog(groupInfo, member)
@@ -34,8 +44,11 @@ function getGroupsAndPopulate() {
                         loanButton.click(function(e) {
                             createNewLoanDialog(groupInfo, member)
                         })
-                        list.append(element)
-                        list.append(loanButton)
+                        col.append(loanButton)
+                        row.append(col)
+                        container.append(row)
+                        list.append(container)
+                       
                     })
 
 
@@ -44,7 +57,6 @@ function getGroupsAndPopulate() {
                     cell.append(link)
                     cell.append(newInviteLink);
                     cell.append(list)
-                    //list.append(newInviteLink)
                     cell.append($('<hr />'))
                     row.append(cell)
 
@@ -114,7 +126,7 @@ function getGroupsAndPopulate() {
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')
             sendButton.click(function(e) {
-                var subjectTextBox = $('#loan-sibject')
+                var subjectTextBox = $('#loan-subject')
                 var bodyTextBox = $('#loan-body')
                 var modal = $('#newLoanDialog')
                 var subject = subjectTextBox.val()
@@ -217,13 +229,19 @@ function getGroupsAndPopulate() {
         var groupChatFrame = $("<iframe id='group-chat' class='form-control chat-window'></iframe>")
         groupChatFrame.attr("src", "");
         var serverName = "209.6.196.14:16667";
-        var src = "https://kiwiirc.com/client/"+serverName+"/?nick="+user+"#"+group.groupName
+        var src = "https://kiwiirc.com/client/"+serverName+"/?theme=mini&nick="+sanitizeUserName(user)+"#"+group.groupName
         groupChatFrame.attr("src", src);
         placeHolder.append(groupChatFrame)
    }
 
+   function sanitizeUserName(userName) {
+       var emailExtraction = userName.replace(/@[^@]+$/, '')
+       return emailExtraction
+   }
+
 
 $(document).ready(function () {
+    
     $('#create-group-btn').click(function(){
         var groupName = $('#group-name').val();
         createGroup(groupName).then(function() {
