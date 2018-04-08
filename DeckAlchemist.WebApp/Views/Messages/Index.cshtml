@@ -1,0 +1,66 @@
+﻿@using System.Collections.Specialized
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Style {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="css/site.css" rel="stylesheet">
+    <link href="css/groups.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link href="css/kiwi.css" rel="stylesheet" type="text/css">
+    <link href="css/messages.css" rel="stylesheet" type="text/css">
+
+}
+
+@section Scripts {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+            authDomain: "deckalchemist.firebaseapp.com",
+            databaseURL: "https://deckalchemist.firebaseio.com/",
+            projectId: "deckalchemist",
+            storageBucket: "deckalchemist.appspot.com",
+            messagingSenderId: "560047522639"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="~/js/messages.js"></script>
+    <script name="kiwiconfig">window.kiwiConfig = function(){return {"startupScreen": "customServer"}}</script>
+}
+
+
+@section SidebarOptions {
+    <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
+    <li><a href="#">Decks</a></li>
+    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+    <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
+    <li>@Html.ActionLink("Login", "Index", "Login")</li>
+    <li><a href="#">Meta Analytics</a></li>
+}
+
+<div class="home-content container">
+    <div class="row">
+        <div id="inbox-content" class="col-3">
+            
+        </div>
+        <div id="messsage-content" class="col">
+            <div class="container">
+                <div class="row">
+                    <div class="col" id="message-body-content">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" id="message-action-bar">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

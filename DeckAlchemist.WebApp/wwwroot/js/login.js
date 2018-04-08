@@ -78,6 +78,16 @@ $(document).ready(function () {
     //----------------------------------------------
     // Validation
 
+    $("#forgot-password").click(function(e) {
+        e.preventDefault();
+        $("#forgotPasswordDialog").modal("toggle")
+        $("#forgot-password-send").click(function(e){
+            var email = $("#forgot-password-email").val();
+            forgotPassword(email);
+            $("#forgotPasswordDialog").modal("toggle")
+        })
+    })
+
     $("#forgot-password-form").validate({
         rules: {
             fp_email: "required",
@@ -192,4 +202,6 @@ $(document).ready(function () {
                 });
         }
     }
+
+
 });

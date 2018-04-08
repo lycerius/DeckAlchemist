@@ -64,3 +64,7 @@
 .group-user-row {
     margin-top: 0.7rem;
 }
+
+.bootstrap-table {
+    max-width:100%;
+}

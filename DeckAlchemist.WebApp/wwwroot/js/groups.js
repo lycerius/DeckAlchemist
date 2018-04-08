@@ -214,7 +214,7 @@ function getGroupsAndPopulate() {
             }],
             data: format
             })
-
+            $('.bootstrap-table').css("max-width", "100%")
             modal.modal("toggle")
         }
 
