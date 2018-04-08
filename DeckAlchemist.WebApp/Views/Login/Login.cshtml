@@ -84,9 +84,34 @@
 				<div class="etc-login-form">
                 
 					<p>new user? @Html.ActionLink("register here", "CreateAccount")</p>
+                    <a href="#" id="forgot-password">forgot password?</a>
 				</div>
 			</form>
 		</div>
 		<!-- end:Main Form -->
 	</div>
 </div>
+
+
+<div class="modal fade" id="forgotPasswordDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordHeader">Forgot Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                                    <input type="text" class="form-control" id="forgot-password-email" placeholder="Email Address">
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="forgot-password-send" type="button" class="btn btn-primary">Send</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>

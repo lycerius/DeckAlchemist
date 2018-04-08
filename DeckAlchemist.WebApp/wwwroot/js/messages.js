@@ -60,7 +60,7 @@ function displayMessageContent(message) {
 
         acceptLoanButton.click(function(e){
             acceptLoanRequest(message["messageId"]).then(function() {
-                swal("Accepted")
+                swal("", "Accepted Loan Request", "success")
             })
         })
         cardBody.append(acceptLoanButton)
@@ -70,7 +70,7 @@ function displayMessageContent(message) {
         var acceptInviteButton = $("<a href='#' class='card-link'>Accept Invite</button>")
         acceptInviteButton.click(function(e) {
             acceptGroupInvite(message["messageId"]).then(function() {
-                swal("Now in group")
+                swal("","Group Invite Accepted!","success")
             })
         })
         cardBody.append(acceptInviteButton)

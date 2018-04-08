@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using DeckAlchemist.Api.Contracts;
 using DeckAlchemist.Api.Sources.User;
+using DeckAlchemist.Api.Sources.Group;
 
 namespace DeckAlchemist.Api.Controllers
 {
@@ -17,11 +18,13 @@ namespace DeckAlchemist.Api.Controllers
     {
         readonly IMessageSource _messageSource;
         readonly IUserSource _userSource;
+        readonly IGroupSource _groupSource;
 
-        public MessageController(IMessageSource messageSource, IUserSource userSource)
+        public MessageController(IMessageSource messageSource, IUserSource userSource, IGroupSource groupSource)
         {
             _messageSource = messageSource;
             _userSource = userSource;
+            _groupSource = groupSource;
         }
 
         [Route("all")]
@@ -64,10 +67,14 @@ namespace DeckAlchemist.Api.Controllers
             var user = _userSource.GetUserByUserName(message.RecipientUserName);
             if (user == null) return StatusCode(404);
             var m = message.ToGroupInviteMessage();
+            var group = _groupSource.GetGroupInfo(message.GroupId);
             m.SenderId = HttpContext.User.Id();
             m.RecipientId = user.UserId;
+            m.Subject = "Group Invite: " + group.GroupName;
+            m.Body = "You have been invited to " + group.GroupName + ". Click 'Accept' to be added to this group!";
             _messageSource.SendMessage(m);
-            return StatusCode(404);
+
+            return StatusCode(200);
         }
 
         [Route("accept/invite")]

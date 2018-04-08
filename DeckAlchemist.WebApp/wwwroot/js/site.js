@@ -410,6 +410,12 @@ function getUserName(userId) {
     })
 }
 
+function forgotPassword(email){
+        firebase.auth().sendPasswordResetEmail(email).then(function(result){
+            swal("sent")
+        })
+    }
+
 function authorizeOrLogin() {
     //if(firebase.auth().currentUser == null) window.location = "/"
 }
