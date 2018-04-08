@@ -129,10 +129,10 @@ namespace DeckAlchemist.Api.Sources.Collection
                 if (!userCollection.OwnedCards.ContainsKey(cardName)) return false;
 
                 var card = userCollection.OwnedCards[cardName];
-                if (card.TotalAmount < amount) return false;
+
+                if (card.Available < amount) return false;
 
                 card.LentTo[lendee] = amount;
-                card.TotalAmount -= amount;
                 collection.FindOneAndReplace(query, userCollection);
             }
             return true;

@@ -38,7 +38,7 @@ function displayMessageContent(message) {
     var actionBar = $("#message-action-bar")
     var messageCard = $("<div class='card'></div>")
     var cardBody = $("<div class='card-body'></div>")
-    var messageTitle = $("<h5 class='card-title' style='width:4rem'>"+message["subject"]+"</h5>")
+    var messageTitle = $("<h5 class='card-title'>"+message["subject"]+"</h5>")
     var messageBody = $("<p class='card-text'>"+message["body"]+"</p>")
     var messageSender = $("<h6 class='card-subtitle mb-2 text-muted'>"+message["senderId"]+"</h6>")
    
@@ -48,7 +48,7 @@ function displayMessageContent(message) {
 
     if(message["type"] == "Loan") {
         actionBar.empty();
-        var acceptLoanButton = $("<a href='#' class='card-link'>Accept</button>")
+        var acceptLoanButton = $("<a href='#' class='card-link'>Accept Loan</button>")
         acceptLoanButton.click(function(e){
             acceptLoanRequest(message["messageId"]).then(function() {
                 swal("Accepted")
@@ -56,8 +56,8 @@ function displayMessageContent(message) {
         })
         cardBody.append(acceptLoanButton)
     } else if(message["type"] == "Group") {
-        actionBar.empty();
-        var acceptInviteButton = $("<a href='#' class='card-link'>Accept</button>")
+        
+        var acceptInviteButton = $("<a href='#' class='card-link'>Accept Invite</button>")
         acceptInviteButton.click(function(e) {
             acceptGroupInvite(message["messageId"]).then(function() {
                 swal("Now in group")
