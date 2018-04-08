@@ -336,6 +336,38 @@ function getOwnedCardsForUser(userId) {
 
 }
 
+function acceptLoanRequest(messageId) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/accept/loan", {
+            method: "POST",
+            body: JSON.stringify(messageId),
+            headers: {
+                'content-type': "application/json"
+            }  
+        }).then(function(response) {
+            resolve()
+        }).catch(function(error){
+            reject(error)
+        })
+    })
+}
+
+function acceptGroupInvite(messageId) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/accept/invite", {
+            method: "POST",
+            body: JSON.stringify(messageId),
+            headers: {
+                'content-type': "application/json"
+            }  
+        }).then(function(response) {
+            resolve();
+        }).catch(function(error){
+            reject(error)
+        })
+    })
+}
+
 function sendLoanRequest(message) {
     return new Promise(function(resolve, reject) {
         fetchWithAuth("http://localhost:5000/api/message/send/loan", {
@@ -350,6 +382,18 @@ function sendLoanRequest(message) {
             reject(error);
         })
     })
+}
+
+function getMessages() {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/message/all").then(function(response){
+            return response.json();
+        }).then(function(json){
+            resolve(json);
+        }).catch(function(error) {
+            reject(error);
+        })
+    });
 }
 
 function authorizeOrLogin() {

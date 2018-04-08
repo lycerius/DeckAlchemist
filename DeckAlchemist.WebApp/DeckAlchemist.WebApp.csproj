@@ -23,4 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DeckAlchemist.Support\DeckAlchemist.Support.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Messages\" />
+  </ItemGroup>
 </Project>
