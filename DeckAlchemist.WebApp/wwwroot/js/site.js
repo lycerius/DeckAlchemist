@@ -396,6 +396,20 @@ function getMessages() {
     });
 }
 
+
+function getUserName(userId) {
+    return new Promise(function(resolve, reject) {
+        fetchWithAuth("http://localhost:5000/api/user/name/"+userId).then(function(result) {
+            console.log(result)
+            return result.text();
+        }).then(function(json){
+            resolve(json);
+        }).catch(function(error){
+            reject(error);
+        })
+    })
+}
+
 function authorizeOrLogin() {
     //if(firebase.auth().currentUser == null) window.location = "/"
 }

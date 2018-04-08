@@ -29,5 +29,13 @@ namespace DeckAlchemist.Api.Controllers
             return _source.Get(uId);
         }
 
+        [HttpGet("name/{userId}")]
+        public string GetUserNameById(string userId) 
+        {
+            var user = _source.Get(userId);
+            var userName = user.UserName;
+            return userName;
+        }
+
     }
 }

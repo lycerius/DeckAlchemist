@@ -34,13 +34,14 @@ function populateInbox(messagesJson) {
 }
 
 function displayMessageContent(message) {
-    var messageBodyDiv = $("#message-body-content")
+    getUserName(message["senderId"]).then(function(userName){
+         var messageBodyDiv = $("#message-body-content")
     var actionBar = $("#message-action-bar")
     var messageCard = $("<div class='card'></div>")
     var cardBody = $("<div class='card-body'></div>")
     var messageTitle = $("<h5 class='card-title'>"+message["subject"]+"</h5>")
     var messageBody = $("<p class='card-text'>"+message["body"]+"</p>")
-    var messageSender = $("<h6 class='card-subtitle mb-2 text-muted'>"+message["senderId"]+"</h6>")
+    var messageSender = $("<h6 class='card-subtitle mb-2 text-muted'>"+userName+"</h6>")
    
     cardBody.append(messageTitle);
     cardBody.append(messageSender);
@@ -49,12 +50,21 @@ function displayMessageContent(message) {
     if(message["type"] == "Loan") {
         actionBar.empty();
         var acceptLoanButton = $("<a href='#' class='card-link'>Accept Loan</button>")
+        var requestedCards = $("<ul class='list-group'></ul>")
+        var keys = Object.keys(message["requestedCardsAndAmounts"]) 
+        $.each(keys, function(index){
+            var requestedCard = keys[index]
+            var amount = message["requestedCardsAndAmounts"][requestedCard]
+            requestedCards.append($("<li class='list-group-item'>"+amount+" "+requestedCard+"</li>"))
+        })
+
         acceptLoanButton.click(function(e){
             acceptLoanRequest(message["messageId"]).then(function() {
                 swal("Accepted")
             })
         })
         cardBody.append(acceptLoanButton)
+        cardBody.append(requestedCards)
     } else if(message["type"] == "Group") {
         
         var acceptInviteButton = $("<a href='#' class='card-link'>Accept Invite</button>")
@@ -69,6 +79,9 @@ function displayMessageContent(message) {
     messageCard.append(cardBody)
     messageBodyDiv.empty();
     messageBodyDiv.append(messageCard);
+
+    })
+   
 }
 
 $(document).ready(function() {
