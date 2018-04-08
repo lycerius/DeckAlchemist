@@ -50,21 +50,33 @@
 				</ul>
 			</div>
 			<div class="deck-card">
-				<div class="row">
-					<div class="col col-lg-9">
-
-						<!-- This table can't be styled because it's removed at runtime -->
-						<table id="table"></table>
-					</div>
-					<img class="col col-lg-3" src="#" id="card-img"/>
-				</div>
-
-				<div class="row deck-btn-list">
-					<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
-					<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
-					<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
-				</div>
+				
 			</div>
+		</div>
+	</div>
+	
+	<!-- Deck Builder -->
+	<div id="deckBuilder" style="display: none;">
+		<ul id="metaDecksPick">
+			
+		</ul>
+	</div>
+	
+	<!-- Deck View -->
+	<div id="deckView" style="display: none;">
+		<div class="row">
+			<div class="col col-lg-9">
+
+				<!-- This table can't be styled because it's removed at runtime -->
+				<table id="table"></table>
+			</div>
+			<img class="col col-lg-3" src="#" id="card-img"/>
+		</div>
+
+		<div class="row deck-btn-list">
+			<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
+			<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
+			<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
 		</div>
 	</div>
 

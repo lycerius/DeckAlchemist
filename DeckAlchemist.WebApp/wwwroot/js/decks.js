@@ -129,7 +129,7 @@ $(document).ready(function () {
     }
 
     var selectedDeckLi;
-    
+    var deckBuilding = false;
     function reloadDeckList() {
         fetchWithAuth("http://localhost:5000/api/UserDeck/all").then(function (result) {
             if (result.status == 500) {
@@ -150,6 +150,13 @@ $(document).ready(function () {
                    list.append(newLi);
                    
                    newLi.click(function () {
+                       if (deckBuilding) {
+                           var html2 = $('#deckView').html();
+
+                           $('.deck-card').html(html2);
+
+                           deckBuilding = false;
+                       }
                        
                        if (selectedDeckLi != null) {
                            selectedDeckLi.removeClass("selected");
@@ -162,6 +169,26 @@ $(document).ready(function () {
                        fetchAndLoadDeck(value.name);
                    });
                 });
+
+                var newLi =  $("<li />").append(
+                    $("<a />").text("Add Deck")
+                );
+
+                list.append(newLi);
+                
+                newLi.click(function () {
+                    if (!deckBuilding) {
+                        var html = $('#deckBuilder').html();
+                        
+                        $('.deck-card').html(html);
+                        
+                        deckBuilding = true;
+                    }
+                });
+                
+                if (data.length == 0)
+                    newLi.click();
+                
             }).catch(function (reason) {
                 swal("Couldn't Create Decks", "There was a problem creating your decks :(\nError: " + reason, "error");
                 reloadDeckTable({});
