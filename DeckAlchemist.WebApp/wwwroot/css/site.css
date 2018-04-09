@@ -347,6 +347,7 @@ li.selected {
 
 .deck-card {
     text-align: center;
+    position: relative;
 }
 
 .deckList {
@@ -354,9 +355,45 @@ li.selected {
     margin: 0;
     padding: 0;
     text-align: center;
+    margin-top: 15px;
+    background-color: #f7f7f7;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+.deckList > li {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 45px;
+    padding-top: 10px;
+}
+
+.deckList > li:hover {
+    background-color: #fff;
 }
 
 .moveBtn {
     height: 40px;
     margin-bottom: 10px;
+}
+
+.dSpacer {
+    margin-top: 75px;
+}
+
+.deck-builder-btn {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+#deckBuilderName {
+    position: absolute;
+    left: 190px;
+    top: 20px;
+    width: 15%;
 }

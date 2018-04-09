@@ -55,22 +55,27 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         [HttpPut("deck/card")]
-        public IActionResult AddCardToDeck([FromBody] string deckName, [FromBody] string cardName)
+        public IActionResult AddCardToDeck([FromBody] PutDeckRequest request)
         {
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
-            var result = _source.AddCardToDeck(uId, deckName,cardName);
+            var result = _source.AddCardToDeck(uId, request.DeckName,request.CardName);
             if (!result) return StatusCode(500);
             return StatusCode(200);
         }
         [HttpDelete("deck/card")]
-        public IActionResult RemoveCardfromDeck([FromBody] string deckName, [FromBody] string cardName)
+        public IActionResult RemoveCardfromDeck([FromBody] PutDeckRequest request)
         {
             var uId = Utility.UserInfo.Id(HttpContext.User);
             var email = Utility.UserInfo.Email(HttpContext.User);
-            var result = _source.RemoveCardFromDeck(uId, deckName, cardName);
+            var result = _source.RemoveCardFromDeck(uId, request.DeckName,request.CardName);
             if (!result) return StatusCode(500);
             return StatusCode(200);
+        }
+        
+        public class PutDeckRequest {
+            public string DeckName { get; set; }
+            public string CardName { get; set; }
         }
 
     }
