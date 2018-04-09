@@ -37,7 +37,11 @@ function getGroupsAndPopulate() {
                         var row = $("<div class='row group-user-row'></div>")
                         var col = $("<div class='col'></div>")
                         var member = members[index]
-                        var element = $("<a class='group-member-name'>"+member.userName+"</a>")
+                        var style = "group-member-name";
+                        if (sameUser(member.userId)) {
+                            style += " group-member-self";
+                        }
+                        var element = $("<a class='" + style + "'>"+member.userName+"</a>")
                         col.append(element)
                         row.append(col)
                         col = $("<div class='col-sm-3'></div>")
@@ -264,7 +268,7 @@ function getGroupsAndPopulate() {
    }
 
    function connectToIRC(user, group) {
-        var placeHolder = $('#group-chat-placehold')
+        var placeHolder = $('#group-chat-placehold');
         placeHolder.empty();
         var groupChatFrame = $("<iframe id='group-chat' class='form-control chat-window'></iframe>")
         groupChatFrame.attr("src", "");

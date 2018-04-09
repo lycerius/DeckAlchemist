@@ -47,6 +47,98 @@ $(document).ready(function () {
         });
     }
     
+    function reloadBorrowedTable(cards) {
+        //Ensure old tables don't override image
+        $('#borrowedTable').off('post-body.bs.table');
+        $('#borrowedTable').bootstrapTable("destroy");
+        $('#borrowedTable').bootstrapTable({
+            clickToSelect: true,
+            idField: 'id',
+            search: true,
+            columns: [{
+                field: 'state',
+                checkbox: true
+            }, {
+                field: 'available',
+                title: 'Cards Available',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'totalAmount',
+                title: 'Total Amount',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'name',
+                title: 'Name',
+                class: 'name-style',
+                align: 'center',
+                halign: 'center',
+                searchable: true
+            }, {
+                field: 'lendable',
+                title: 'Lendable',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'cmc',
+                title: 'Converted Cost',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'manaCost',
+                title: 'Full Cost',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'colors',
+                title: 'Colors',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'power',
+                title: 'Power',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'toughness',
+                title: 'Toughness',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'type',
+                title: 'Type',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'layout',
+                title: 'Set',
+                class: 'set-style',
+                align: 'center',
+                halign: 'center'
+            }],
+            data: cards
+        });
+
+        function showImageOnHover() {
+            $('tr[id]').each(function (index) {
+                var card = cards[index];
+
+                $(this).mouseenter(function() {
+                    getCardImage(card.name).then(function(e) {
+                        var src = e.normal;
+                        $('#card-img').show().attr('src', src);
+                    });
+                });
+            });
+        }
+
+        showImageOnHover();
+
+        //Make sure WE ALWAYS SHOW THE LIGHT
+        $('#table').on('post-body.bs.table', showImageOnHover);
+    }
+    
     function reloadCollectionTable(cards) {
         //Ensure old tables don't override image
         $('#table').off('post-body.bs.table');
@@ -148,8 +240,10 @@ $(document).ready(function () {
 
             result.json().then(function (data) {
                 var tableData = buildTableFromCollection(data);
+                var borrowedData = buildBorrowedTableFromCollection(data);
 
                 reloadCollectionTable(tableData);
+                reloadBorrowedTable(borrowedData);
             }).catch(function (reason) {
                 swal("Collection Empty", "You don't have any cards :(\nAdd some using the \"Add Cards\" button!", "error");
                 reloadCollectionTable({});
