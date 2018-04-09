@@ -48,10 +48,13 @@ $(document).ready(function () {
     }
     
     function reloadCollectionTable(cards) {
+        //Ensure old tables don't override image
+        $('#table').off('post-body.bs.table');
         $('#table').bootstrapTable("destroy");
         $('#table').bootstrapTable({
             clickToSelect: true,
             idField: 'id',
+            search: true,
             columns: [{
                 field: 'state',
                 checkbox: true
@@ -70,7 +73,8 @@ $(document).ready(function () {
                 title: 'Name',
                 class: 'name-style',
                 align: 'center',
-                halign: 'center'
+                halign: 'center',
+                searchable: true
             }, {
                 field: 'lendable',
                 title: 'Lendable',
@@ -116,16 +120,23 @@ $(document).ready(function () {
             data: cards
         });
         
-        $('tr[id]').each(function (index) {
-            var card = cards[index];
-            
-            $(this).mouseenter(function() {
-                getCardImage(card.name).then(function(e) { 
-                    var src = e.normal;
-                    $('#card-img').show().attr('src', src);
+        function showImageOnHover() {
+            $('tr[id]').each(function (index) {
+                var card = cards[index];
+
+                $(this).mouseenter(function() {
+                    getCardImage(card.name).then(function(e) {
+                        var src = e.normal;
+                        $('#card-img').show().attr('src', src);
+                    });
                 });
             });
-        });
+        }
+        
+        showImageOnHover();
+        
+        //Make sure WE ALWAYS SHOW THE LIGHT
+        $('#table').on('post-body.bs.table', showImageOnHover);
     }
     
     function reloadCollection() {
