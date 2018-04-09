@@ -68,3 +68,8 @@
 .bootstrap-table {
     max-width:100%;
 }
+
+.error-text {
+    color: red;
+    font-size: small;
+}

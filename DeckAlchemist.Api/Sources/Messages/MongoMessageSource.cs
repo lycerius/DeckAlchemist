@@ -90,5 +90,13 @@ namespace DeckAlchemist.Api.Sources.Messages
             box.Messages[message.MessageId] = message;
             collection.FindOneAndReplace(boxQuery, box);
         }
+
+        public void DeleteMessage(string userId, string messageId) 
+        {
+            var query = _filter.Eq("UserId", userId);
+            var box = collection.Find(query).FirstOrDefault();
+            box.Messages.Remove(messageId);
+            collection.FindOneAndReplace(query, box);
+        }
     }
 }

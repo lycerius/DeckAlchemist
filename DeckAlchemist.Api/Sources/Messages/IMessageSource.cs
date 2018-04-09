@@ -14,5 +14,6 @@ namespace DeckAlchemist.Api.Sources.Messages
         void Create(IMessageBox box);
         bool ExistsForUser(string uId);
         void Update(string userId, IMessage message);
+        void DeleteMessage(string userId, string messageId);
     }
 }

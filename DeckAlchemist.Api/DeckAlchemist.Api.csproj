@@ -52,4 +52,7 @@
   <ItemGroup>
     <Compile Remove="Controllers\AuthHelloController.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Contracts\LendabilityContract.css" />
+  </ItemGroup>
 </Project>

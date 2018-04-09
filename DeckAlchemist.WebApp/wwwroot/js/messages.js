@@ -1,4 +1,5 @@
 ﻿function fetchMessagesAndShow() {
+    $("#message-body-content").empty();
     getMessages().then(function(messagesJson) {
         populateInbox(messagesJson);
     })
@@ -37,7 +38,7 @@ function displayMessageContent(message) {
     getUserName(message["senderId"]).then(function(userName){
          var messageBodyDiv = $("#message-body-content")
     var actionBar = $("#message-action-bar")
-    var messageCard = $("<div class='card'></div>")
+    var messageCard = $("<div class='card' style='height:100%'></div>")
     var cardBody = $("<div class='card-body'></div>")
     var messageTitle = $("<h5 class='card-title'>"+message["subject"]+"</h5>")
     var messageBody = $("<p class='card-text'>"+message["body"]+"</p>")
@@ -59,8 +60,10 @@ function displayMessageContent(message) {
         })
 
         acceptLoanButton.click(function(e){
+            e.preventDefault()
             acceptLoanRequest(message["messageId"]).then(function() {
                 swal("", "Accepted Loan Request", "success")
+                fetchMessagesAndShow();
             })
         })
         cardBody.append(acceptLoanButton)
@@ -69,8 +72,10 @@ function displayMessageContent(message) {
         
         var acceptInviteButton = $("<a href='#' class='card-link'>Accept Invite</button>")
         acceptInviteButton.click(function(e) {
+            e.preventDefault();
             acceptGroupInvite(message["messageId"]).then(function() {
                 swal("","Group Invite Accepted!","success")
+                fetchMessagesAndShow();
             })
         })
         cardBody.append(acceptInviteButton)
