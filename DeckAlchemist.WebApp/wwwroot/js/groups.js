@@ -28,6 +28,7 @@ function getGroupsAndPopulate() {
 
                     var list = $("<div class='collapse group-header' id='group"+index+"'></div>")
                     var newInviteLink = $("<button class='loan-button btn btn-outline btn-primary'>+Invite<br />")
+                    newInviteLink.off();
                     newInviteLink.click(function(e) {
                         createNewGroupInviteDialog(groupInfo)
                     })
@@ -79,6 +80,7 @@ function getGroupsAndPopulate() {
         var sendMessageBtn = $('#create-message-btn')
 
         userTextBox.text(user.userName)
+        sendMessageBtn.off()
         sendMessageBtn.click(function(e) {
             var subjectTextBox = $('#message-subject')
             var bodyTextBox = $('#message-body')
@@ -123,6 +125,7 @@ function getGroupsAndPopulate() {
         newGroupInviteError("")
         var modal = $('#newGroupInviteDialog')
         var sendGroupInviteBtn = $('#create-invite-btn')
+        sendGroupInvite.off();
         sendGroupInviteBtn.click(function(e) {
             var userNameTextBox = $('#invite-user')
             var userName = userNameTextBox.val()
@@ -141,7 +144,7 @@ function getGroupsAndPopulate() {
                 swal("Invite Sent", userName+" was invited to "+group.groupName+"!", "success");
             }).catch(function(error) {
                 
-                swal("Invit Failed", "Couln't invite "+userName+" (user not found)", "error");
+                swal("Invite Failed", "Couln't invite "+userName+" (user not found)", "error");
             })
         })
 
@@ -156,6 +159,7 @@ function getGroupsAndPopulate() {
             collection.userCollection = {}
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')
+            sendButton.off();
             sendButton.click(function(e) {
                 var subjectTextBox = $('#loan-subject')
                 var bodyTextBox = $('#loan-body')
