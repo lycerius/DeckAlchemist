@@ -163,6 +163,18 @@ namespace DeckAlchemist.Api.Controllers
             }
         }
 
+        [HttpPost("mark")]
+        public IActionResult MarkCardsAsLendable([FromBody] IEnumerable<LendableContract> cardNames)
+        {
+            var userId = HttpContext.User.Id();
+            var lendableDictionary = new Dictionary<string, bool>();
+            foreach (var lendable in cardNames)
+                lendableDictionary[lendable.CardName] = lendable.Lenable;
+            if (_collectionSource.MarkCardsAsLendable(userId, lendableDictionary))
+                return StatusCode(200);
+            return StatusCode(500);
+        }
+
         [HttpPost("csv")]
         public IActionResult AddCardsFromCsv()
         {

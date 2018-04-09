@@ -8,6 +8,7 @@ namespace DeckAlchemist.Support.Objects.Collection
         string CardId { get; set; }
         int TotalAmount { get; set; }
         int Available { get; set; }
+        bool Lendable { get; set; }
         IDictionary<string, int> InDecks { get; set; }
         IDictionary<string, int> LentTo { get; set; }
     }

@@ -221,5 +221,21 @@ namespace DeckAlchemist.Api.Sources.Collection
             collection.FindOneAndReplace(query, userCollection);
             return true;
         }
+
+        public bool MarkCardsAsLendable(string userId, IDictionary<string, bool> lendingStatus)
+        {
+            var query = _filter.Eq("UserId", userId);
+            var col = collection.Find(query).FirstOrDefault();
+            if (col == null) return false;
+            var ownedCards = col.OwnedCards;
+            foreach(var status in lendingStatus) {
+                var cardName = status.Key;
+                var lendable = status.Value;
+                if (ownedCards.ContainsKey(cardName))
+                    ownedCards[cardName].Lendable = lendable;
+            }
+            collection.FindOneAndReplace(query, col);
+            return true;
+        }
     }
 }
