@@ -90,6 +90,9 @@ namespace DeckAlchemist.Api.Controllers
             var task = client.Auth(HttpContext.GetIdToken()).PutAsync($"http://localhost:5000/api/group/{groupId}/member", userId);
             task.Wait();
             task.Result.EnsureSuccessStatusCode();
+            var user = _userSource.Get(userId);
+            user.Groups.Add(groupId);
+            _userSource.Update(user);
             groupInvite.Accepted = true;
             _messageSource.Update(userId, groupInvite);
         }
