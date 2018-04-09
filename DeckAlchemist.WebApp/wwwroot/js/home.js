@@ -121,7 +121,7 @@ $(document).ready(function () {
         });
 
         function showImageOnHover() {
-            $('tr[id]').each(function (index) {
+            $('#borrowedTable').children('tbody').children('tr[id]').each(function (index) {
                 var card = cards[index];
 
                 $(this).mouseenter(function() {
@@ -136,7 +136,7 @@ $(document).ready(function () {
         showImageOnHover();
 
         //Make sure WE ALWAYS SHOW THE LIGHT
-        $('#table').on('post-body.bs.table', showImageOnHover);
+        $('#borrowedTable').on('post-body.bs.table', showImageOnHover);
     }
     
     function reloadCollectionTable(cards) {
@@ -213,7 +213,7 @@ $(document).ready(function () {
         });
         
         function showImageOnHover() {
-            $('tr[id]').each(function (index) {
+            $('#table').children('tbody').children('tr[id]').each(function (index) {
                 var card = cards[index];
 
                 $(this).mouseenter(function() {
