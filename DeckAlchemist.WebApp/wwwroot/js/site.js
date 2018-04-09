@@ -123,11 +123,8 @@ function buildBorrowedTableFromCollection(collection) {
             var info = cardInfo[c.cardId];
 
             var newCard = Object.assign({
-                lendable: c.lendable,
-                available: c.available,
-                inDecks: c.inDecks,
-                lentTo: c.lentTo,
-                totalAmount: c.totalAmount,
+                amountBorrowed: c.amountBorrowed,
+                lender: c.lender,
                 id: id
             }, info);
 

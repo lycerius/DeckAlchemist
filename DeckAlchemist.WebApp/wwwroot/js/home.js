@@ -59,13 +59,8 @@ $(document).ready(function () {
                 field: 'state',
                 checkbox: true
             }, {
-                field: 'available',
-                title: 'Cards Available',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'totalAmount',
-                title: 'Total Amount',
+                field: 'amountBorrowed',
+                title: 'Amount Borrowed',
                 align: 'center',
                 halign: 'center'
             }, {
@@ -76,8 +71,8 @@ $(document).ready(function () {
                 halign: 'center',
                 searchable: true
             }, {
-                field: 'lendable',
-                title: 'Lendable',
+                field: 'lender',
+                title: 'Lender',
                 align: 'center',
                 halign: 'center'
             }, {
