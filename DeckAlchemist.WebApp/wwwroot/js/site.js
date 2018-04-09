@@ -43,6 +43,51 @@ function fetchWithAuth(url, fetchProps = {}) {
     });
 }
 
+function buildTableFromDeck(deck) {
+    var cardInfo = deck.cardInfo;
+    var uDeck = deck.userDeck.cardsAndAmounts;
+
+    var result = [];
+
+    var id = 1;
+    for (var name in uDeck) {
+        if (uDeck.hasOwnProperty(name)) {
+            /*
+            int
+             */
+            var c = uDeck[name];
+
+            /*
+            cmc
+            colors
+            imageName
+            layout
+            legality
+            manaCost
+            name
+            power
+            subTypes
+            text
+            toughness
+            type
+            types
+            _id
+             */
+            var info = cardInfo[name];
+
+            var newCard = Object.assign({
+                amount: c,
+                id: id
+            }, info);
+
+            result.push(newCard);
+            id++;
+        }
+    }
+
+    return result;
+}
+
 function buildTableFromCollection(collection) {
     var cardInfo = collection.cardInfo;
     var owned = collection.userCollection.ownedCards;

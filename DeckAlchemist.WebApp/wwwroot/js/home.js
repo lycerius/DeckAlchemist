@@ -124,7 +124,7 @@ $(document).ready(function () {
     }
     
     function reloadCollection() {
-        fetchWithAuth("http://localhost:5000/api/collection").then(function (result) {
+        fetchWithAuth("http://" + window.location.hostname + ":5000/api/collection").then(function (result) {
             if (result.status == 500) {
                 swal("You don't have any cards!")
                 return;
@@ -157,7 +157,7 @@ $(document).ready(function () {
     $('#search-btn').click(function () {
         var value = $('#card-name').val();
         
-        fetchWithAuth("http://localhost:5000/api/card/search/" + value).then(function (response) {
+        fetchWithAuth("http://" + window.location.hostname + ":5000/api/card/search/" + value).then(function (response) {
             response.json().then(function (data) {
                 reloadSearchTable(data);
             });
@@ -195,7 +195,7 @@ $(document).ready(function () {
         var postData = nameArray;
 
         
-        putWithAuth("http://localhost:5000/api/collection/cards", postData).then(function (value) { 
+        putWithAuth("http://" + window.location.hostname + ":5000/api/collection/cards", postData).then(function (value) { 
             swal(nameArray.length + " Cards Added", "One copy of each card has been added!", "success");
             reloadCollection();
         });
@@ -225,7 +225,7 @@ $(document).ready(function () {
                 var postData = nameArray;
 
 
-                deleteWithAuth("http://localhost:5000/api/collection/cards", postData).then(function (value) {
+                deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/cards", postData).then(function (value) {
                     swal(nameArray.length + " Cards Removed", "One copy of each card has been removed!", "success");
                     reloadCollection();
                 });
@@ -243,9 +243,42 @@ $(document).ready(function () {
         var postData = new FormData(form);
         console.log(postData);
         
-        formWithAuth("http://localhost:5000/api/collection/csv", postData, "POST").then(function (value) {
+        formWithAuth("http://" + window.location.hostname + ":5000/api/collection/csv", postData, "POST").then(function (value) {
             swal("Cards Imported", "The cards have been successfully imported!", "success");
             reloadCollection();
         });
+    });
+    
+    
+    $("#lend").click(function () {
+        swal({
+                title: "Are you sure?",
+                text: "This will mark all cards selected as lendable.\nWould you like to continue?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                closeOnConfirm: false
+            },
+            function() {
+                var selectedCards = $('#table').bootstrapTable('getSelections');
+
+                console.log(selectedCards);
+
+                var nameArray = [];
+
+                selectedCards.forEach(function (value) {
+                    nameArray.push(value.name);
+                });
+
+                var postData = nameArray;
+
+
+                deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/cards", postData).then(function (value) {
+                    swal(nameArray.length + " Cards Removed", "One copy of each card has been removed!", "success");
+                    reloadCollection();
+                });
+            }
+        );
     });
 });

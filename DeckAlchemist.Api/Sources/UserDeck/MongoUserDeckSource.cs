@@ -30,7 +30,7 @@ namespace DeckAlchemist.Api.Sources.UserDeck
 
         public bool AddCardToDeck(string uId, string deckName, string cardName)
         {
-            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("DeckName", deckName));
             var userDeck = collection.Find(query).FirstOrDefault();
 
             if(userDeck.CardsAndAmounts.ContainsKey(cardName))
@@ -49,7 +49,7 @@ namespace DeckAlchemist.Api.Sources.UserDeck
 
         public bool RemoveCardFromDeck(string uId, string deckName, string cardName)
         {
-            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("DeckName", deckName));
             var userDeck = collection.Find(query).FirstOrDefault();
             if (userDeck == null) return false;
 
@@ -66,7 +66,7 @@ namespace DeckAlchemist.Api.Sources.UserDeck
 
         public IUserDeck GetDeckByName(string uId, string deckName)
         {
-            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("Name", deckName));
+            var query = _filter.And(_filter.Eq("UserId", uId), _filter.Eq("DeckName", deckName));
             return collection.Find(query).FirstOrDefault();
         }
 

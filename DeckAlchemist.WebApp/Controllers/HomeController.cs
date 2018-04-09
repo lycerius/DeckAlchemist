@@ -17,6 +17,11 @@ namespace DeckAlchemist.WebApp.Controllers
             return View("Home");
         }
 
+        public IActionResult Decks()
+        {
+            return View("Decks");
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

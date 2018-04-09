@@ -229,6 +229,7 @@ ul.sidebar-nav li {
 .home-content {
     float: right;
     width: 80%;
+    max-width: 82%;
 }
 
 #table {
@@ -297,4 +298,106 @@ ul.sidebar-nav li {
     right: 0;
     width: 325.333333px;
     height: 453.333333px;
+}
+
+.decks {
+    display: flex;
+    flex-direction: row;
+}
+
+.deck-card {
+    /* display: table-cell; */
+    height: 80%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    /* box-shadow: 5px 10px #888888; */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 25px;
+    /* padding-bottom: 0; */
+}
+
+.deck-selection {
+    width: 200px;
+}
+
+.deck-selection > ul {
+    list-style: none;
+    padding: 0;
+}
+
+.deck-selection > ul > li {
+    border: 1px solid #0000;
+    border-radius: 3px;
+    margin-top: 5px;
+    height: 33px;
+    color: #aaabb1 !important;
+    background: #f5f5f5;
+    width: 200px;
+    line-height: 15px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+li.selected {
+   background: #fff; 
+}
+
+.row.deck-btn-list {
+    margin: 10px 0 0;
+}
+
+.deck-card {
+    text-align: center;
+    position: relative;
+}
+
+.deckList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    margin-top: 15px;
+    background-color: #f7f7f7;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+.deckList > li {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 45px;
+    padding-top: 10px;
+}
+
+.deckList > li:hover {
+    background-color: #fff;
+}
+
+.moveBtn {
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.dSpacer {
+    margin-top: 75px;
+}
+
+.deck-builder-btn {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.deck-selection > ul > li:hover {
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.deck-selection .selected {
+    background-color: #fff;
+    color: #000 !important;
 }
