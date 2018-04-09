@@ -72,6 +72,11 @@ $(document).ready(function () {
                 align: 'center',
                 halign: 'center'
             }, {
+                field: 'lendable',
+                title: 'Lendable',
+                align: 'center',
+                halign: 'center'
+            }, {
                 field: 'cmc',
                 title: 'Converted Cost',
                 align: 'center',
@@ -251,34 +256,64 @@ $(document).ready(function () {
     
     
     $("#lend").click(function () {
-        swal({
-                title: "Are you sure?",
-                text: "This will mark all cards selected as lendable.\nWould you like to continue?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Yes",
-                closeOnConfirm: false
-            },
-            function() {
-                var selectedCards = $('#table').bootstrapTable('getSelections');
-
-                console.log(selectedCards);
-
-                var nameArray = [];
-
-                selectedCards.forEach(function (value) {
-                    nameArray.push(value.name);
-                });
-
-                var postData = nameArray;
-
-
-                deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/cards", postData).then(function (value) {
-                    swal(nameArray.length + " Cards Removed", "One copy of each card has been removed!", "success");
-                    reloadCollection();
-                });
+        var lendable = [];
+        var notLendable = [];
+        var selectedCards = $('#table').bootstrapTable('getSelections');
+        
+        selectedCards.forEach(function (value) {
+            if (value.lendable) {
+                notLendable.push({lendable: false, cardName: value.name});
+            } else {
+                lendable.push({lendable: true, cardName: value.name});
             }
-        );
+        });
+        
+        var notLendableFunc = function (fromSwal) {
+            if (notLendable.length > 0) {
+                swal({
+                        title: "Mark Not Lendable?",
+                        text: "This will mark " + lendable.length + " cards as not lendable.\nWould you like to continue?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Yes",
+                        closeOnConfirm: false
+                    },
+                    function() {
+                        var postData = notLendable;
+
+                        deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
+                            reloadCollection();
+                        });
+                    }
+                );
+            } else if (fromSwal) {
+                reloadCollection();
+            } else {
+                swal("No Cards", "You must select at least one card to toggle!", "error");
+            }
+        };
+        
+        if (lendable.length > 0) {
+            swal({
+                    title: "Mark Lendable?",
+                    text: "This will mark " + lendable.length + " cards as lendable.\nWould you like to continue?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    closeOnConfirm: false
+                },
+                function() {
+                    var postData = lendable;
+                    
+                    deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
+                        notLendableFunc(true);
+                    });
+                }
+            );
+        } else {
+            notLendableFunc(false);
+        }
     });
 });
