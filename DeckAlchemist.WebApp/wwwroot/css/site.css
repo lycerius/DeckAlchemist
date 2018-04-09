@@ -216,10 +216,6 @@ ul.sidebar-nav li {
     margin-bottom: 15px;
 }
 
-.navbar-brand {
-    margin-left: 15%;
-}
-
 .navbar-header {
     width: 100%;
     border-bottom: #e4e4e4 2px solid;
@@ -333,7 +329,7 @@ ul.sidebar-nav li {
     color: #aaabb1 !important;
     background: #f5f5f5;
     width: 200px;
-    line-height: 15px;
+    line-height: 28px;
     text-align: center;
     vertical-align: middle;
 }

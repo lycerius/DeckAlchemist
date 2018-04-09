@@ -48,10 +48,13 @@ $(document).ready(function () {
     }
     
     function reloadCollectionTable(cards) {
+        //Ensure old tables don't override image
+        $('#table').off('post-body.bs.table');
         $('#table').bootstrapTable("destroy");
         $('#table').bootstrapTable({
             clickToSelect: true,
             idField: 'id',
+            search: true,
             columns: [{
                 field: 'state',
                 checkbox: true
@@ -69,6 +72,12 @@ $(document).ready(function () {
                 field: 'name',
                 title: 'Name',
                 class: 'name-style',
+                align: 'center',
+                halign: 'center',
+                searchable: true
+            }, {
+                field: 'lendable',
+                title: 'Lendable',
                 align: 'center',
                 halign: 'center'
             }, {
@@ -111,16 +120,23 @@ $(document).ready(function () {
             data: cards
         });
         
-        $('tr[id]').each(function (index) {
-            var card = cards[index];
-            
-            $(this).mouseenter(function() {
-                getCardImage(card.name).then(function(e) { 
-                    var src = e.normal;
-                    $('#card-img').show().attr('src', src);
+        function showImageOnHover() {
+            $('tr[id]').each(function (index) {
+                var card = cards[index];
+
+                $(this).mouseenter(function() {
+                    getCardImage(card.name).then(function(e) {
+                        var src = e.normal;
+                        $('#card-img').show().attr('src', src);
+                    });
                 });
             });
-        });
+        }
+        
+        showImageOnHover();
+        
+        //Make sure WE ALWAYS SHOW THE LIGHT
+        $('#table').on('post-body.bs.table', showImageOnHover);
     }
     
     function reloadCollection() {
@@ -251,34 +267,75 @@ $(document).ready(function () {
     
     
     $("#lend").click(function () {
-        swal({
-                title: "Are you sure?",
-                text: "This will mark all cards selected as lendable.\nWould you like to continue?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Yes",
-                closeOnConfirm: false
-            },
-            function() {
-                var selectedCards = $('#table').bootstrapTable('getSelections');
-
-                console.log(selectedCards);
-
-                var nameArray = [];
-
-                selectedCards.forEach(function (value) {
-                    nameArray.push(value.name);
-                });
-
-                var postData = nameArray;
-
-
-                deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/cards", postData).then(function (value) {
-                    swal(nameArray.length + " Cards Removed", "One copy of each card has been removed!", "success");
-                    reloadCollection();
-                });
+        var lendable = [];
+        var notLendable = [];
+        var selectedCards = $('#table').bootstrapTable('getSelections');
+        
+        if (selectedCards.length == 0) {
+            swal("No Cards", "You must select at least one card to toggle!", "error");
+            return;
+        }
+        
+        selectedCards.forEach(function (value) {
+            if (value.lendable) {
+                notLendable.push({lenable: false, cardName: value.name});
+            } else {
+                lendable.push({lenable: true, cardName: value.name});
             }
-        );
+        });
+        
+        var notLendableFunc = function (fromSwal) {
+            if (notLendable.length > 0) {
+                swal({
+                        title: "Mark Not Lendable?",
+                        text: "This will mark " + notLendable.length + " cards as not lendable.\nWould you like to continue?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Yes",
+                        closeOnConfirm: true
+                    },
+                    function() {
+                        var postData = notLendable;
+
+                        postWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
+                            reloadCollection();
+                            
+                            if (fromSwal) 
+                                swal("Cards Marked", "A total of " + (lendable.length + notLendable.length) + " cards have been marked!", "success");
+                            else
+                                swal("Cards Marked", "" + (lendable.length + notLendable.length) + " cards have been marked not lendable!", "success");
+                        });
+                    }
+                );
+            } else if (fromSwal) {
+                reloadCollection();
+                swal("Cards Marked", "" + (lendable.length + notLendable.length) + " cards have been marked lendable!", "success");
+            } else {
+                swal("No Cards", "You must select at least one card to toggle!", "error");
+            }
+        };
+        
+        if (lendable.length > 0) {
+            swal({
+                    title: "Mark Lendable?",
+                    text: "This will mark " + lendable.length + " cards as lendable.\nWould you like to continue?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes",
+                    closeOnConfirm: true
+                },
+                function() {
+                    var postData = lendable;
+                    
+                    postWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
+                        notLendableFunc(true);
+                    });
+                }
+            );
+        } else {
+            notLendableFunc(false);
+        }
     });
 });

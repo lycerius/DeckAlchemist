@@ -104,6 +104,7 @@ function buildTableFromCollection(collection) {
             inDecks
             lentTo
             totalAmount
+            lendable
              */
             var c = owned[name];
             
@@ -126,6 +127,7 @@ function buildTableFromCollection(collection) {
             var info = cardInfo[c.cardId];
             
             var newCard = Object.assign({
+                lendable: c.lendable,
                 available: c.available,
                 inDecks: c.inDecks,
                 lentTo: c.lentTo,
