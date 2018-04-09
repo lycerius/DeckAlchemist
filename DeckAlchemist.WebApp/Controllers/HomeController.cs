@@ -21,6 +21,11 @@ namespace DeckAlchemist.WebApp.Controllers
             return View("Decks");
         }
 
+        public IActionResult Meta()
+        {
+            return View("Meta");
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
