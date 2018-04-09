@@ -58,10 +58,9 @@
 	<!-- Deck Builder -->
 	<div id="deckBuilder" style="display: none;">
 		<h2 style="margin-bottom: 30px;">Deck Builder</h2>
-		<button id="completeDeck" class="btn btn-success deck-builder-btn">Complete Deck</button>
-		<input id="deckBuilderName" class="form-control" type="text" placeholder="Deck Name"/>
+		<button id="reviewDeck" data-toggle="modal" data-target="#reviewDeckModal" class="btn btn-primary deck-builder-btn">Review</button>
 		<div class="row">
-			<div class="col col-lg-3">
+			<div class="col col-lg-5">
 				<h4>Meta Decks</h4>
 				<input id="metaSearch" type="text" class="form-control" placeholder="Search.."/>
 				<ul id="metaDecksPick" class="deckList">
@@ -73,7 +72,7 @@
 						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
 				</ul>
 			</div>
-			<div class="col col-lg-1">
+			<div class="col col-lg-2">
 				<h4>Actions</h4>
 				<div class="dSpacer"></div>
 				<button id="addMeta" class="btn btn-success btn-outline moveBtn">
@@ -81,11 +80,11 @@
 				<button id="removeMeta" class="btn btn-danger btn-outline moveBtn">
 					<p><i class="fas fa-arrow-circle-left"></i></p></button>
 				<button id="addSearchCard" data-toggle="modal" data-target="#searchDialog" class="btn btn-primary btn-outline moveBtn">
-					<p>Add Card</p></button>
+					<p><i class="fas fa-plus-circle"></i></p></button>
 				<button id="clearAll" class="btn btn-danger btn-outline moveBtn">
-					<p>Clear</p></button>
+					<p><i class="fas fa-trash"></i></p></button>
 			</div>
-			<div class="col col-lg-3">
+			<div class="col col-lg-5">
 				<h4>Workspace</h4>
 				<input id="metaAddedSearch" type="text" class="form-control" placeholder="Search.."/>
 				<ul id="metaDecksAdded" class="deckList">
@@ -97,16 +96,34 @@
 						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
 				</ul>
 			</div>
-			<div class="col col-lg-5">
-				<h3>Deck</h3>
-				<!-- This table can't be styled because it's removed at runtime -->
-				<table id="table"></table>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="reviewDeckModal" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Review Deck Contents</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- This table can't be styled because it's removed at runtime -->
+					<table id="table"></table>
+				</div>
+				<div class="modal-footer">
+					<input id="deckBuilderName" class="form-control" type="text" placeholder="Deck Name"/>
+					<button id="completeDeck" class="btn btn-success">Complete Deck</button>
+					<button id="editDeck" class="btn btn-primary" data-dismiss="modal">Continue Editing</button>
+				</div>
 			</div>
 		</div>
 	</div>
 	
 	<!-- Deck View -->
 	<div id="deckView" style="display: none;">
+		<h2 id="deckName">Deck Name</h2>
 		<div class="row">
 			<div class="col col-lg-9">
 
@@ -119,7 +136,6 @@
 		<div class="row deck-btn-list">
 			<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
 			<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
-			<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
 		</div>
 	</div>
 

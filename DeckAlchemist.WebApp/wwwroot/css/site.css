@@ -391,9 +391,12 @@ li.selected {
     top: 20px;
 }
 
-#deckBuilderName {
-    position: absolute;
-    left: 190px;
-    top: 20px;
-    width: 15%;
+.deck-selection > ul > li:hover {
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.deck-selection .selected {
+    background-color: #fff;
+    color: #000 !important;
 }

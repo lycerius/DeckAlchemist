@@ -1,6 +1,8 @@
 $(document).ready(function () {
     
     var deckBuilderCards = [];
+    var firstShow = true;
+    var currentDeck = "";
     
     function reloadSearchTable(cards) {
         $('#searchTable').bootstrapTable("destroy");
@@ -51,7 +53,21 @@ $(document).ready(function () {
     
     
     function fetchAndLoadDeck(name) {
-        
+        fetchWithAuth("http://" + window.location.hostname + ":5000/api/UserDeck/deck/" + name).then(function (response) { 
+            response.json().then(function (value) {
+                console.log(value);
+                
+                var table = buildTableFromDeck(value);
+                
+                reloadDeckTable(table);
+                
+                currentDeck = name;
+            }).catch(function (reason) {
+                swal("Error", "Couldn't load the contents of the deck " + name + "\nError: " + reason, "error");
+            })
+        }).catch(function (reason) { 
+            swal("Error", "Couldn't get the contents of the deck " + name + "\nError: " + reason, "error");
+        });
     }
     
     function reloadDeckTable(cards) {
@@ -69,39 +85,8 @@ $(document).ready(function () {
                 align: 'center',
                 halign: 'center'
             }, {
-                field: 'cmc',
-                title: 'Converted Cost',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'manaCost',
-                title: 'Full Cost',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'colors',
-                title: 'Colors',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'power',
-                title: 'Power',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'toughness',
-                title: 'Toughness',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'type',
-                title: 'Type',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'layout',
-                title: 'Set',
-                class: 'set-style',
+                field: 'amount',
+                title: 'Amount',
                 align: 'center',
                 halign: 'center'
             }],
@@ -120,10 +105,14 @@ $(document).ready(function () {
         });
     }
     
-    function addCard(nameArray) {
+    function addCard(nameArray, cardCountCache) {
         var postData = nameArray;
         
-        postWithAuth('http://localhost:5000/api/card/names', postData).then(function (value) {
+        postWithAuth('http://' + window.location.hostname + ':5000/api/card/names', postData).then(function (value) {
+            value.forEach(function (card) { 
+                card.amount = cardCountCache[card.name];
+            });
+            
             deckBuilderCards = deckBuilderCards.concat(value);
             
             reloadDeckTable(deckBuilderCards);
@@ -151,7 +140,7 @@ $(document).ready(function () {
     function startDeckBuilding() {
         //<li><a href="#">Deck 1</a></li>
         
-        fetchWithAuth("http://localhost:5000/api/decks/all").then(function (result) {
+        fetchWithAuth("http://" + window.location.hostname + ":5000/api/decks/all").then(function (result) {
             if (result.status == 500) {
                 swal("There are no meta decks!");
                 return;
@@ -168,36 +157,47 @@ $(document).ready(function () {
                 
                 var selectedLi = null;
                 var deckCache = {};
-                data.forEach(function (value) { 
+                var cardCountCache = {};
+                data.forEach(function (value) {
                     var text = value.name + " (" + value.meta + "%)";
-                    
+
                     var newLi = $("<li />").append(
                         $("<a />").text(text)
                     );
-                    
+
                     newLi.attr('data-added', 'not-added');
                     newLi.attr('data-name', value.name);
-                    
+
                     list.append(newLi);
-                    
+
                     newLi.click(function () {
                         if (selectedLi != null) {
                             selectedLi.removeClass("selected");
                         }
 
                         $(this).addClass("selected");
-                        
+
                         selectedLi = $(this);
                     });
-                    
+
                     var nameArray = [];
                     for (var key in value.cards) {
                         if (value.cards.hasOwnProperty(key)) {
                             nameArray.push(value.cards[key].name);
                         }
                     }
-                    
+
                     deckCache[value.name] = nameArray;
+
+                    var temp = {};
+
+                    for (var name in value.cards) {
+                        if (value.cards.hasOwnProperty(name)) {
+                            temp[name] = value.cards[name].count;
+                        }
+                    }
+                    
+                    cardCountCache[value.name] = temp;
                 });
                 
                 $('#addMeta').click(function () {
@@ -207,8 +207,9 @@ $(document).ready(function () {
                         if (state === 'not-added') {
                             myList.append(selectedLi);
                             selectedLi.attr('data-added', 'added');
+                            var deckName = selectedLi.attr('data-name')
                             
-                            addCard(deckCache[selectedLi.attr('data-name')]);
+                            addCard(deckCache[deckName], cardCountCache[deckName]);
                         }
                     }
                 });
@@ -274,12 +275,23 @@ $(document).ready(function () {
                         return;
                     }
 
-                    putWithAuth("http://localhost:5000/api/UserDeck/deck", name).then(function (value) {
+                    putWithAuth("http://" + window.location.hostname + ":5000/api/UserDeck/deck", name).then(function (value) {
                         var i = deckBuilderCards.length;
                         while (i--) {
                             var putData = { DeckName: name,  CardName: deckBuilderCards[i].name };
-                            putWithAuth("http://localhost:5000/api/UserDeck/deck/card", putData);
+                            var temp = i;
+                            var count = deckBuilderCards[i].amount;
+                            
+                            while (count--) {
+                                putWithAuth("http://" + window.location.hostname + ":5000/api/UserDeck/deck/card", putData).catch(function (reason) {
+                                    swal("Error Adding Card", "Failed to add the card " + deckBuilderCards[temp].name + " to the deck :(\nError: " + reason, "error");
+                                });
+                            }
                         }
+                        
+                        swal("Deck Created!", "The deck " + name + " has been created successfully!", "success");
+                        
+                        reloadDeckList();
                     }).catch(function (reason) {
                         swal("Deck Creation Failed", "Failed to create the deck :(\nError: " + reason, "error");
                     });
@@ -304,7 +316,7 @@ $(document).ready(function () {
     var selectedDeckLi;
     var deckBuilding = false;
     function reloadDeckList() {
-        fetchWithAuth("http://localhost:5000/api/UserDeck/all").then(function (result) {
+        fetchWithAuth("http://" + window.location.hostname + ":5000/api/UserDeck/all").then(function (result) {
             if (result.status == 500) {
                 swal("You don't have any decks!")
                 return;
@@ -317,18 +329,19 @@ $(document).ready(function () {
                 
                 data.forEach(function (value) { 
                   var newLi =  $("<li />").append(
-                                  $("<a />").text(value.name)
+                                  $("<a />").text(value.deckName)
                               ); 
                     
                    list.append(newLi);
                    
                    newLi.click(function () {
-                       if (deckBuilding) {
+                       if (deckBuilding || firstShow) {
                            var html2 = $('#deckView').html();
 
                            $('.deck-card').html(html2);
 
                            deckBuilding = false;
+                           firstShow = false;
                        }
                        
                        if (selectedDeckLi != null) {
@@ -339,7 +352,9 @@ $(document).ready(function () {
                        
                        selectedDeckLi = $(this);
                        
-                       fetchAndLoadDeck(value.name);
+                       fetchAndLoadDeck(value.deckName);
+                       
+                       $('#deckName').text(value.deckName);
                    });
                 });
 
@@ -351,6 +366,14 @@ $(document).ready(function () {
                 
                 newLi.click(function () {
                     if (!deckBuilding) {
+                        if (selectedDeckLi != null) {
+                            selectedDeckLi.removeClass("selected");
+                        }
+
+                        $(this).addClass("selected");
+                        
+                        selectedDeckLi = $(this);
+                        
                         startDeckBuilding();
                         
                         deckBuilding = true;
@@ -359,6 +382,7 @@ $(document).ready(function () {
                 
                 if (data.length == 0)
                     newLi.click();
+                    
                 
             }).catch(function (reason) {
                 swal("Couldn't Create Decks", "There was a problem creating your decks :(\nError: " + reason, "error");
@@ -383,7 +407,7 @@ $(document).ready(function () {
     $('#search-btn').click(function () {
         var value = $('#card-name').val();
 
-        fetchWithAuth("http://localhost:5000/api/card/search/" + value).then(function (response) {
+        fetchWithAuth("http://" + window.location.hostname + ":5000/api/card/search/" + value).then(function (response) {
             response.json().then(function (data) {
                 reloadSearchTable(data);
             });
@@ -405,7 +429,44 @@ $(document).ready(function () {
             addCard(nameArray);
             swal(nameArray.length + " Cards Added", "One copy of each card has been added!", "success");
         } else {
-            console.log("Searching outside deckbuilder");
+            var i = nameArray.length;
+            while (i--) {
+                var putData = { DeckName: currentDeck,  CardName: nameArray[i] };
+                
+                putWithAuth("http://" + window.location.hostname + ":5000/api/UserDeck/deck/card", putData).catch(function (reason) {
+                    swal("Error", "Error adding " + putData.CardName + "\nError: " + reason,  "error");
+                });
+            }
+            
+            swal("Deck Updated", nameArray.length + " cards have been added!", "success");
+        }
+    });
+    
+    $("#remove").click(function () {
+        var selectedCards = $('#table').bootstrapTable('getSelections');
+
+        console.log(selectedCards);
+
+        var nameArray = [];
+
+        selectedCards.forEach(function (value) {
+            nameArray.push(value.name);
+        });
+
+        if (deckBuilding) {
+            addCard(nameArray);
+            swal(nameArray.length + " Cards Added", "One copy of each card has been added!", "success");
+        } else {
+            var i = nameArray.length;
+            while (i--) {
+                var putData = { DeckName: currentDeck,  CardName: nameArray[i] };
+
+                deleteWithAuth("http://" + window.location.hostname + ":5000/api/UserDeck/deck/card", putData).catch(function (reason) {
+                    swal("Error", "Error removing " + putData.CardName + "\nError: " + reason,  "error");
+                });
+            }
+
+            swal("Deck Updated", nameArray.length + " cards have been removed!", "success");
         }
     });
 });
