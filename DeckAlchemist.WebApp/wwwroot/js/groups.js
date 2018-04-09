@@ -1,6 +1,10 @@
 ﻿authorizeOrLogin();
 var groupsModel = {}
 
+function sameUser(userId) {
+    return firebase.auth().currentUser.uid == userId;
+}
+
 function getGroupsAndPopulate() {
         getAllUserGroups().then(function (result) {
             groupsModel = result;
@@ -37,14 +41,17 @@ function getGroupsAndPopulate() {
                         col.append(element)
                         row.append(col)
                         col = $("<div class='col-sm-3'></div>")
-                        var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
-                        element.click(function(e){
-                            createNewUserMessageDialog(groupInfo, member)
-                        })
-                        loanButton.click(function(e) {
-                            createNewLoanDialog(groupInfo, member)
-                        })
-                        col.append(loanButton)
+                        if(!sameUser(member.userId)) {
+                            var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
+                            element.click(function(e){
+                                createNewUserMessageDialog(groupInfo, member)
+                            })
+                            loanButton.click(function(e) {
+                                createNewLoanDialog(groupInfo, member)
+                            })
+                            col.append(loanButton)
+                        }
+
                         row.append(col)
                         container.append(row)
                         list.append(container)
