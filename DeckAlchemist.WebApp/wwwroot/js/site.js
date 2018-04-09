@@ -1,5 +1,5 @@
 ﻿promiseQueue = [];
-var apiEndPoint = "http://209.6.196.14:5000/"
+var apiEndPoint = "http://"+window.location.hostname+":5000/";
 /*
     * Fetches a resource from an endpoint that expects authorization.
     * Achieves this by automatically appending the firebase id token
