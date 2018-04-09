@@ -260,11 +260,16 @@ $(document).ready(function () {
         var notLendable = [];
         var selectedCards = $('#table').bootstrapTable('getSelections');
         
+        if (selectedCards.length == 0) {
+            swal("No Cards", "You must select at least one card to toggle!", "error");
+            return;
+        }
+        
         selectedCards.forEach(function (value) {
             if (value.lendable) {
-                notLendable.push({lendable: false, cardName: value.name});
+                notLendable.push({lenable: false, cardName: value.name});
             } else {
-                lendable.push({lendable: true, cardName: value.name});
+                lendable.push({lenable: true, cardName: value.name});
             }
         });
         
@@ -272,23 +277,29 @@ $(document).ready(function () {
             if (notLendable.length > 0) {
                 swal({
                         title: "Mark Not Lendable?",
-                        text: "This will mark " + lendable.length + " cards as not lendable.\nWould you like to continue?",
+                        text: "This will mark " + notLendable.length + " cards as not lendable.\nWould you like to continue?",
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonClass: "btn-danger",
                         confirmButtonText: "Yes",
-                        closeOnConfirm: false
+                        closeOnConfirm: true
                     },
                     function() {
                         var postData = notLendable;
 
-                        deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
+                        postWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
                             reloadCollection();
+                            
+                            if (fromSwal) 
+                                swal("Cards Marked", "A total of " + (lendable.length + notLendable.length) + " cards have been marked!", "success");
+                            else
+                                swal("Cards Marked", "" + (lendable.length + notLendable.length) + " cards have been marked not lendable!", "success");
                         });
                     }
                 );
             } else if (fromSwal) {
                 reloadCollection();
+                swal("Cards Marked", "" + (lendable.length + notLendable.length) + " cards have been marked lendable!", "success");
             } else {
                 swal("No Cards", "You must select at least one card to toggle!", "error");
             }
@@ -302,12 +313,12 @@ $(document).ready(function () {
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Yes",
-                    closeOnConfirm: false
+                    closeOnConfirm: true
                 },
                 function() {
                     var postData = lendable;
                     
-                    deleteWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
+                    postWithAuth("http://" + window.location.hostname + ":5000/api/collection/mark", postData).then(function (value) {
                         notLendableFunc(true);
                     });
                 }
