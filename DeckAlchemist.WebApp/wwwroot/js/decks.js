@@ -71,10 +71,13 @@ $(document).ready(function () {
     }
     
     function reloadDeckTable(cards) {
+        //Ensure old tables don't override image
+        $('#table').off('post-body.bs.table');
         $('#table').bootstrapTable("destroy");
         $('#table').bootstrapTable({
             clickToSelect: true,
             idField: 'id',
+            search: true, 
             columns: [{
                 field: 'state',
                 checkbox: true
@@ -83,7 +86,8 @@ $(document).ready(function () {
                 title: 'Name',
                 class: 'name-style',
                 align: 'center',
-                halign: 'center'
+                halign: 'center',
+                searchable: true
             }, {
                 field: 'amount',
                 title: 'Amount',
@@ -92,17 +96,23 @@ $(document).ready(function () {
             }],
             data: cards
         });
+        function showImageOnHover() {
+            $('tr[id]').each(function (index) {
+                var card = cards[index];
 
-        $('tr[id]').each(function (index) {
-            var card = cards[index];
-
-            $(this).mouseenter(function() {
-                getCardImage(card.name).then(function(e) {
-                    var src = e.normal;
-                    $('#card-img').show().attr('src', src);
+                $(this).mouseenter(function() {
+                    getCardImage(card.name).then(function(e) {
+                        var src = e.normal;
+                        $('#card-img').show().attr('src', src);
+                    });
                 });
             });
-        });
+        }
+
+        showImageOnHover();
+
+        //Make sure WE ALWAYS SHOW THE LIGHT
+        $('#table').on('post-body.bs.table', showImageOnHover);
     }
     
     function addCard(nameArray, cardCountCache) {
@@ -327,6 +337,8 @@ $(document).ready(function () {
 
                 list.empty();
                 
+                var firstLi = null;
+                
                 data.forEach(function (value) { 
                   var newLi =  $("<li />").append(
                                   $("<a />").text(value.deckName)
@@ -356,6 +368,10 @@ $(document).ready(function () {
                        
                        $('#deckName').text(value.deckName);
                    });
+                   
+                   if (firstLi == null) {
+                       firstLi = newLi;
+                   }
                 });
 
                 var newLi =  $("<li />").append(
@@ -382,6 +398,8 @@ $(document).ready(function () {
                 
                 if (data.length == 0)
                     newLi.click();
+                else
+                    firstLi.click();
                     
                 
             }).catch(function (reason) {
