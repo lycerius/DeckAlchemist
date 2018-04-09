@@ -102,7 +102,7 @@ function buildBorrowedTableFromCollection(collection) {
             lender
             amountBorrowed
              */
-            var c = borrowed[name];
+            var c = borrowed[name][Object.keys(borrowed[name])[0]];
 
             /*
             cmc
