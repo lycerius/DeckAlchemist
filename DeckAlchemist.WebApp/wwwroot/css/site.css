@@ -397,3 +397,7 @@ li.selected {
     background-color: #fff;
     color: #000 !important;
 }
+
+.bad {
+    background-color: #e06969;
+}

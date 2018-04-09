@@ -88,6 +88,57 @@ function buildTableFromDeck(deck) {
     return result;
 }
 
+function buildBorrowedTableFromCollection(collection) {
+    var cardInfo = collection.cardInfo;
+    var borrowed = collection.userCollection.borrowedCards;
+
+    var result = [];
+
+    var id = 1;
+    for (var name in borrowed) {
+        if (borrowed.hasOwnProperty(name)) {
+            /*
+            cardId
+            lender
+            amountBorrowed
+             */
+            var c = borrowed[name];
+
+            /*
+            cmc
+            colors
+            imageName
+            layout
+            legality
+            manaCost
+            name
+            power
+            subTypes
+            text
+            toughness
+            type
+            types
+            _id
+             */
+            var info = cardInfo[c.cardId];
+
+            var newCard = Object.assign({
+                lendable: c.lendable,
+                available: c.available,
+                inDecks: c.inDecks,
+                lentTo: c.lentTo,
+                totalAmount: c.totalAmount,
+                id: id
+            }, info);
+
+            result.push(newCard);
+            id++;
+        }
+    }
+
+    return result;
+}
+
 function buildTableFromCollection(collection) {
     var cardInfo = collection.cardInfo;
     var owned = collection.userCollection.ownedCards;

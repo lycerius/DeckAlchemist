@@ -115,6 +115,25 @@ $(document).ready(function () {
         $('#table').on('post-body.bs.table', showImageOnHover);
     }
     
+    function checkCompatiblitiy() {
+        var nameArray = [];
+        $("[data-added='added']").each(function () {
+            var name = $(this).attr('data-name');
+            nameArray.push(name);
+        });
+        
+        
+        postWithAuth("http://" + window.location.hostname + ":5000/api/decks/search", nameArray).then(function (value) {
+            $("[data-added='added']").each(function () {
+                var name = $(this).attr('data-name');
+
+                if (value.indexOf(name) == -1) {
+                    $(this).addClass('bad');
+                }
+            });
+        });
+    }
+    
     function addCard(nameArray, cardCountCache) {
         var postData = nameArray;
         
@@ -217,9 +236,10 @@ $(document).ready(function () {
                         if (state === 'not-added') {
                             myList.append(selectedLi);
                             selectedLi.attr('data-added', 'added');
-                            var deckName = selectedLi.attr('data-name')
+                            var deckName = selectedLi.attr('data-name');
                             
                             addCard(deckCache[deckName], cardCountCache[deckName]);
+                            checkCompatiblitiy();
                         }
                     }
                 });
@@ -233,6 +253,7 @@ $(document).ready(function () {
                             selectedLi.attr('data-added', 'not-added');
                             
                             removeCards(deckCache[selectedLi.attr('data-name')]);
+                            checkCompatiblitiy();
                         }
                     }
                 });
@@ -309,6 +330,7 @@ $(document).ready(function () {
                 
                 $('#clearAll').click(function () {
                     startDeckBuilding(); //Recall function will clear everything
+                    deckBuilderCards = [];
                 })
             }).catch(function (reason) {
                 swal("Couldn't start deck builder!", "There was a problem getting the meta decks :(\nError: " + reason, "error");
