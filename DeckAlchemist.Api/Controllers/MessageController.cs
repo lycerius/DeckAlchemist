@@ -93,8 +93,8 @@ namespace DeckAlchemist.Api.Controllers
             var user = _userSource.Get(userId);
             user.Groups.Add(groupId);
             _userSource.Update(user);
-            groupInvite.Accepted = true;
-            _messageSource.Update(userId, groupInvite);
+            //TODO: groupInvite.Accepted = true;
+            _messageSource.DeleteMessage(userId, groupInvite.MessageId);
         }
 
         [Route("accept/loan")]
@@ -113,6 +113,7 @@ namespace DeckAlchemist.Api.Controllers
                                             new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardsAndAmounts = loanRequest.RequestedCardsAndAmounts });
             loanTask.Wait();
             loanTask.Result.EnsureSuccessStatusCode();
+            _messageSource.DeleteMessage(userId, messageId);
         }
 
         

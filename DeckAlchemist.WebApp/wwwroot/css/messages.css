@@ -1,4 +1,5 @@
 ﻿#inbox-content {
     border-right-style: solid;
-    border-width: thin
+    border-width: thin;
+    border-right-color: #aaaaaa;
 }

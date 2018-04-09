@@ -73,6 +73,7 @@ function getGroupsAndPopulate() {
     }
 
     function createNewUserMessageDialog(group, user) {
+        newUserDialogError("")
         var newMessageDialog = $('#newMessageDialog')
         var userTextBox = $('#message-user')
         var sendMessageBtn = $('#create-message-btn')
@@ -81,7 +82,11 @@ function getGroupsAndPopulate() {
         sendMessageBtn.click(function(e) {
             var subjectTextBox = $('#message-subject')
             var bodyTextBox = $('#message-body')
-
+            if(subjectTextBox.val() == "" || subjectTextBox.val() == null) {
+                newUserDialogError("Subject is required")
+                return;
+            }
+                
             var message = {
                 "groupId": group.groupId,
                 "subject": subjectTextBox.val(),
@@ -99,15 +104,32 @@ function getGroupsAndPopulate() {
         })
         newMessageDialog.modal("toggle")
 
+
+    }
+
+    function newUserDialogError(message) {
+        $("#new-user-message-error").text(message);
+    }
+
+    function newGroupInviteError(message) {
+        $("#group-invite-error").text(message);
+    }
+
+    function newLoanError(message) {
+        $("#loan-request-error").text(message)
     }
 
     function createNewGroupInviteDialog(group) {
-
+        newGroupInviteError("")
         var modal = $('#newGroupInviteDialog')
         var sendGroupInviteBtn = $('#create-invite-btn')
         sendGroupInviteBtn.click(function(e) {
             var userNameTextBox = $('#invite-user')
             var userName = userNameTextBox.val()
+            if(userName == "" || userName == null) {
+                newGroupInviteError("Username is required")
+                return;
+            }
             var message = {
                 "groupId": group.groupId,
                 "subject": "Invite!",
@@ -125,10 +147,12 @@ function getGroupsAndPopulate() {
 
         modal.modal("toggle")
 
+
    }
 
    function createNewLoanDialog(group, user) {
         getOwnedCardsForUser(user.userId).then(function(collection){
+            newLoanError("")
             collection.userCollection = {}
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')
@@ -136,7 +160,11 @@ function getGroupsAndPopulate() {
                 var subjectTextBox = $('#loan-subject')
                 var bodyTextBox = $('#loan-body')
                 var modal = $('#newLoanDialog')
-                var subject = subjectTextBox.val()
+                var subject = subjectTextBox.val() ///Required
+                if(subject == "" || subject == null){
+                    newLoanError("Subject is required")
+                    return;
+                }
                 var body = bodyTextBox.val()
                 var selectedCards = $('#collectionTable').bootstrapTable('getSelections')
                 var requestedCardsAndAmounts = {}
@@ -144,6 +172,10 @@ function getGroupsAndPopulate() {
                     var card = selectedCards[cardIndex]
                     requestedCardsAndAmounts[card.name] = 1
                 })
+                if(Object.keys(requestedCardsAndAmounts).length == 0) {
+                    newLoanError("You need to loan at least 1 card")
+                    return;
+                }
                 var message = {
                     "groupId": group.groupId,
                     "subject": subject,
@@ -223,6 +255,7 @@ function getGroupsAndPopulate() {
             })
             $('.bootstrap-table').css("max-width", "100%")
             modal.modal("toggle")
+
         }
 
         );
