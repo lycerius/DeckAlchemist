@@ -125,7 +125,7 @@ function getGroupsAndPopulate() {
         newGroupInviteError("")
         var modal = $('#newGroupInviteDialog')
         var sendGroupInviteBtn = $('#create-invite-btn')
-        sendGroupInvite.off();
+        sendGroupInviteBtn.off();
         sendGroupInviteBtn.click(function(e) {
             var userNameTextBox = $('#invite-user')
             var userName = userNameTextBox.val()
