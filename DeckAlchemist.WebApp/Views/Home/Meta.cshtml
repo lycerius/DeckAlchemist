@@ -1,0 +1,104 @@
+﻿@section Style {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="~/css/groups.css" />
+}
+
+@section Scripts {
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+			authDomain: "deckalchemist.firebaseapp.com",
+			databaseURL: "https://deckalchemist.firebaseio.com/",
+			projectId: "deckalchemist",
+			storageBucket: "deckalchemist.appspot.com",
+			messagingSenderId: "560047522639"
+		};
+		firebase.initializeApp(config);
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+	<script src="https://codepen.io/anon/pen/aWapBE.js"></script>
+	<script>
+		$(document).ready(function() {
+			var ctx = document.getElementById("metaCanvas").getContext('2d');
+
+			fetchWithAuth("http://" + window.location.hostname + ":5000/api/decks/all").then(function(result) {
+				if (result.status == 500) {
+					swal("There are no meta decks!");
+					return;
+				}
+
+				result.json().then(function(data) {
+					var selectedLi = null;
+					var deckCache = {};
+					var cardCountCache = {};
+					var labels = [];
+					var metaData = [];
+					var otherCount = 0;
+					data.forEach(function(value) {
+						if (value.meta >= 1) {
+							labels.push(value.name);
+							metaData.push(value.meta);
+						} else {
+							otherCount += value.meta;
+						}
+					});
+
+					labels.push("Other");
+					metaData.push(otherCount);
+
+					new Chart(ctx,
+						{
+							type: 'pie',
+							data: {
+								labels: labels,
+								datasets: [
+									{
+										label: 'Meta %',
+										data: metaData,
+										backgroundColor: palette('tol-sq', metaData.length).map(function(hex) {
+											return '#' + hex;
+										})
+									}
+								]
+							},
+							options: {
+								scales: {
+									yAxes: [
+										{
+											ticks: {
+												beginAtZero: true
+											}
+										}
+									]
+								}
+							}
+						});
+
+				}).catch(function(reason) {
+					swal("Couldn't get analytics", "There was a problem getting the meta analytics :(\nError: " + reason, "error");
+				});
+			}).catch(function(reason) {
+				swal("Couldn't get analytics", "There was a problem getting the meta analytics :(\nError: " + reason, "error");
+			});
+		});
+	</script>
+}
+
+
+@section SidebarOptions {
+    <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
+    <li>@Html.ActionLink("Decks", "Decks", "Home")</li>
+    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+    <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
+    <li>@Html.ActionLink("Meta Analytics", "Meta")</li>
+}
+
+
+<div class="home-content container">
+	<canvas id="metaCanvas" width="400" height="400"></canvas>
+</div>
