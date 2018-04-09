@@ -33,7 +33,7 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
                 ImageName = card.ImageName,
                 Layout = card.Layout,
                 ManaCost = card.ManaCost,
-                Name = card.Name,
+                Name = card.Name.Replace("\"", ""),
                 Power = card.Power,
                 SubTypes = card.SubTypes,
                 Text = card.Text,
