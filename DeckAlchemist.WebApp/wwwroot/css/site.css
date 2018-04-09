@@ -284,8 +284,9 @@ ul.sidebar-nav li {
 }
 
 .table-actions {
-    margin-bottom: -40px;
-    margin-left: 0;
+    padding-bottom: -5px;
+    padding-left: 1em;
+    padding-top: 1em;
 }
 
 .table-btn {

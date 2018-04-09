@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using DeckAlchemist.Api.Contracts;
+using DeckAlchemist.Api.Sources.User;
+using DeckAlchemist.Api.Sources.Group;
 
 namespace DeckAlchemist.Api.Controllers
 {
@@ -15,11 +17,14 @@ namespace DeckAlchemist.Api.Controllers
     public class MessageController : Controller
     {
         readonly IMessageSource _messageSource;
+        readonly IUserSource _userSource;
+        readonly IGroupSource _groupSource;
 
-        public MessageController(IMessageSource messageSource)
+        public MessageController(IMessageSource messageSource, IUserSource userSource, IGroupSource groupSource)
         {
             _messageSource = messageSource;
-           
+            _userSource = userSource;
+            _groupSource = groupSource;
         }
 
         [Route("all")]
@@ -41,21 +46,35 @@ namespace DeckAlchemist.Api.Controllers
         [HttpPost]
         public void SendMessageToUser([FromBody] UserMessageContract message)
         {
-            _messageSource.SendMessage(message.ToUserMessage());
+            var m = message.ToUserMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("send/loan")]
         [HttpPost]
         public void SendLoanRequestToUser([FromBody] LoanRequestMessageContract message)
         {
-            _messageSource.SendMessage(message.ToLoanRequestMessage());
+            var m = message.ToLoanRequestMessage();
+            m.SenderId = HttpContext.User.Id();
+            _messageSource.SendMessage(m);
         }
 
         [Route("send/invite")]
         [HttpPost]
-        public void SendGroupInviteToUser([FromBody] GroupInviteContract message)
+        public IActionResult SendGroupInviteToUser([FromBody] GroupInviteContract message)
         {
-            _messageSource.SendMessage(message.ToGroupInviteMessage());
+            var user = _userSource.GetUserByUserName(message.RecipientUserName);
+            if (user == null) return StatusCode(404);
+            var m = message.ToGroupInviteMessage();
+            var group = _groupSource.GetGroupInfo(message.GroupId);
+            m.SenderId = HttpContext.User.Id();
+            m.RecipientId = user.UserId;
+            m.Subject = "Group Invite: " + group.GroupName;
+            m.Body = "You have been invited to " + group.GroupName + ". Click 'Accept' to be added to this group!";
+            _messageSource.SendMessage(m);
+
+            return StatusCode(200);
         }
 
         [Route("accept/invite")]
@@ -71,8 +90,11 @@ namespace DeckAlchemist.Api.Controllers
             var task = client.Auth(HttpContext.GetIdToken()).PutAsync($"http://localhost:5000/api/group/{groupId}/member", userId);
             task.Wait();
             task.Result.EnsureSuccessStatusCode();
-            groupInvite.Accepted = true;
-            _messageSource.Update(userId, groupInvite);
+            var user = _userSource.Get(userId);
+            user.Groups.Add(groupId);
+            _userSource.Update(user);
+            //TODO: groupInvite.Accepted = true;
+            _messageSource.DeleteMessage(userId, groupInvite.MessageId);
         }
 
         [Route("accept/loan")]
@@ -91,6 +113,7 @@ namespace DeckAlchemist.Api.Controllers
                                             new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardsAndAmounts = loanRequest.RequestedCardsAndAmounts });
             loanTask.Wait();
             loanTask.Result.EnsureSuccessStatusCode();
+            _messageSource.DeleteMessage(userId, messageId);
         }
 
         

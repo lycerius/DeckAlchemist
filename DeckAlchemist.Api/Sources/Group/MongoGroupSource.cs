@@ -55,5 +55,19 @@ namespace DeckAlchemist.Api.Sources.Group
             collection.InsertOne(mongoGroup);
 
         }
+
+        public IGroup GetGroupInfo(string groupId)
+        {
+            var query = _filter.Eq("GroupId", groupId);
+            var group = collection.Find(query).FirstOrDefault();
+            return group;
+        }
+
+        public IEnumerable<IGroup> GetGroups(IEnumerable<string> groupIds)
+        {
+            var query = _filter.In("GroupId", groupIds);
+            var groups = collection.Find(query);
+            return groups.ToList();
+        }
     }
 }

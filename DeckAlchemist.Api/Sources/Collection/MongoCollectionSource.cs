@@ -50,6 +50,7 @@ namespace DeckAlchemist.Api.Sources.Collection
             var query = _filter.Eq("CollectionId", mongoCollection.CollectionId);
             collection.FindOneAndReplace(query, mongoCollection);
         }
+
         public ICollection GetCollection(string uId){
             var query = _filter.Eq("UserId", uId);
             var userCollection = collection.Find(query).FirstOrDefault();
@@ -71,9 +72,9 @@ namespace DeckAlchemist.Api.Sources.Collection
             {
                 userCollection.BorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
             }
-            foreach(var card in cardName)
+            foreach(var cardA in cardName)
             {
-                
+                var card = cardA.Replace("\\\"", "\"");
                 if(userCollection.OwnedCards.ContainsKey(card))
                 {
                     userCollection.OwnedCards[card].TotalAmount++;
@@ -128,10 +129,10 @@ namespace DeckAlchemist.Api.Sources.Collection
                 if (!userCollection.OwnedCards.ContainsKey(cardName)) return false;
 
                 var card = userCollection.OwnedCards[cardName];
-                if (card.TotalAmount < amount) return false;
+
+                if (card.Available < amount) return false;
 
                 card.LentTo[lendee] = amount;
-                card.TotalAmount -= amount;
                 collection.FindOneAndReplace(query, userCollection);
             }
             return true;
@@ -218,6 +219,22 @@ namespace DeckAlchemist.Api.Sources.Collection
             }
 
             collection.FindOneAndReplace(query, userCollection);
+            return true;
+        }
+
+        public bool MarkCardsAsLendable(string userId, IDictionary<string, bool> lendingStatus)
+        {
+            var query = _filter.Eq("UserId", userId);
+            var col = collection.Find(query).FirstOrDefault();
+            if (col == null) return false;
+            var ownedCards = col.OwnedCards;
+            foreach(var status in lendingStatus) {
+                var cardName = status.Key;
+                var lendable = status.Value;
+                if (ownedCards.ContainsKey(cardName))
+                    ownedCards[cardName].Lendable = lendable;
+            }
+            collection.FindOneAndReplace(query, col);
             return true;
         }
     }

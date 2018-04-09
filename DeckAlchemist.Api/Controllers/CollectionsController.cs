@@ -52,6 +52,25 @@ namespace DeckAlchemist.Api.Controllers
             return model;  
         } 
 
+        [HttpPost]
+        public OwnedCardsModel GetOthersOwnedCollection([FromBody] string otherUID)
+        {
+            var result = _collectionSource.GetCollection(otherUID);
+            if (result == null || result.OwnedCards == null || result.BorrowedCards == null) return null;
+
+            //Only lendable cards should be here
+            var ownedCards = result.OwnedCards;
+            var lendableOwnedCards = new Dictionary<string, IOwnedCard>(ownedCards.Where(card => card.Value.Lendable));
+            var cardInfo = GetCardInfo(lendableOwnedCards.Keys);
+            var model = new OwnedCardsModel
+            {
+                OwnedCards = lendableOwnedCards,
+                CardInfo = cardInfo
+            };
+            return model;
+        }
+
+
         [HttpGet("slim")]
         public CollectionModel GetCollectionSlim() 
         {
@@ -96,7 +115,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
                 var cardExists = _cardSource.CheckExistance(cardnames);
-                if (!cardExists) return StatusCode(401);
+                if (!cardExists) return StatusCode(400);
                 var result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
@@ -148,20 +167,45 @@ namespace DeckAlchemist.Api.Controllers
             }
         }
 
+        [HttpPost("mark")]
+        public IActionResult MarkCardsAsLendable([FromBody] IEnumerable<LendableContract> cardNames)
+        {
+            var userId = HttpContext.User.Id();
+            var lendableDictionary = new Dictionary<string, bool>();
+            foreach (var lendable in cardNames)
+                lendableDictionary[lendable.CardName] = lendable.Lenable;
+            if (_collectionSource.MarkCardsAsLendable(userId, lendableDictionary))
+                return StatusCode(200);
+            return StatusCode(500);
+        }
+
         [HttpPost("csv")]
-        public void AddCardsFromCsv()
+        public IActionResult AddCardsFromCsv()
         {
             var csv = Request.Form.Files.FirstOrDefault();
             //CSV Must be less than 5MB
-            if (csv == null) return;
+            if (csv == null) return StatusCode(400);
             if(csv.Length > 5242880) {
-                return;
+                return StatusCode(400);
             }
             var uId = HttpContext.User.Id();
             var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
             var entries = GetCsvEntries(tempFile);
-            var toDict = new Dictionary<string, int>(entries.Select(entry => new KeyValuePair<string, int>(entry.CardName, entry.Amount)));
-            _collectionSource.AddCardToCollection(uId, toDict);
+            var toDict = new Dictionary<string, int>();
+            foreach(var entry in entries) {
+                if (toDict.ContainsKey(entry.CardName))
+                    toDict[entry.CardName] += entry.Amount;
+                else
+                    toDict.Add(entry.CardName, entry.Amount);
+            }
+            if (_cardSource.CheckExistance(toDict.Keys.ToList()))
+            {
+                _collectionSource.AddCardToCollection(uId, toDict);
+                return StatusCode(200);
+            }
+            else
+                return StatusCode(400);
+                
         }
 
         string CreateTempFileAndAcceptUpload(Stream upload)
@@ -190,5 +234,7 @@ namespace DeckAlchemist.Api.Controllers
             System.IO.File.Delete(path);
             return entries;
         }
+
+
     }
 }

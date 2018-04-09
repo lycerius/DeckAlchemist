@@ -84,7 +84,19 @@ namespace DeckAlchemist.Api.Sources.Messages
 
         public void Update(string userId, IMessage message)
         {
-            throw new NotImplementedException();
+            var boxQuery = _filter.Eq("UserId", userId);
+            var box = collection.Find(boxQuery).FirstOrDefault();
+            if (box == null) return;
+            box.Messages[message.MessageId] = message;
+            collection.FindOneAndReplace(boxQuery, box);
+        }
+
+        public void DeleteMessage(string userId, string messageId) 
+        {
+            var query = _filter.Eq("UserId", userId);
+            var box = collection.Find(query).FirstOrDefault();
+            box.Messages.Remove(messageId);
+            collection.FindOneAndReplace(query, box);
         }
     }
 }
