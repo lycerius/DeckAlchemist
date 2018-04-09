@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DeckAlchemist.Support.Objects.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -59,6 +61,24 @@ namespace DeckAlchemist.Api.Sources.User
             return collection.Find(query).Any();
         }
 
+        public IDictionary<string, string> GetUserNamesByUserIds(string[] userIds)
+        {
+            var query = _filter.In("UserId", userIds);
+            var users = collection.Find(query).ToList();
+            var userDictionary = new Dictionary<string, string>();
+            foreach(var user in users)
+            {
+                userDictionary.Add(user.UserId, user.UserName);
+            }
 
+            return userDictionary;
+        }
+
+        public IUser GetUserByUserName(string userName)
+        {
+            var query = _filter.Eq("UserName", userName);
+            var result = collection.Find(query).FirstOrDefault();
+            return result;
+        }
     }
 }

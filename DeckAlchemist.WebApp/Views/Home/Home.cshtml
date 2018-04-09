@@ -1,8 +1,8 @@
-﻿@section Style {
+@section Style {
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-	
+	<link rel="stylesheet" href="~/css/groups.css" />
 }
 
 @section Scripts {
@@ -25,11 +25,12 @@
 
 
 @section SidebarOptions {
-	<li><a href="#">My Collections</a></li>
-	<li>@Html.ActionLink("Deck Builder", "Decks")</li>
-	<li><a href="#">Social</a></li>
-	<li><a href="#">Meta Analytics</a></li>
-	<li><a href="#">Settings</a></li>
+    <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
+    <li><a href="#">Decks</a></li>
+    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+    <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
+    <li>@Html.ActionLink("Login", "Index", "Login")</li>
+    <li><a href="#">Meta Analytics</a></li>
 }
 
 
@@ -45,7 +46,7 @@
 		<div class="col col-lg-9">
 
 			<!-- This table can't be styled because it's removed at runtime -->
-			<table id="table"></table>
+			<table id="table" class="groupTable"></table>
 		</div>
 		<img class="col col-lg-3" src="#" id="card-img"/>
 	</div>

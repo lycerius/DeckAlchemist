@@ -37,7 +37,7 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
         public IEnumerable<IMtgCard> SearchByName(string byName)
         {
             var searchQuery = _filter.Regex("Name", new BsonRegularExpression($".*{byName}.*", "i"));
-            return collection.Find(searchQuery).ToList();
+            return collection.Find(searchQuery).SortBy(card => card.Name).Limit(50).ToList();
         }
     }
 }

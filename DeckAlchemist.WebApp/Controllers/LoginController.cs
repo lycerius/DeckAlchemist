@@ -9,10 +9,7 @@ namespace DeckAlchemist.WebApp.Controllers
     {
         public IActionResult Index()
         {
-            if (User.IsLoggedIn())
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            
             
             return View("Login");
         }

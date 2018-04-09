@@ -13,6 +13,7 @@ namespace DeckAlchemist.Api.Sources.Collection
         bool RemoveCardFromCollection(string uId, IEnumerable<string> cardName);
         bool MarkCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         bool AddCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
+        bool MarkCardsAsLendable(string userId, IDictionary<string, bool> lendingStatus);
         void Init();
         void Create(ICollection collec);
         void Update(ICollection collection);
