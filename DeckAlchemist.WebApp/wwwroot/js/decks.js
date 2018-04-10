@@ -343,6 +343,7 @@ $(document).ready(function () {
                 $('#clearAll').click(function () {
                     startDeckBuilding(); //Recall function will clear everything
                     deckBuilderCards = [];
+                    reloadDeckTable(deckBuilderCards);
                 })
             }).catch(function (reason) {
                 swal("Couldn't start deck builder!", "There was a problem getting the meta decks :(\nError: " + reason, "error");
