@@ -27,11 +27,15 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
             return collection.Find(byNameFilter).ToList();
         }
 
-        public bool CheckExistance(IList<string> cardNames)
+        public IEnumerable<string> CheckExistance(IList<string> cardNames)
         {
             var byNameFilter = _filter.In("Name", cardNames);
-            if (cardNames.Count == collection.Find(byNameFilter).ToList().Count) return true;
-            return false;
+            var cards = collection.Find(byNameFilter).ToList();
+            var cardSet = new HashSet<string>();
+            var notFound = new List<string>();
+            foreach (var card in cards) cardSet.Add(card.Name);
+            foreach (var card in cardNames) if (!cardSet.Contains(card)) notFound.Add(card);
+            return notFound;
         }
 
         public IEnumerable<IMtgCard> SearchByName(string byName)
