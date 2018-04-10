@@ -44,10 +44,38 @@ namespace DeckAlchemist.Api.Controllers
             if (result == null || result.OwnedCards == null || result.BorrowedCards == null) return null;
             var uniqueCardNames = GetUniqueCardNames(result.OwnedCards.Keys, result.BorrowedCards.Keys);
             var cardInfo = GetCardInfo(uniqueCardNames);
+
+            var newBorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
+            var userids = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
+            var userNames = _userSource.GetUserNamesByUserIds(userids);
+            foreach(var borrowedCards in result.BorrowedCards) {
+                var cardName = borrowedCards.Key;
+                var borrowed = borrowedCards.Value;
+                foreach(var user in borrowed) {
+                    var bCard = new BorrowedCardModel
+                    {
+                        AmountBorrowed = user.Value.AmountBorrowed,
+                        CardId = user.Value.CardId,
+                        Lender = user.Value.Lender,
+                        LenderUserName = userNames[user.Value.Lender]
+                    };
+                    if (!newBorrowedCards.ContainsKey(cardName))
+                        newBorrowedCards[cardName] = new Dictionary<string, IBorrowedCard>();
+
+                    newBorrowedCards[cardName].Add(user.Value.Lender, bCard);
+                }
+
+            }
             var model = new CollectionModel
             {
                 CardInfo = cardInfo,
-                UserCollection = result
+                UserCollection = new Collection
+                {
+                    BorrowedCards = newBorrowedCards,
+                    CollectionId = result.CollectionId,
+                    OwnedCards = result.OwnedCards,
+                    UserId = result.UserId
+                }
             };
             return model;  
         } 

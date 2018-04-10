@@ -125,18 +125,18 @@ function buildBorrowedTableFromCollection(collection) {
 
             var newCard = Object.assign({
                 amountBorrowed: c.amountBorrowed,
-                lender: c.lender,
+                lender: c.lenderUserName,
                 id: id
             }, info);
 
             result.push(newCard);
             id++;
             
-            promiseHell.push(
-                getUserName(c.lender).then(function (value) { 
-                    newCard.lender = value;
-                })
-            );
+            //promiseHell.push(
+                //getUserName(c.lender).then(function (value) { 
+                    //newCard.lender = value;
+                //})
+            //);
         }
     }
 
