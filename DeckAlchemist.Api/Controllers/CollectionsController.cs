@@ -115,7 +115,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
                 var cardExists = _cardSource.CheckExistance(cardnames);
-                if (!cardExists.Any()) return StatusCode(400);
+                if (cardExists.Any()) return StatusCode(400);
                 var result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
@@ -135,7 +135,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
                 var cardExists = _cardSource.CheckExistance(cardnames);
-                if (!cardExists.Any()) return StatusCode(401);
+                if (cardExists.Any()) return StatusCode(401);
                 var result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
