@@ -1,39 +1,54 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'WebApp and Api|AnyCPU' ">
+    <IntermediateOutputPath>obj\WebApp and Api</IntermediateOutputPath>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WebApp and Api</OutputPath>
+    <DefineConstants></DefineConstants>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Sources\" />
     <Folder Include="Sources\Cards\" />
     <Folder Include="Sources\Cards\Mtg\" />
-    <Folder Include="Objects\" />
-    <Folder Include="Objects\Cards\" />
     <Folder Include="Sources\Cards\Mtg\External\" />
-    <Folder Include="Sources\Cards\Mtg\Internal\" />
     <Folder Include="Services\" />
-    <Folder Include="Objects\Decks\" />
     <Folder Include="Sources\Decks\" />
     <Folder Include="Sources\Decks\Mtg\" />
     <Folder Include="Sources\Decks\Mtg\External\" />
-    <Folder Include="Sources\Decks\Mtg\Internal\" />
     <Folder Include="Controllers\" />
     <Folder Include="Schedulers\" />
-    <Folder Include="Objects\Messages\" />
+    <Folder Include="Objects\" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="OpenScraping" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Remove="Objects\Cards\IMtgCard.cs" />
+    <Compile Remove="Objects\Cards\IMtgLegality.cs" />
+    <Compile Remove="Objects\Cards\MongoMtgCard.cs" />
+    <Compile Remove="Objects\Cards\MongoMtgLegality.cs" />
+    <Compile Remove="Objects\Cards\MtgCard.cs" />
+    <Compile Remove="Objects\Cards\MtgLegality.cs" />
+    <Compile Remove="Objects\Decks\DeckCompare.cs" />
+    <Compile Remove="Objects\Decks\IMtgDeck.cs" />
+    <Compile Remove="Objects\Decks\IMtgDeckCard.cs" />
+    <Compile Remove="Objects\Decks\MongoMtgDeck.cs" />
+    <Compile Remove="Objects\Decks\MtgDeck.cs" />
+    <Compile Remove="Objects\Decks\MtgDeckCard.cs" />
+    <Compile Remove="Objects\Messages\ServiceStatusMessage.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -41,12 +56,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\DeckAlchemist.Support\DeckAlchemist.Support.csproj" />
+  </ItemGroup>
 </Project>

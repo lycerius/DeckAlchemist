@@ -1,33 +1,58 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'WebApp and Api|AnyCPU' ">
+    <IntermediateOutputPath>obj\WebApp and Api</IntermediateOutputPath>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WebApp and Api</OutputPath>
+    <DefineConstants></DefineConstants>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\" />
     <Folder Include="Sources\" />
-    <Folder Include="Objects\" />
     <Folder Include="Sources\Cards\" />
     <Folder Include="Sources\Deck\" />
     <Folder Include="Sources\Cards\Mtg\" />
-    <Folder Include="Objects\User\" />
-    <Folder Include="Objects\Group\" />
-    <Folder Include="Objects\Collection\" />
     <Folder Include="Sources\Deck\Mtg\" />
     <Folder Include="Sources\User\" />
     <Folder Include="Sources\Group\" />
     <Folder Include="Sources\Collection\" />
+    <Folder Include="Sources\UserDeck\" />
+    <Folder Include="Sources\Messages\" />
+    <Folder Include="Contracts\" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="CsvHelper" Version="7.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.3.0" />
   </ItemGroup>
-
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\.nuget\packages\mongodb.bson\2.5.0\lib\netstandard1.5\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\.nuget\packages\mongodb.driver\2.5.0\lib\netstandard1.5\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\.nuget\packages\mongodb.driver.core\2.5.0\lib\netstandard1.5\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeckAlchemist.Support\DeckAlchemist.Support.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\AuthHelloController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Contracts\LendabilityContract.css" />
+  </ItemGroup>
 </Project>

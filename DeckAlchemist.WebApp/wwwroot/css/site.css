@@ -1,35 +1,407 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px
+﻿/*------------------------------------------------------------------
+[Master Stylesheet]
+
+Project    	: Aether
+Version		: 1.0
+Last change	: 2015/03/27
+-------------------------------------------------------------------*/
+/*------------------------------------------------------------------
+[Table of contents]
+
+1. General Structure
+2. Anchor Link
+3. Text Outside the Box
+4. Main Form
+5. Login Button
+6. Form Invalid
+7. Form - Main Message
+8. Custom Checkbox & Radio
+9. Misc
+-------------------------------------------------------------------*/
+/*=== 1. General Structure ===*/
+html,
+body {
+    background: #efefef;
+    padding: 10px;
+    font-family: 'Varela Round';
+    height: 100%;
+}
+/*=== 2. Anchor Link ===*/
+a {
+    color: #aaaaaa;
+    transition: all ease-in-out 200ms;
+}
+a:hover {
+    color: #333333;
+    text-decoration: none;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px
+.big {
+    font-size: 32px;
+    margin-top: 25%;
+}
+/*=== 3. Text Outside the Box ===*/
+.etc-login-form {
+    color: #919191;
+    padding: 10px 20px;
+}
+.etc-login-form p {
+    margin-bottom: 5px;
+}
+/*=== 4. Main Form ===*/
+.login-form-1 {
+    max-width: 300px;
+    border-radius: 5px;
+    display: inline-block;
+}
+.main-login-form {
+    position: relative;
+}
+.login-form-1 .form-control {
+    border: 0;
+    box-shadow: 0 0 0;
+    border-radius: 0;
+    background: transparent;
+    color: #555555;
+    padding: 7px 0;
+    font-weight: bold;
+    height:auto;
+}
+.login-form-1 .form-control::-webkit-input-placeholder {
+    color: #999999;
+}
+.login-form-1 .form-control:-moz-placeholder,
+.login-form-1 .form-control::-moz-placeholder,
+.login-form-1 .form-control:-ms-input-placeholder {
+    color: #999999;
+}
+.login-form-1 .form-group {
+    margin-bottom: 0;
+    border-bottom: 2px solid #efefef;
+    padding-right: 20px;
+    position: relative;
+}
+.login-form-1 .form-group:last-child {
+    border-bottom: 0;
+}
+.login-group {
+    background: #ffffff;
+    color: #999999;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+.login-group-checkbox {
+    padding: 5px 0;
+}
+/*=== 5. Login Button ===*/
+.login-form-1 .login-button {
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    background: #ffffff;
+    color: #999999;
+    padding: 11px 0;
+    width: 50px;
+    height: 50px;
+    margin-top: -25px;
+    border: 5px solid #efefef;
+    border-radius: 50%;
+    transition: all ease-in-out 500ms;
+}
+.login-form-1 .login-button:hover {
+    color: #555555;
+    transform: rotate(450deg);
+}
+.login-form-1 .login-button.clicked {
+    color: #555555;
+}
+.login-form-1 .login-button.clicked:hover {
+    transform: none;
+}
+.login-form-1 .login-button.clicked.success {
+    color: #2ecc71;
+}
+.login-form-1 .login-button.clicked.error {
+    color: #e74c3c;
+}
+/*=== 6. Form Invalid ===*/
+label.form-invalid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    display: block;
+    margin-top: -25px;
+    padding: 7px 9px;
+    background: #777777;
+    color: #ffffff;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 11px;
+}
+label.form-invalid:after {
+    top: 100%;
+    right: 10px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-top-color: #777777;
+    border-width: 6px;
+}
+/*=== 7. Form - Main Message ===*/
+.login-form-main-message {
+    background: #ffffff;
+    color: #999999;
+    border-left: 3px solid transparent;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    height: 0;
+    padding: 0 20px 0 17px;
+    opacity: 0;
+    transition: all ease-in-out 200ms;
+}
+.login-form-main-message.show {
+    height: auto;
+    opacity: 1;
+    padding: 10px 20px 10px 17px;
+}
+.login-form-main-message.success {
+    border-left-color: #2ecc71;
+}
+.login-form-main-message.error {
+    border-left-color: #e74c3c;
+}
+/*=== 9. Misc ===*/
+.logo {
+    padding: 15px 0;
+    font-size: 25px;
+    color: #aaaaaa;
+    font-weight: bold;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4
+
+.sidebar {
+    min-height: 250px;
+    max-width: 15%;
+    width: 15%;
+    height: 45%;
+    position: absolute;
+    /* float: left; */
+    background-color: #ffffff;
+    border-radius: 3px;
+    /* box-shadow: 5px 10px #888888; */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%
+.content {
+    max-width: 80%;
+    height: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px
+.sidebar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    /* width: 60px; */
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none
-    }
+ul.sidebar-nav li {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.navbar-brand {
+    width: 100%;
+}
+
+.navbar-header {
+    width: 100%;
+    border-bottom: #e4e4e4 2px solid;
+    text-align: center;
+}
+
+.home-content {
+    float: right;
+    width: 80%;
+    max-width: 82%;
+}
+
+#table {
+    width: 80%;
+}
+
+.set-style {
+    min-width: 125px;
+}
+
+.name-style {
+    min-width: 200px;
+}
+
+/*Bootstrap button outline override because fuk*/
+.btn-outline {
+    background-color: transparent;
+    color: inherit;
+    transition: all .5s;
+}
+
+.btn-primary.btn-outline {
+    color: #428bca;
+}
+
+.btn-success.btn-outline {
+    color: #5cb85c;
+}
+
+.btn-info.btn-outline {
+    color: #5bc0de;
+}
+
+.btn-warning.btn-outline {
+    color: #f0ad4e;
+}
+
+.btn-danger.btn-outline {
+    color: #d9534f;
+}
+
+.btn-primary.btn-outline:hover,
+.btn-success.btn-outline:hover,
+.btn-info.btn-outline:hover,
+.btn-warning.btn-outline:hover,
+.btn-danger.btn-outline:hover {
+    color: #fff;
+}
+
+.big-dialog {
+    min-width: 90%;
+}
+
+.table-actions {
+    padding-bottom: -5px;
+    padding-left: 1em;
+    padding-top: 1em;
+}
+
+.table-btn {
+    margin-right: 10px;
+}
+
+#card-img {
+    position: fixed;
+    right: 0;
+    width: 325.333333px;
+    height: 453.333333px;
+}
+
+.decks {
+    display: flex;
+    flex-direction: row;
+}
+
+.deck-card {
+    /* display: table-cell; */
+    height: 80%;
+    background-color: #ffffff;
+    border-radius: 3px;
+    /* box-shadow: 5px 10px #888888; */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    padding: 25px;
+    /* padding-bottom: 0; */
+}
+
+.deck-selection {
+    width: 200px;
+}
+
+.deck-selection > ul {
+    list-style: none;
+    padding: 0;
+}
+
+.deck-selection > ul > li {
+    border: 1px solid #0000;
+    border-radius: 3px;
+    margin-top: 5px;
+    height: 33px;
+    color: #aaabb1 !important;
+    background: #f5f5f5;
+    width: 175px;
+    line-height: 28px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+li.selected {
+   background: #fff; 
+}
+
+.row.deck-btn-list {
+    margin: 10px 0 0;
+}
+
+.deck-card {
+    text-align: center;
+    position: relative;
+}
+
+.deckList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    margin-top: 15px;
+    background-color: #f7f7f7;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+.deckList > li {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 45px;
+    padding-top: 10px;
+}
+
+.deckList > li:hover {
+    background-color: #fff;
+}
+
+.moveBtn {
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.dSpacer {
+    margin-top: 75px;
+}
+
+.deck-builder-btn {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.deck-selection > ul > li:hover {
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.deck-selection .selected {
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.bad {
+    background-color: #e06969;
 }

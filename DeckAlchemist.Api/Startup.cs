@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Api.Utility;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
 using DeckAlchemist.Api.Sources.Collection;
 using DeckAlchemist.Api.Sources.Deck.Mtg;
 using DeckAlchemist.Api.Sources.Group;
+using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Api.Sources.User;
+using DeckAlchemist.Support.Objects.Cards;
+using DeckAlchemist.Support.Objects.Messages;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
+using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.Decks;
+using DeckAlchemist.Api.Sources.UserDeck;
 
 namespace DeckAlchemist.Api
 {
@@ -31,11 +33,15 @@ namespace DeckAlchemist.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
             services.AddCors();
             ConfigureAuthentication(services);
             ConfigureSources(services);
+            services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Deck Alchemist Web Api", Version = "v1" });
+            });
         }
 
         public void ConfigureSources(IServiceCollection services)
@@ -45,6 +51,12 @@ namespace DeckAlchemist.Api
             services.AddTransient<ICollectionSource, MongoCollectionSource>();
             services.AddTransient<IGroupSource, MongoGroupSource>();
             services.AddTransient<IUserSource, MongoUserSource>();
+            services.AddTransient<IMtgCardSource, MongoMtgCardSource>();
+            services.AddTransient<IMtgDeckSource, MongoMtgDeckSource>();
+            services.AddSingleton<IAuthorizationHandler, EmailVerificationHandler>();
+            services.AddTransient<IMessageSource, MongoMessageSource>();
+            services.AddTransient<IUserDeckSource, MongoUserDeckSource>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -59,6 +71,12 @@ namespace DeckAlchemist.Api
                 builder.AllowAnyMethod();
             });
             app.UseAuthentication();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseMvc();
 
@@ -70,12 +88,42 @@ namespace DeckAlchemist.Api
                 cm.AutoMap();
                 cm.SetDiscriminator("MtgLegality");
             });
-            /* Uncomment when MtgDeckCard is Added
-            BsonClassMap.RegisterClassMap<MtgDeckCard>(cm => {
+            BsonClassMap.RegisterClassMap<UserMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("UserMessage");
+            });
+            BsonClassMap.RegisterClassMap<LoanRequestMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("LoanRequestMessage");
+            });
+            BsonClassMap.RegisterClassMap<GroupInviteMessage>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("GroupInviteMessage");
+            });
+            BsonClassMap.RegisterClassMap<BorrowedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("BorrowedCard");
+            });
+            BsonClassMap.RegisterClassMap<OwnedCard>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("OwnedCard");
+            });
+            BsonClassMap.RegisterClassMap<MtgDeckCard>(cm =>
+            {
                 cm.AutoMap();
                 cm.SetDiscriminator("MtgDeckCard");
             });
-            */
+            BsonClassMap.RegisterClassMap<MtgDeck>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminator("MtgDeck");
+            });
+
         }
 
         void ConfigureAuthentication(IServiceCollection services)
@@ -95,6 +143,13 @@ namespace DeckAlchemist.Api
                     };
                     options.SaveToken = true;
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Email", policy => {
+                    policy.AddRequirements(new EmailVerificationRequirement());
+                });
+            });
+            
         }
     }
 }

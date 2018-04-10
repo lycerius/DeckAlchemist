@@ -1,0 +1,113 @@
+﻿@using System.Collections.Specialized
+@{
+    ViewData["Title"] = "Login Page";
+}
+
+@section Style {
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link href="css/login.css" rel="stylesheet" >
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+}
+
+@section Scripts {
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+			authDomain: "deckalchemist.firebaseapp.com",
+			databaseURL: "https://deckalchemist.firebaseio.com/",
+			projectId: "deckalchemist",
+			storageBucket: "deckalchemist.appspot.com",
+			messagingSenderId: "560047522639"
+		};
+		firebase.initializeApp(config);
+	</script>
+	
+	<script src="~/js/login.js"></script>
+	
+	<environment include="Development">
+		<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+		<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+	</environment>
+	<environment exclude="Development">
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"
+		        asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+		        asp-fallback-test="window.jQuery && window.jQuery.validator"
+		        crossorigin="anonymous"
+		        integrity="sha384-Fnqn3nxp3506LP/7Y3j/25BlWeA3PXTyT1l78LjECcPaKCV12TsZP7yyMxOe/G/k">
+		</script>
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"
+		        asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+		        asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
+		        crossorigin="anonymous"
+		        integrity="sha384-JrXK+k53HACyavUKOsL+NkmSesD2P+73eDMrbTtTk0h4RmOF8hF8apPlkp26JlyH">
+		</script>
+	</environment>
+}
+
+
+@section SidebarOptions {
+	<li><a href="#">Login</a></li>
+	<li>@Html.ActionLink("Create Account", "CreateAccount")</li>
+}
+
+
+<div class="container body-content content">
+	<div class="text-center" style="padding:50px 0">
+		<div class="logo">Deck Alchemist</div>
+		<!-- Main Form -->
+		<div class="login-form-1">
+			<form id="login-form" class="text-left">
+				<div class="login-form-main-message"></div>
+				<div class="main-login-form">
+					<div class="login-group">
+						<div class="form-group">
+							<label for="lg_username" class="sr-only">Email</label>
+							<input type="text" class="form-control" id="username" name="lg_username" placeholder="email@example.com">
+						</div>
+						<div class="form-group">
+							<label for="lg_password" class="sr-only">Password</label>
+							<input type="password" class="form-control" id="password" name="lg_password" placeholder="password">
+						</div>
+						<div class="form-group login-group-checkbox">
+							<input type="checkbox" id="lg_remember" name="lg_remember">
+							<label for="lg_remember">remember</label>
+						</div>
+					</div>
+					<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+				</div>
+				<div class="etc-login-form">
+                
+					<p>new user? @Html.ActionLink("register here", "CreateAccount")</p>
+                    <a href="#" id="forgot-password">forgot password?</a>
+				</div>
+			</form>
+		</div>
+		<!-- end:Main Form -->
+	</div>
+</div>
+
+
+<div class="modal fade" id="forgotPasswordDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordHeader">Forgot Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                                    <input type="text" class="form-control" id="forgot-password-email" placeholder="Email Address">
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="forgot-password-send" type="button" class="btn btn-primary">Send</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>

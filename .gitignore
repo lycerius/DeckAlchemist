@@ -1,3 +1,6 @@
+# Rider project folder
+.idea/
+
 _build/
 _site/
 Properties/
@@ -217,3 +220,6 @@ __pycache__/
 Thumbs.db
 
 .idea
+
+#Environment Variables for Docker
+.env

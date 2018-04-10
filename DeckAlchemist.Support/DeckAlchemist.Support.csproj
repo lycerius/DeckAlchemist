@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'WebApp and Api|AnyCPU' ">
+    <IntermediateOutputPath>obj\WebApp and Api</IntermediateOutputPath>
+    <DebugType></DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\WebApp and Api</OutputPath>
+    <DefineConstants></DefineConstants>
+    <NoWarn></NoWarn>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Objects\" />
+    <Folder Include="Objects\Collection\" />
+    <Folder Include="Objects\Group\" />
+    <Folder Include="Objects\User\" />
+    <Folder Include="Objects\Cards\" />
+    <Folder Include="Objects\UserDeck\" />
+    <Folder Include="Objects\Messages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Objects\Cards\MongoMtgLegality.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+</Project>

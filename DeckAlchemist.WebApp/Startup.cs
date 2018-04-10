@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeckAlchemist.WebApp
 {
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -42,8 +43,22 @@ namespace DeckAlchemist.WebApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Login}/{action=Index}"
+                );
+
+                routes.MapRoute(
+                    name: "AccountCreation",
+                    template: "{controller=Login}/{action=CreateAccount}"
+                );
+
+                routes.MapRoute(
+                    name: "Home",
+                    template: "{controller=Home}/{action=Index}"
+                );
             });
+
+
         }
+
     }
 }

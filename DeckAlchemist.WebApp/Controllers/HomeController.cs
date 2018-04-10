@@ -5,28 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.WebApp.Models;
+using DeckAlchemist.Api.Auth;
 
 namespace DeckAlchemist.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
+        {   
+            return View("Home");
         }
 
-        public IActionResult About()
+        public IActionResult Decks()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
+            return View("Decks");
         }
 
-        public IActionResult Contact()
+        public IActionResult Meta()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return View("Meta");
         }
 
         public IActionResult Error()

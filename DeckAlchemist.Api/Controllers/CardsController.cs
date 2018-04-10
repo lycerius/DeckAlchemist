@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using DeckAlchemist.Api.Objects.Card.Mtg;
 using DeckAlchemist.Api.Sources.Cards.Mtg;
+using DeckAlchemist.Support.Objects.Cards;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DeckAlchemist.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/card")]
     public class CardsController : Controller
     {
         readonly IMtgCardSource _source;
@@ -20,10 +18,17 @@ namespace DeckAlchemist.Api.Controllers
             _source = source;
         }
 
+        [HttpGet("search/{byName}")]
+        public IEnumerable<IMtgCard> Search(string byName)
+        {
+            return _source.SearchByName(byName).Select(MtgCard.FromMtg);
+        }
+
+
         [HttpPost("names")]
         public IEnumerable<IMtgCard> GetCardsByName([FromBody] string[] names)
         {
-            var result = _source.GetCardsByNames(names).Select(card => MtgCard.FromMtg(card));
+            var result = _source.GetCardsByNames(names).Select(MtgCard.FromMtg);
             return result;
         }
 

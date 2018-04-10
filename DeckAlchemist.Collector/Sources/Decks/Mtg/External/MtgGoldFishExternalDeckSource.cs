@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
-using DeckAlchemist.Collector.Objects.Decks;
+using DeckAlchemist.Support.Objects.Decks;
 using Newtonsoft.Json.Linq;
 using OpenScraping;
 using OpenScraping.Config;
@@ -19,12 +18,12 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             return GetDecksFromLinks(GetAllDeckLinks(), true).ToList();
         }
 
-        private IEnumerable<IMtgDeck> GetDecksFromLinks(IEnumerable<string> links, bool alsoCards)
+        IEnumerable<IMtgDeck> GetDecksFromLinks(IEnumerable<string> links, bool alsoCards)
         {
             return links.Select(link => GetDeckFromLink($"{MTGGoldfishEndpoint}{link}#paper", alsoCards));
         }
 
-        private IMtgDeck GetDeckFromLink(string link, bool alsoCards)
+        IMtgDeck GetDeckFromLink(string link, bool alsoCards)
         {
             var deck = (alsoCards ? DeckWithCardsScraper : DeckWithoutCardsScraper).Extract(DownloadWebpageSource(link)).First.First;
             return new MtgDeck
@@ -35,7 +34,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             };
         }
 
-        private IDictionary<string, IMtgDeckCard> ParseCardsFromScrapeResult(JArray jCards)
+        IDictionary<string, IMtgDeckCard> ParseCardsFromScrapeResult(JArray jCards)
         {
             var conversion = new Dictionary<string, IMtgDeckCard>();
 
@@ -59,7 +58,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             return conversion;
         }
 
-        private double ParseMetaFromText(string text)
+        double ParseMetaFromText(string text)
         {
             var result = PercentageMatchingPattern.Match(text);
 
@@ -69,19 +68,19 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             return 0D;
         }
 
-        private IEnumerable<string> GetAllDeckLinks()
+        IEnumerable<string> GetAllDeckLinks()
         {
             var endpoint = $"{MTGGoldfishEndpoint}/metagame/standard/full#paper";
             var results = DeckLinksScraper.Extract(DownloadWebpageSource(endpoint));
             return GetDeckLinksFromScraper(results);
         }
 
-        private IEnumerable<string> GetDeckLinksFromScraper(JContainer extraction)
+        IEnumerable<string> GetDeckLinksFromScraper(JContainer extraction)
         {
             return extraction.First.First.Select(token => (string)token);
         }
 
-        private string DownloadWebpageSource(string url)
+        string DownloadWebpageSource(string url)
         {
             var client = new HttpClient();
             var download = client.GetStringAsync(url);
@@ -89,7 +88,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             return download.Result;
         }
 
-        private const string StandardLinksParsingConfig = @"
+        const string StandardLinksParsingConfig = @"
             {
                 ""decklinks"": {
                     ""_xpath"": ""//a[@class='card-image-tile-link-overlay']"",
@@ -104,7 +103,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             }
         ";
 
-        private const string DeckWithCardsPageParsingConfig = @"
+        const string DeckWithCardsPageParsingConfig = @"
         {
             ""deck"": {
                 ""name"": ""//h2[@class='deck-view-title']/text()[1]"",
@@ -118,7 +117,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
         }
         ";
 
-        private const string DeckWithoutCardsPageParsingConfig = @"
+        const string DeckWithoutCardsPageParsingConfig = @"
         {
             ""deck"": {
                 ""name"": ""//h2[@class='deck-view-title']/text()[1]"",
@@ -127,12 +126,12 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
         }
         ";
 
-        private readonly StructuredDataExtractor DeckWithCardsScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(DeckWithCardsPageParsingConfig));
+        readonly StructuredDataExtractor DeckWithCardsScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(DeckWithCardsPageParsingConfig));
 
-        private readonly StructuredDataExtractor DeckWithoutCardsScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(DeckWithoutCardsPageParsingConfig));
+        readonly StructuredDataExtractor DeckWithoutCardsScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(DeckWithoutCardsPageParsingConfig));
 
-        private readonly StructuredDataExtractor DeckLinksScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(StandardLinksParsingConfig));
+        readonly StructuredDataExtractor DeckLinksScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(StandardLinksParsingConfig));
 
-        private readonly Regex PercentageMatchingPattern = new Regex("((\\d+(?:\\.\\d+))%)");
+        readonly Regex PercentageMatchingPattern = new Regex("((\\d+(?:\\.\\d+))%)");
     }
 }

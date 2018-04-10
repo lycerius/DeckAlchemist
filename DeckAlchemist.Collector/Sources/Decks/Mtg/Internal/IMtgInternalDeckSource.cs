@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Decks;
+﻿using System.Collections.Generic;
+using DeckAlchemist.Support.Objects.Decks;
 
 namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
 {

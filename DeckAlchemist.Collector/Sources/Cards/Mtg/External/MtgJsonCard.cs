@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DeckAlchemist.Collector.Objects.Cards;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Linq;
+using DeckAlchemist.Support.Objects.Cards;
+
 namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
 {
     public class MtgJsonCard
@@ -34,18 +33,18 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
                 ImageName = card.ImageName,
                 Layout = card.Layout,
                 ManaCost = card.ManaCost,
-                Name = card.Name,
+                Name = card.Name.Replace("\"", ""),
                 Power = card.Power,
                 SubTypes = card.SubTypes,
                 Text = card.Text,
                 Toughness = card.Toughness,
                 Type = card.Type,
                 Types = card.Types,
-                Legality = card.Legality != null ?  card.Legality.Select(legal => ToMtgLegality(legal)).ToList() : null
+                Legality = card.Legality != null ?  card.Legality.Select(ToMtgLegality).ToList() : null
             };
         }
 
-        public static IMtgLegality ToMtgLegality(MtgJsonLegality legal)
+        public static MtgLegality ToMtgLegality(MtgJsonLegality legal)
         {
             return new MtgLegality
             {

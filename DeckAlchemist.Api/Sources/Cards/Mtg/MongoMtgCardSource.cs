@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeckAlchemist.Api.Objects.Card.Mtg;
+using DeckAlchemist.Support.Objects.Cards;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DeckAlchemist.Api.Sources.Cards.Mtg
@@ -24,6 +25,23 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
         {
             var byNameFilter = _filter.In("Name", names);
             return collection.Find(byNameFilter).ToList();
+        }
+
+        public IEnumerable<string> CheckExistance(IList<string> cardNames)
+        {
+            var byNameFilter = _filter.In("Name", cardNames);
+            var cards = collection.Find(byNameFilter).ToList();
+            var cardSet = new HashSet<string>();
+            var notFound = new List<string>();
+            foreach (var card in cards) cardSet.Add(card.Name);
+            foreach (var card in cardNames) if (!cardSet.Contains(card)) notFound.Add(card);
+            return notFound;
+        }
+
+        public IEnumerable<IMtgCard> SearchByName(string byName)
+        {
+            var searchQuery = _filter.Regex("Name", new BsonRegularExpression($".*{byName}.*", "i"));
+            return collection.Find(searchQuery).SortBy(card => card.Name).Limit(50).ToList();
         }
     }
 }

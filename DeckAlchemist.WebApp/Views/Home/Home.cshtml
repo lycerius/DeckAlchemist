@@ -1,0 +1,114 @@
+@section Style {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="~/css/groups.css" />
+}
+
+@section Scripts {
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+			authDomain: "deckalchemist.firebaseapp.com",
+			databaseURL: "https://deckalchemist.firebaseio.com/",
+			projectId: "deckalchemist",
+			storageBucket: "deckalchemist.appspot.com",
+			messagingSenderId: "560047522639"
+		};
+		firebase.initializeApp(config);
+	</script>
+	<script src="js/home.js"></script>
+}
+
+
+@section SidebarOptions {
+    <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
+    <li>@Html.ActionLink("Decks", "Decks", "Home")</li>
+    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+    <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
+    <li>@Html.ActionLink("Meta Analytics", "Meta")</li>
+}
+
+
+<div class="home-content container">
+	<div class="row table-actions">
+		<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
+		<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
+		<button id="import" data-toggle="modal" data-target="#uploadDialog" type="button" class="btn btn-primary btn-outline table-btn">Import From CSV</button>
+		<button id="lend" type="button" class="btn btn-primary btn-outline table-btn">Toggle Lendable</button>
+	</div>
+	
+	<div class="row" style="padding: 50px 0">
+		<div class="col col-lg-9">
+			
+			<h3 style="margin-bottom: -50px;">Own Cards</h3>
+			<!-- This table can't be styled because it's removed at runtime -->
+			<table id="table" class="groupTable"></table>
+			
+			<h3 style="margin-top: 40px; margin-bottom: -50px;">Borrowed Cards</h3>
+			<table id="borrowedTable" class="groupTable"></table>
+		</div>
+		<img class="col col-lg-3" src="#" id="card-img"/>
+	</div>
+	
+	<!-- Search Modal -->
+	<div class="modal fade" id="searchDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Search for Cards</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<input type="text" id="card-name" placeholder="Search by name..">
+							<button id="search-btn" type="button" class="btn btn-success table-btn">Search</button>
+						</div>
+					</div>
+					
+					<!-- This table can't be styled because it's removed at runtime -->
+					<table id="searchTable"></table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button id="pushCards" type="button" class="btn btn-primary">Add Selected</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Upload Modal -->
+	<div class="modal fade" id="uploadDialog" tabindex="-1" role="dialog" aria-labelledby="uploadCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Upload CSV File</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="uploadForm" action="http://209.6.196.14:5000/api/collection/csv" method="post" enctype="multipart/form-data" >
+						<div class="form-group">
+							<div class="col-md-10">
+								<p>Upload one or more files using this form:</p>
+								<input type="file" name="files" multiple />
+								
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button id="uploadCards" type="button" class="btn btn-primary">Upload</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
