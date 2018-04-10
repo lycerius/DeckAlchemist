@@ -1,5 +1,5 @@
 ﻿promiseQueue = [];
-
+var apiEndPoint = "http://"+window.location.hostname+":5000/";
 /*
     * Fetches a resource from an endpoint that expects authorization.
     * Achieves this by automatically appending the firebase id token
@@ -88,6 +88,54 @@ function buildTableFromDeck(deck) {
     return result;
 }
 
+function buildBorrowedTableFromCollection(collection) {
+    var cardInfo = collection.cardInfo;
+    var borrowed = collection.userCollection.borrowedCards;
+
+    var result = [];
+
+    var id = 1;
+    for (var name in borrowed) {
+        if (borrowed.hasOwnProperty(name)) {
+            /*
+            cardId
+            lender
+            amountBorrowed
+             */
+            var c = borrowed[name][Object.keys(borrowed[name])[0]];
+
+            /*
+            cmc
+            colors
+            imageName
+            layout
+            legality
+            manaCost
+            name
+            power
+            subTypes
+            text
+            toughness
+            type
+            types
+            _id
+             */
+            var info = cardInfo[c.cardId];
+
+            var newCard = Object.assign({
+                amountBorrowed: c.amountBorrowed,
+                lender: c.lender,
+                id: id
+            }, info);
+
+            result.push(newCard);
+            id++;
+        }
+    }
+
+    return result;
+}
+
 function buildTableFromCollection(collection) {
     var cardInfo = collection.cardInfo;
     var owned = collection.userCollection.ownedCards;
@@ -104,6 +152,7 @@ function buildTableFromCollection(collection) {
             inDecks
             lentTo
             totalAmount
+            lendable
              */
             var c = owned[name];
             
@@ -126,6 +175,7 @@ function buildTableFromCollection(collection) {
             var info = cardInfo[c.cardId];
             
             var newCard = Object.assign({
+                lendable: c.lendable,
                 available: c.available,
                 inDecks: c.inDecks,
                 lentTo: c.lentTo,
@@ -264,7 +314,7 @@ function getCardImage(cardName) {
 
 function getGroups() {
     return new Promise(function (resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/user").then(function (result) {
+        fetchWithAuth(apiEndPoint+"api/user").then(function (result) {
             return result.json();
         }).then(function (json) {
             resolve(json.groups)
@@ -276,7 +326,7 @@ function getGroups() {
 
 function getAllUserGroups() {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/group/all").then(function(result) {
+        fetchWithAuth(apiEndPoint+"api/group/all").then(function(result) {
             return result.json();
         }).then(function(json){
             resolve(json)
@@ -288,7 +338,7 @@ function getAllUserGroups() {
 
 function getGroupInfo(groupId) {
     return new Promise(function (resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/group/" + groupId).then(function (result) {
+        fetchWithAuth(apiEndPoint+"api/group/" + groupId).then(function (result) {
             return result.json();
         }).then(function(json){
             resolve(json);
@@ -300,7 +350,7 @@ function getGroupInfo(groupId) {
 
 function getUserNamesByUserIds(userIds) {
     return new Promise(function(resolve, reject){
-        fetchWithAuth("http://localhost:5000/api/user/names", 
+        fetchWithAuth(apiEndPoint+"api/user/names", 
             {
                 method: "POST", 
                 body: JSON.stringify(userIds), 
@@ -319,7 +369,7 @@ function getUserNamesByUserIds(userIds) {
 
 function createGroup(groupName) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/group/"+groupName+"/create", {method: "POST"}).then(function() {
+        fetchWithAuth(apiEndPoint+"api/group/"+groupName+"/create", {method: "POST"}).then(function() {
             resolve()
         }).catch(function(error) {
             reject(error)
@@ -329,7 +379,7 @@ function createGroup(groupName) {
 
 function sendUserMessage(message) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/message/send/user", 
+        fetchWithAuth(apiEndPoint+"api/message/send/user", 
             {
                 method: "POST",
                 body: JSON.stringify(message),
@@ -346,7 +396,7 @@ function sendUserMessage(message) {
 
 function sendGroupInvite(message) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/message/send/invite", 
+        fetchWithAuth(apiEndPoint+"api/message/send/invite", 
             {
                 method: "POST",
                 body: JSON.stringify(message),
@@ -363,7 +413,7 @@ function sendGroupInvite(message) {
 
 function getOwnedCardsForUser(userId) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/collection", {
+        fetchWithAuth(apiEndPoint+"api/collection", {
         method: "POST",
         body: JSON.stringify(userId),
         headers: {
@@ -383,7 +433,7 @@ function getOwnedCardsForUser(userId) {
 
 function acceptLoanRequest(messageId) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/message/accept/loan", {
+        fetchWithAuth(apiEndPoint+"api/message/accept/loan", {
             method: "POST",
             body: JSON.stringify(messageId),
             headers: {
@@ -399,7 +449,7 @@ function acceptLoanRequest(messageId) {
 
 function acceptGroupInvite(messageId) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/message/accept/invite", {
+        fetchWithAuth(apiEndPoint+"api/message/accept/invite", {
             method: "POST",
             body: JSON.stringify(messageId),
             headers: {
@@ -415,7 +465,7 @@ function acceptGroupInvite(messageId) {
 
 function sendLoanRequest(message) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/message/send/loan", {
+        fetchWithAuth(apiEndPoint+"api/message/send/loan", {
              method: "POST",
              body: JSON.stringify(message),
              headers: {
@@ -431,7 +481,7 @@ function sendLoanRequest(message) {
 
 function getMessages() {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/message/all").then(function(response){
+        fetchWithAuth(apiEndPoint+"api/message/all").then(function(response){
             return response.json();
         }).then(function(json){
             resolve(json);
@@ -444,8 +494,7 @@ function getMessages() {
 
 function getUserName(userId) {
     return new Promise(function(resolve, reject) {
-        fetchWithAuth("http://localhost:5000/api/user/name/"+userId).then(function(result) {
-            console.log(result)
+        fetchWithAuth(apiEndPoint+"api/user/name/"+userId).then(function(result) {
             return result.text();
         }).then(function(json){
             resolve(json);

@@ -35,19 +35,17 @@
 
 @section SidebarOptions {
     <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
-    <li><a href="#">Decks</a></li>
+    <li>@Html.ActionLink("Decks", "Decks", "Home")</li>
     <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
     <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
-    <li>@Html.ActionLink("Login", "Index", "Login")</li>
-    <li><a href="#">Meta Analytics</a></li>
+    <li>@Html.ActionLink("Meta Analytics", "Meta", "Home")</li>
 }
 
 
     
     <div class="home-content container">
         <div class="table-actions row">
-            <button id="Groups" data-toggle="groups" data-target="#groupsButton" type="button" class="btn btn-success btn-outline table-btn">Groups</button>
-           
+            <button type="button" id="new-group-button" data-toggle="modal" data-target="#newGroupDialog" class="btn btn-primary btn-outline table-btn">+ New Group</button>
         </div>
         <div class="row">
             <div class="col">
@@ -64,14 +62,6 @@
                     </div>
 
                </div>
-               <div class="row">
-                    <div class="col new-group-content">
-                        <button type="button" id="new-group-button" data-toggle="modal" data-target="#newGroupDialog" class="btn btn-primary btn-outline table-btn">+ New Group</button>
-                    </div>
-                        
-                </div>
-               
-
             </div>
         
             <div class="col">

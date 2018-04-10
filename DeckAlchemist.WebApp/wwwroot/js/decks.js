@@ -71,10 +71,13 @@ $(document).ready(function () {
     }
     
     function reloadDeckTable(cards) {
+        //Ensure old tables don't override image
+        $('#table').off('post-body.bs.table');
         $('#table').bootstrapTable("destroy");
         $('#table').bootstrapTable({
             clickToSelect: true,
             idField: 'id',
+            search: true, 
             columns: [{
                 field: 'state',
                 checkbox: true
@@ -83,7 +86,8 @@ $(document).ready(function () {
                 title: 'Name',
                 class: 'name-style',
                 align: 'center',
-                halign: 'center'
+                halign: 'center',
+                searchable: true
             }, {
                 field: 'amount',
                 title: 'Amount',
@@ -92,15 +96,40 @@ $(document).ready(function () {
             }],
             data: cards
         });
+        function showImageOnHover() {
+            $('tr[id]').each(function (index) {
+                var card = cards[index];
 
-        $('tr[id]').each(function (index) {
-            var card = cards[index];
-
-            $(this).mouseenter(function() {
-                getCardImage(card.name).then(function(e) {
-                    var src = e.normal;
-                    $('#card-img').show().attr('src', src);
+                $(this).mouseenter(function() {
+                    getCardImage(card.name).then(function(e) {
+                        var src = e.normal;
+                        $('#card-img').show().attr('src', src);
+                    });
                 });
+            });
+        }
+
+        showImageOnHover();
+
+        //Make sure WE ALWAYS SHOW THE LIGHT
+        $('#table').on('post-body.bs.table', showImageOnHover);
+    }
+    
+    function checkCompatiblitiy() {
+        var nameArray = [];
+        $("[data-added='added']").each(function () {
+            var name = $(this).attr('data-name');
+            nameArray.push(name);
+        });
+        
+        
+        postWithAuth("http://" + window.location.hostname + ":5000/api/decks/search", nameArray).then(function (value) {
+            $("[data-added='added']").each(function () {
+                var name = $(this).attr('data-name');
+
+                if (value.indexOf(name) == -1) {
+                    $(this).addClass('bad');
+                }
             });
         });
     }
@@ -149,6 +178,18 @@ $(document).ready(function () {
             result.json().then(function (data) {
                 var list = $('#metaDecksPick');
                 var myList = $('#metaDecksAdded');
+
+                $('#addMeta').off('click');
+
+                $('#removeMeta').off('click');
+
+                $('#metaSearch').off('input');
+
+                $('#metaAddedSearch').off('input');
+
+                $('#completeDeck').off('click');
+
+                $('#clearAll').off('click');
                 
                 list.empty();
                 myList.empty();
@@ -207,9 +248,10 @@ $(document).ready(function () {
                         if (state === 'not-added') {
                             myList.append(selectedLi);
                             selectedLi.attr('data-added', 'added');
-                            var deckName = selectedLi.attr('data-name')
+                            var deckName = selectedLi.attr('data-name');
                             
                             addCard(deckCache[deckName], cardCountCache[deckName]);
+                            checkCompatiblitiy();
                         }
                     }
                 });
@@ -223,6 +265,7 @@ $(document).ready(function () {
                             selectedLi.attr('data-added', 'not-added');
                             
                             removeCards(deckCache[selectedLi.attr('data-name')]);
+                            checkCompatiblitiy();
                         }
                     }
                 });
@@ -299,6 +342,8 @@ $(document).ready(function () {
                 
                 $('#clearAll').click(function () {
                     startDeckBuilding(); //Recall function will clear everything
+                    deckBuilderCards = [];
+                    reloadDeckTable(deckBuilderCards);
                 })
             }).catch(function (reason) {
                 swal("Couldn't start deck builder!", "There was a problem getting the meta decks :(\nError: " + reason, "error");
@@ -326,6 +371,8 @@ $(document).ready(function () {
                 var list = $("#deckList");
 
                 list.empty();
+                
+                var firstLi = null;
                 
                 data.forEach(function (value) { 
                   var newLi =  $("<li />").append(
@@ -356,6 +403,10 @@ $(document).ready(function () {
                        
                        $('#deckName').text(value.deckName);
                    });
+                   
+                   if (firstLi == null) {
+                       firstLi = newLi;
+                   }
                 });
 
                 var newLi =  $("<li />").append(
@@ -382,6 +433,8 @@ $(document).ready(function () {
                 
                 if (data.length == 0)
                     newLi.click();
+                else
+                    firstLi.click();
                     
                 
             }).catch(function (reason) {

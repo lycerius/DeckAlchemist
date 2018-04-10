@@ -32,9 +32,9 @@
 @section SidebarOptions {
 	<li>@Html.ActionLink("My Collection", "Index")</li>
 	<li><a href="#">Decks</a></li>
-	<li><a href="#">Social</a></li>
-	<li><a href="#">Meta Analytics</a></li>
-	<li><a href="#">Settings</a></li>
+	<li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+	<li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
+	<li>@Html.ActionLink("Meta Analytics", "Meta")</li>
 }
 
 
@@ -43,10 +43,6 @@
 		<div class="decks">
 			<div class="deck-selection">
 				<ul id="deckList">
-					<li><a href="#">Deck 1</a></li>
-					<li><a href="#">Deck 1</a></li>
-					<li><a href="#">Deck 1</a></li>
-					<li><a href="#">Deck 1</a></li>
 				</ul>
 			</div>
 			<div class="deck-card container">
@@ -64,12 +60,6 @@
 				<h4>Meta Decks</h4>
 				<input id="metaSearch" type="text" class="form-control" placeholder="Search.."/>
 				<ul id="metaDecksPick" class="deckList">
-					<li>
-						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
-					<li>
-						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
-					<li>
-						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
 				</ul>
 			</div>
 			<div class="col col-lg-2">
@@ -88,12 +78,6 @@
 				<h4>Workspace</h4>
 				<input id="metaAddedSearch" type="text" class="form-control" placeholder="Search.."/>
 				<ul id="metaDecksAdded" class="deckList">
-					<li>
-						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
-					<li>
-						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
-					<li>
-						<p><i class="fas fa-trophy"></i> Meta Deck 1</p></li>
 				</ul>
 			</div>
 		</div>
@@ -180,7 +164,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form id="uploadForm" action="http://localhost:5000/api/collection/csv" method="post" enctype="multipart/form-data">
+					<form id="uploadForm" action="http://209.6.196.14:5000/api/collection/csv" method="post" enctype="multipart/form-data">
 						<div class="form-group">
 							<div class="col-md-10">
 								<p>Upload one or more files using this form:</p>

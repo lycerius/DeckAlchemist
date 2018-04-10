@@ -6,7 +6,6 @@
 }
 
 .row.app-content {
-    height: 100%;
     width:100%;
     margin-left: 1px;
 
@@ -55,6 +54,17 @@
 
 .group-member-name {
     margin-left: 1rem;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.group-member-self {
+    cursor: not-allowed;
 }
 
 .group-header {

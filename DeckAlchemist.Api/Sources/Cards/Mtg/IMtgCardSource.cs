@@ -7,6 +7,6 @@ namespace DeckAlchemist.Api.Sources.Cards.Mtg
     {
         IEnumerable<IMtgCard> SearchByName(string byName);
         IEnumerable<IMtgCard> GetCardsByNames(params string[] names);
-        bool CheckExistance(IList<string> cardNames);
+        IEnumerable<string> CheckExistance(IList<string> cardNames);
     }
 }

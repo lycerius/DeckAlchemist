@@ -26,11 +26,10 @@
 
 @section SidebarOptions {
     <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
-    <li><a href="#">Decks</a></li>
+    <li>@Html.ActionLink("Decks", "Decks", "Home")</li>
     <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
     <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
-    <li>@Html.ActionLink("Login", "Index", "Login")</li>
-    <li><a href="#">Meta Analytics</a></li>
+    <li>@Html.ActionLink("Meta Analytics", "Meta")</li>
 }
 
 
@@ -44,9 +43,13 @@
 	
 	<div class="row" style="padding: 50px 0">
 		<div class="col col-lg-9">
-
+			
+			<h3 style="margin-bottom: -50px;">Own Cards</h3>
 			<!-- This table can't be styled because it's removed at runtime -->
 			<table id="table" class="groupTable"></table>
+			
+			<h3 style="margin-top: 40px; margin-bottom: -50px;">Borrowed Cards</h3>
+			<table id="borrowedTable" class="groupTable"></table>
 		</div>
 		<img class="col col-lg-3" src="#" id="card-img"/>
 	</div>
@@ -91,7 +94,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form id="uploadForm" action="http://localhost:5000/api/collection/csv" method="post" enctype="multipart/form-data" >
+					<form id="uploadForm" action="http://209.6.196.14:5000/api/collection/csv" method="post" enctype="multipart/form-data" >
 						<div class="form-group">
 							<div class="col-md-10">
 								<p>Upload one or more files using this form:</p>

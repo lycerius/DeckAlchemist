@@ -115,7 +115,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
                 var cardExists = _cardSource.CheckExistance(cardnames);
-                if (!cardExists) return StatusCode(400);
+                if (!cardExists.Any()) return StatusCode(400);
                 var result = _collectionSource.AddCardToCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
@@ -135,7 +135,7 @@ namespace DeckAlchemist.Api.Controllers
                 var uId = Utility.UserInfo.Id(HttpContext.User);
                 var userEmail = Utility.UserInfo.Email(HttpContext.User);
                 var cardExists = _cardSource.CheckExistance(cardnames);
-                if (!cardExists) return StatusCode(401);
+                if (!cardExists.Any()) return StatusCode(401);
                 var result = _collectionSource.RemoveCardFromCollection(uId, cardnames);
                 if (result) return StatusCode(200);
                 return StatusCode(500);
@@ -180,13 +180,13 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         [HttpPost("csv")]
-        public IActionResult AddCardsFromCsv()
+        public IEnumerable<string> AddCardsFromCsv()
         {
             var csv = Request.Form.Files.FirstOrDefault();
             //CSV Must be less than 5MB
-            if (csv == null) return StatusCode(400);
+            if (csv == null) return null;
             if(csv.Length > 5242880) {
-                return StatusCode(400);
+                return null;
             }
             var uId = HttpContext.User.Id();
             var tempFile = CreateTempFileAndAcceptUpload(csv.OpenReadStream());
@@ -198,14 +198,11 @@ namespace DeckAlchemist.Api.Controllers
                 else
                     toDict.Add(entry.CardName, entry.Amount);
             }
-            if (_cardSource.CheckExistance(toDict.Keys.ToList()))
-            {
-                _collectionSource.AddCardToCollection(uId, toDict);
-                return StatusCode(200);
-            }
-            else
-                return StatusCode(400);
-                
+            var notExistingCards = _cardSource.CheckExistance(toDict.Keys.ToList());
+            if (notExistingCards.Any()) foreach (var card in notExistingCards) toDict.Remove(card);
+            _collectionSource.AddCardToCollection(uId, toDict);
+            
+           return notExistingCards;     
         }
 
         string CreateTempFileAndAcceptUpload(Stream upload)

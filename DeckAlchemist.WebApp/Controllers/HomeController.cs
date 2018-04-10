@@ -12,14 +12,18 @@ namespace DeckAlchemist.WebApp.Controllers
     public class HomeController : Controller
     {
         public IActionResult Index()
-        {
-            
+        {   
             return View("Home");
         }
 
         public IActionResult Decks()
         {
             return View("Decks");
+        }
+
+        public IActionResult Meta()
+        {
+            return View("Meta");
         }
 
         public IActionResult Error()

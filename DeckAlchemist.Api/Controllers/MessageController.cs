@@ -87,7 +87,7 @@ namespace DeckAlchemist.Api.Controllers
             var groupInvite = message as GroupInviteMessage;
             var groupId = groupInvite.GroupId;
             var client = new HttpClient();
-            var task = client.Auth(HttpContext.GetIdToken()).PutAsync($"http://localhost:5000/api/group/{groupId}/member", userId);
+            var task = client.Auth(HttpContext.GetIdToken()).PutAsync($"http://209.6.196.14:5000/api/group/{groupId}/member", userId);
             task.Wait();
             task.Result.EnsureSuccessStatusCode();
             var user = _userSource.Get(userId);
@@ -109,7 +109,7 @@ namespace DeckAlchemist.Api.Controllers
             var client = new HttpClient();
             client.Auth(HttpContext.GetIdToken());
 
-            var loanTask = client.PostAsync("http://localhost:5000/api/collection/lend", 
+            var loanTask = client.PostAsync("http://209.6.196.14:5000/api/collection/lend", 
                                             new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardsAndAmounts = loanRequest.RequestedCardsAndAmounts });
             loanTask.Wait();
             loanTask.Result.EnsureSuccessStatusCode();

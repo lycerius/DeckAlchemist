@@ -28,6 +28,7 @@ function getGroupsAndPopulate() {
 
                     var list = $("<div class='collapse group-header' id='group"+index+"'></div>")
                     var newInviteLink = $("<button class='loan-button btn btn-outline btn-primary'>+Invite<br />")
+                    newInviteLink.off();
                     newInviteLink.click(function(e) {
                         createNewGroupInviteDialog(groupInfo)
                     })
@@ -37,7 +38,11 @@ function getGroupsAndPopulate() {
                         var row = $("<div class='row group-user-row'></div>")
                         var col = $("<div class='col'></div>")
                         var member = members[index]
-                        var element = $("<a class='group-member-name'>"+member.userName+"</a>")
+                        var style = "group-member-name";
+                        if (sameUser(member.userId)) {
+                            style += " group-member-self";
+                        }
+                        var element = $("<a class='" + style + "'>"+member.userName+"</a>")
                         col.append(element)
                         row.append(col)
                         col = $("<div class='col-sm-3'></div>")
@@ -79,6 +84,7 @@ function getGroupsAndPopulate() {
         var sendMessageBtn = $('#create-message-btn')
 
         userTextBox.text(user.userName)
+        sendMessageBtn.off()
         sendMessageBtn.click(function(e) {
             var subjectTextBox = $('#message-subject')
             var bodyTextBox = $('#message-body')
@@ -123,6 +129,7 @@ function getGroupsAndPopulate() {
         newGroupInviteError("")
         var modal = $('#newGroupInviteDialog')
         var sendGroupInviteBtn = $('#create-invite-btn')
+        sendGroupInviteBtn.off();
         sendGroupInviteBtn.click(function(e) {
             var userNameTextBox = $('#invite-user')
             var userName = userNameTextBox.val()
@@ -141,7 +148,7 @@ function getGroupsAndPopulate() {
                 swal("Invite Sent", userName+" was invited to "+group.groupName+"!", "success");
             }).catch(function(error) {
                 
-                swal("Invit Failed", "Couln't invite "+userName+" (user not found)", "error");
+                swal("Invite Failed", "Couln't invite "+userName+" (user not found)", "error");
             })
         })
 
@@ -156,6 +163,7 @@ function getGroupsAndPopulate() {
             collection.userCollection = {}
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')
+            sendButton.off();
             sendButton.click(function(e) {
                 var subjectTextBox = $('#loan-subject')
                 var bodyTextBox = $('#loan-body')
@@ -264,7 +272,7 @@ function getGroupsAndPopulate() {
    }
 
    function connectToIRC(user, group) {
-        var placeHolder = $('#group-chat-placehold')
+        var placeHolder = $('#group-chat-placehold');
         placeHolder.empty();
         var groupChatFrame = $("<iframe id='group-chat' class='form-control chat-window'></iframe>")
         groupChatFrame.attr("src", "");

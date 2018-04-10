@@ -59,7 +59,7 @@ namespace DeckAlchemist.Api.Controllers
             return result;
         }
 
-        [HttpGet("search")]
+        [HttpPost("search")]
         public IActionResult Search([FromBody] List<string> decks)
         {
 
