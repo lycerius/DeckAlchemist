@@ -235,10 +235,11 @@ $(document).ready(function () {
 
             result.json().then(function (data) {
                 var tableData = buildTableFromCollection(data);
-                var borrowedData = buildBorrowedTableFromCollection(data);
+                buildBorrowedTableFromCollection(data).then(function (borrowedData) {
+                    reloadBorrowedTable(borrowedData);
+                });
 
                 reloadCollectionTable(tableData);
-                reloadBorrowedTable(borrowedData);
             }).catch(function (reason) {
                 swal("Collection Empty", "You don't have any cards :(\nAdd some using the \"Add Cards\" button!", "error");
                 reloadCollectionTable({});

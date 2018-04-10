@@ -95,6 +95,7 @@ function buildBorrowedTableFromCollection(collection) {
     var result = [];
 
     var id = 1;
+    var promiseHell = [];
     for (var name in borrowed) {
         if (borrowed.hasOwnProperty(name)) {
             /*
@@ -130,10 +131,22 @@ function buildBorrowedTableFromCollection(collection) {
 
             result.push(newCard);
             id++;
+            
+            promiseHell.push(
+                fetchWithAuth("http://" + window.location.hostname + "/api/user/name/" + c.lender).then(function (value) { 
+                    newCard.lender = value;
+                })
+            );
         }
     }
 
-    return result;
+    return new Promise(function (resolve, reject) {
+        Promise.all(promiseHell).then(function (value) { 
+            resolve(result);
+        }).catch(function (reason) { 
+            resolve(result); //FUCK IT
+        })
+    });
 }
 
 function buildTableFromCollection(collection) {
