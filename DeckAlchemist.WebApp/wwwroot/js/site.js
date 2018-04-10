@@ -133,7 +133,7 @@ function buildBorrowedTableFromCollection(collection) {
             id++;
             
             promiseHell.push(
-                fetchWithAuth("http://" + window.location.hostname + "/api/user/name/" + c.lender).then(function (value) { 
+                fetchWithAuth("http://" + window.location.hostname + ":5000/api/user/name/" + c.lender).then(function (value) { 
                     newCard.lender = value;
                 })
             );

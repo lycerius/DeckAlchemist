@@ -6,6 +6,7 @@
 }
 
 .row.app-content {
+    height: 80%;
     width:100%;
     margin-left: 1px;
 
@@ -64,7 +65,7 @@
 }
 
 .group-member-self {
-    cursor: not-allowed;
+    
 }
 
 .group-header {
