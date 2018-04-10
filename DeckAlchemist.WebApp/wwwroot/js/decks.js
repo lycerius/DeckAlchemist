@@ -178,6 +178,18 @@ $(document).ready(function () {
             result.json().then(function (data) {
                 var list = $('#metaDecksPick');
                 var myList = $('#metaDecksAdded');
+
+                $('#addMeta').off('click');
+
+                $('#removeMeta').off('click');
+
+                $('#metaSearch').off('input');
+
+                $('#metaAddedSearch').off('input');
+
+                $('#completeDeck').off('click');
+
+                $('#clearAll').off('click');
                 
                 list.empty();
                 myList.empty();
@@ -331,6 +343,7 @@ $(document).ready(function () {
                 $('#clearAll').click(function () {
                     startDeckBuilding(); //Recall function will clear everything
                     deckBuilderCards = [];
+                    reloadDeckTable(deckBuilderCards);
                 })
             }).catch(function (reason) {
                 swal("Couldn't start deck builder!", "There was a problem getting the meta decks :(\nError: " + reason, "error");
