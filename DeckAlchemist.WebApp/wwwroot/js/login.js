@@ -1,6 +1,6 @@
 $(document).ready(function () {
     "use strict";
-    
+
     // Options for Message
     //----------------------------------------------
     var options = {
@@ -78,10 +78,10 @@ $(document).ready(function () {
     //----------------------------------------------
     // Validation
 
-    $("#forgot-password").click(function(e) {
+    $("#forgot-password").click(function (e) {
         e.preventDefault();
         $("#forgotPasswordDialog").modal("toggle")
-        $("#forgot-password-send").click(function(e){
+        $("#forgot-password-send").click(function (e) {
             var email = $("#forgot-password-email").val();
             forgotPassword(email);
             $("#forgotPasswordDialog").modal("toggle")
