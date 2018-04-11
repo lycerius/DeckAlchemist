@@ -84,3 +84,7 @@
     color: red;
     font-size: small;
 }
+
+#message-subject {
+    margin-bottom: 0.5rem;
+}

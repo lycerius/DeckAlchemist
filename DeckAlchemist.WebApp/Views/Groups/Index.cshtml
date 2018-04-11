@@ -104,7 +104,7 @@
 
     <!-- New Message Modal -->
     <div class="modal fade" id="newMessageDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="composeMessageDialogHeader">Compose Message</h5>
@@ -120,12 +120,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-1"><label>Subject:</label></div>
-                            <div class="col-lg-10"><input type="text" id="message-subject" placeholder="Subject"></input></div>
+                            <div class="col-lg"><input type="text" class="form-control" id="message-subject" placeholder="Subject"></div>
                         </div>
                         <div class="row">
                             <div class="col-lg">
-                                <textarea id="message-body" class="form-control" ></textarea>
+                                <textarea id="message-body" class="form-control" placeholder="Body" ></textarea>
                             </div>
                         </div>  
                      </div>
