@@ -39,19 +39,24 @@ function getGroupsAndPopulate() {
                         var col = $("<div class='col'></div>")
                         var member = members[index]
                         var style = "group-member-name";
+                       
                         if (sameUser(member.userId)) {
                             style += " group-member-self";
                         }
-                        var element = $("<a class='" + style + "'>"+member.userName+"</a>")
+                        var element = $("<a href='#' class='group-member-name' data-toggle='tooltip' data-placement='right' title='Send Message'>"+member.userName+"</a>")
                         col.append(element)
                         row.append(col)
                         col = $("<div class='col-sm-3'></div>")
                         if(!sameUser(member.userId)) {
                             var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
-                            element.click(function(e){
+                            element.tooltip()
+                            element.click(function (e) {
+                                element.tooltip('hide')
+                                e.preventDefault()
                                 createNewUserMessageDialog(groupInfo, member)
                             })
-                            loanButton.click(function(e) {
+                            loanButton.click(function (e) {
+                                e.preventDefault()
                                 createNewLoanDialog(groupInfo, member)
                             })
                             col.append(loanButton)
@@ -160,6 +165,7 @@ function getGroupsAndPopulate() {
    function createNewLoanDialog(group, user) {
         getOwnedCardsForUser(user.userId).then(function(collection){
             newLoanError("")
+            $('#loanUser').text(user.userName);
             collection.userCollection = {}
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')
@@ -220,42 +226,6 @@ function getGroupsAndPopulate() {
                 field: 'name',
                 title: 'Name',
                 class: 'name-style',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'cmc',
-                title: 'Converted Cost',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'manaCost',
-                title: 'Full Cost',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'colors',
-                title: 'Colors',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'power',
-                title: 'Power',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'toughness',
-                title: 'Toughness',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'type',
-                title: 'Type',
-                align: 'center',
-                halign: 'center'
-            }, {
-                field: 'layout',
-                title: 'Set',
-                class: 'set-style',
                 align: 'center',
                 halign: 'center'
             }],

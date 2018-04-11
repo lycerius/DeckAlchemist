@@ -168,7 +168,7 @@
 
     <!-- New Loan Request Modal -->
     <div class="modal fade" id="newLoanDialog" tabindex="-1" role="dialog" aria-labelledby="sendLoanMessage" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="composeLoanMessageDialogHeader">Initiate Loan</h5>
@@ -181,6 +181,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
+                                    <p id="loanUser"></p>
                                     <input type="text" id="loan-subject" class="form-control" style="margin-bottom: 20px" placeholder="Subject"/>
                                     <textarea id="loan-body" class="form-control" placeholder="Body"></textarea>
                                 </div>
@@ -194,7 +195,7 @@
                     <div class="modal-footer">
                         <p class="error-text" id="loan-request-error"></p>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button id="create-loan-btn" type="button" class="btn btn-primary">Send Message</button>
+                        <button id="create-loan-btn" type="button" class="btn btn-primary">Send Loan</button>
                     </div>
 
                 </div>
