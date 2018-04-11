@@ -1,5 +1,4 @@
-﻿using System;
-namespace DeckAlchemist.Collector.Objects.Messages
+﻿namespace DeckAlchemist.Collector.Objects.Messages
 {
     public class ServiceStatusMessage
     {

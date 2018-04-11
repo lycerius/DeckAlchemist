@@ -20,7 +20,8 @@ function getGroupsAndPopulate() {
             var members = groups[index].users;
                     var row = $("<div class='row' style='width:100%;'></div>")
                     var cell = $("<div style='width:100%'></div>")
-                    var link = $("<a style='width: 100%;' data-toggle='collapse' href='#group"+index+"' role='button'>"+groupInfo.groupName+"</a>")
+                    var link = $("<a style='width: 100%;' data-toggle='collapse' href='#group" + index + "' role='button'>" + groupInfo.groupName + "</a>")
+            link.tooltip()
                     link.click(function(e) {
                         $(".group-header").collapse("hide")
                         connectToIRC(firebase.auth().currentUser.email,groupInfo)
@@ -88,7 +89,7 @@ function getGroupsAndPopulate() {
         var userTextBox = $('#message-user')
         var sendMessageBtn = $('#create-message-btn')
 
-        userTextBox.text(user.userName)
+        userTextBox.text("To: "+user.userName)
         sendMessageBtn.off()
         sendMessageBtn.click(function(e) {
             var subjectTextBox = $('#message-subject')
@@ -165,7 +166,7 @@ function getGroupsAndPopulate() {
    function createNewLoanDialog(group, user) {
         getOwnedCardsForUser(user.userId).then(function(collection){
             newLoanError("")
-            $('#loanUser').text(user.userName);
+            $('#loanUser').text("To: "+user.userName);
             collection.userCollection = {}
             collection.userCollection.ownedCards = collection.ownedCards
             var sendButton = $('#create-loan-btn')

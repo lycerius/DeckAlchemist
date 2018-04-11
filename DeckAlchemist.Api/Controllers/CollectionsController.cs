@@ -8,13 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.Api.Contracts;
 using DeckAlchemist.Support.Objects.Collection;
-using System.Net.Http;
 using DeckAlchemist.Api.Utility;
-using Newtonsoft.Json;
 using DeckAlchemist.Support.Objects.Cards;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

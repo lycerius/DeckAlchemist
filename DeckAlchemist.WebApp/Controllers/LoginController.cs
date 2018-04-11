@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using DeckAlchemist.Api.Auth;
 using DeckAlchemist.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 

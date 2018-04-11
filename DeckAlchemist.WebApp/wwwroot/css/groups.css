@@ -88,3 +88,7 @@
 #message-subject {
     margin-bottom: 0.5rem;
 }
+
+#message-body {
+    resize: none
+}
