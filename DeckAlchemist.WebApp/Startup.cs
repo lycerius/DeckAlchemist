@@ -51,6 +51,11 @@ namespace DeckAlchemist.WebApp
                     name: "Home",
                     template: "{controller=Home}/{action=Index}"
                 );
+
+                routes.MapRoute(
+                    name: "Logout",
+                    template: "{controller=Login}/{action=Logout}"
+                );
             });
 
 
