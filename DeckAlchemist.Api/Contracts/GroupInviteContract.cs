@@ -1,5 +1,4 @@
-﻿using System;
-using DeckAlchemist.Support.Objects.Messages;
+﻿using DeckAlchemist.Support.Objects.Messages;
 
 namespace DeckAlchemist.Api.Contracts
 {

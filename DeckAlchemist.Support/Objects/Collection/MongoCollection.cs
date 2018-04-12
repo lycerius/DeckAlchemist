@@ -17,7 +17,6 @@ namespace DeckAlchemist.Support.Objects.Collection
                 UserId = collec.UserId
             };
         }
-        
         [BsonId]
         [JsonIgnore]
         public ObjectId _id { get; set; }

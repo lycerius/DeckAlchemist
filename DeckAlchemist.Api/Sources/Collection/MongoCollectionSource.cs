@@ -1,10 +1,8 @@
 using System;
 using DeckAlchemist.Support.Objects.Collection;
-using DeckAlchemist.Support.Objects.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
-using DeckAlchemist.Support.Objects.Cards;
 
 namespace DeckAlchemist.Api.Sources.Collection
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.Group;
 using DeckAlchemist.Support.Objects.User;
 

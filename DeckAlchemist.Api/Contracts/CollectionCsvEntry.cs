@@ -1,5 +1,4 @@
-﻿using System;
-namespace DeckAlchemist.Api.Contracts
+﻿namespace DeckAlchemist.Api.Contracts
 {
     public class CollectionCsvEntry
     {

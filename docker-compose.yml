@@ -22,7 +22,6 @@ services:
     environment:
         - MONGO_URI=mongodb://mongo
 
-
   deckalchemist.collector:
     image: deckalchemist.collector
     build:
