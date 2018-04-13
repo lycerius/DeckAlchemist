@@ -405,3 +405,8 @@ li.selected {
 .bad {
     background-color: #e06969;
 }
+
+#card-name {
+    width: 40%;
+    margin-right: 0.5rem;
+}
