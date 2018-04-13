@@ -166,7 +166,9 @@ $(document).ready(function () {
                         form_failed($form, "Email must be verified")
                     }
                     else {
-                        fetchWithAuth("http://" + window.location.hostname + ":5000/api/login").then(function () { form_success($form) })
+                        fetchWithAuth("http://" + window.location.hostname + ":5000/api/login").then(function () { 
+                            window.location = "/Home"
+                        })
                     }
                 })
                 .catch(function (error) {
