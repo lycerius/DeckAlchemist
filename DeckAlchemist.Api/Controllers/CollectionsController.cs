@@ -83,9 +83,9 @@ namespace DeckAlchemist.Api.Controllers
             var result = _collectionSource.GetCollection(otherUID);
             if (result == null || result.OwnedCards == null || result.BorrowedCards == null) return null;
 
-            //Only lendable cards should be here
+            //Only lendable cards that are available should be here
             var ownedCards = result.OwnedCards;
-            var lendableOwnedCards = new Dictionary<string, IOwnedCard>(ownedCards.Where(card => card.Value.Lendable));
+            var lendableOwnedCards = new Dictionary<string, IOwnedCard>(ownedCards.Where(card => card.Value.Lendable && card.Value.Available > 0));
             var cardInfo = GetCardInfo(lendableOwnedCards.Keys);
             var model = new OwnedCardsModel
             {

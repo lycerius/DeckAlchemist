@@ -154,7 +154,7 @@ function createNewGroupInviteDialog(group) {
             swal("Invite Sent", userName + " was invited to " + group.groupName + "!", "success");
         }).catch(function (error) {
 
-            swal("Invite Failed", "Couln't invite " + userName + " (user not found)", "error");
+            swal("Invite Failed", "Couln't invite " + userName + " ("+error+")", "error");
         })
     })
 

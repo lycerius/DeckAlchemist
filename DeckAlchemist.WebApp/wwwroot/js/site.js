@@ -416,8 +416,9 @@ function sendGroupInvite(message) {
                 headers: {
                     'content-type': "application/json"
                 }
-            }).then(function () {
-                resolve()
+            }).then(function (result) {
+                if(result.status == 404) reject("user not found")
+                else resolve()
             }).catch(function (error) {
                 reject(error)
             })
