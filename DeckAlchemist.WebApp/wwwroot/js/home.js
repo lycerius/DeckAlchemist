@@ -321,7 +321,7 @@ $(document).ready(function () {
                     reloadBorrowedTable(borrowedData);
                 });
                 
-                var lentData = buildLentFromCollection(tableData);
+                var lentData = buildLentFromCollection(tableData, data.userIdToUserName);
 
                 reloadCollectionTable(tableData);
                 reloadLentTable(lentData);
@@ -546,6 +546,46 @@ $(document).ready(function () {
                 Promise.all(promiseArray).then(function (value) {
                     swal("Returned", selectedCards.length +  " card" + (selectedCards.length > 1 ? "s" : "") + " returned!", "success");
                     
+                    reloadCollection();
+                }).catch(function (reason) {
+                    swal("Couldn't Return Cards", "There was a problem returning the cards :(\nError: " + reason, "error");
+                })
+            }
+        );
+    });
+
+    $('#revoke-cards').click(function () {
+        var selectedCards = $('#lentTable').bootstrapTable('getSelections');
+
+        if (selectedCards.length == 0) {
+            swal("Select Cards", "Please select at least one borrowed card to return!", "error");
+            return;
+        }
+
+        swal({
+                title: "Return Card" + (selectedCards.length > 1 ? "s" : "" ) + "?",
+                text: "This will return " + selectedCards.length + " card" + (selectedCards.length > 1 ? "s" : "" ) + " back to your collection.\nWould you like to continue?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                closeOnConfirm: true
+            },
+            function () {
+                var promiseArray = [];
+                selectedCards.forEach(function (value) {
+                    var postData = {
+                        fromUser: value.lenderId,
+                        cardName: value.name
+                    };
+                    promiseArray.push(
+                        postWithAuth("http://" + window.location.hostname + ":5000/api/collection/lend/revoke", postData)
+                    );
+                });
+
+                Promise.all(promiseArray).then(function (value) {
+                    swal("Returned", selectedCards.length +  " card" + (selectedCards.length > 1 ? "s" : "") + " returned!", "success");
+
                     reloadCollection();
                 }).catch(function (reason) {
                     swal("Couldn't Return Cards", "There was a problem returning the cards :(\nError: " + reason, "error");

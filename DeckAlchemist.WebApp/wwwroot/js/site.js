@@ -151,7 +151,7 @@ function buildBorrowedTableFromCollection(collection) {
     });
 }
 
-function buildLentFromCollection(builtCollection) {
+function buildLentFromCollection(builtCollection, userIdToUserName) {
     var lentCards = [];
     
     builtCollection.forEach(function (value) { 
@@ -162,7 +162,8 @@ function buildLentFromCollection(builtCollection) {
         for (var lenderInfo in value.lentTo) {
             if (value.lentTo.hasOwnProperty(lenderInfo)) {
                 var newCard = Object.assign({
-                    lender: lenderInfo
+                    lenderId: lenderInfo,
+                    lender: userIdToUserName[lenderInfo]
                 }, value);
                 
                 lentCards.push(newCard);
