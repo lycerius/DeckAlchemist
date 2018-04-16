@@ -43,8 +43,26 @@ namespace DeckAlchemist.Api.Controllers
             var cardInfo = GetCardInfo(uniqueCardNames);
 
             var newBorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
-            var userids = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
-            var userNames = _userSource.GetUserNamesByUserIds(userids);
+            var borrows = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
+            var lentTos = new HashSet<string>();
+            foreach(var card in result.OwnedCards.Values)
+            {
+                foreach(var lend in card.LentTo.Keys)
+                {
+                    lentTos.Add(lend);
+                }
+            }
+            var userids = new HashSet<string>();
+            foreach(var borrow in borrows)
+            {
+                userids.Add(borrow);
+            }
+            foreach(var lent in lentTos)
+            {
+                userids.Add(lent);
+            }
+
+            var userNames = _userSource.GetUserNamesByUserIds(userids.ToArray());
             foreach(var borrowedCards in result.BorrowedCards) {
                 var cardName = borrowedCards.Key;
                 var borrowed = borrowedCards.Value;
