@@ -102,6 +102,7 @@ function buildBorrowedTableFromCollection(collection) {
             cardId
             lender
             amountBorrowed
+            lenderUserName
              */
             var c = borrowed[name][Object.keys(borrowed[name])[0]];
 
@@ -126,6 +127,7 @@ function buildBorrowedTableFromCollection(collection) {
             var newCard = Object.assign({
                 amountBorrowed: c.amountBorrowed,
                 lender: c.lenderUserName,
+                lenderId: c.lender,
                 id: id
             }, info);
 
@@ -144,7 +146,7 @@ function buildBorrowedTableFromCollection(collection) {
         Promise.all(promiseHell).then(function (value) {
             resolve(result);
         }).catch(function (reason) {
-            resolve(result); //FUCK IT
+            resolve(result);
         })
     });
 }

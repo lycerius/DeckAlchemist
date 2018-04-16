@@ -231,12 +231,14 @@ namespace DeckAlchemist.Api.Controllers
         }
 
         [HttpPost("lend/remove")]
-        public void RemoveBorrowedCards([FromBody] RemoveBorrowedCardsMessage message) 
+        public IActionResult RemoveBorrowedCards([FromBody] RemoveBorrowedCardsMessage message)
         {
-            var ownerId = HttpContext.User.Id();
-            var fromUser = message.FromUser;
+            var ownerId = message.FromUser;
+            var fromUser = HttpContext.User.Id();
             var cardName = message.CardName;
-            _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
+            var result = _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
+            
+            return StatusCode(result ? 200 : 500);
         }
 
         string CreateTempFileAndAcceptUpload(Stream upload)

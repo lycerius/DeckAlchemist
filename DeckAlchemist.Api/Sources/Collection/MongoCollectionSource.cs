@@ -3,6 +3,7 @@ using DeckAlchemist.Support.Objects.Collection;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging.Console;
 
 namespace DeckAlchemist.Api.Sources.Collection
 {
@@ -242,14 +243,41 @@ namespace DeckAlchemist.Api.Sources.Collection
             var lenderQuery = _filter.Eq("UserId", lendingUserId);
 
             var ownerCollection = collection.Find(ownerQuery).FirstOrDefault();
-            if (ownerCollection == null) return false;
+            if (ownerCollection == null)
+            {
+                Console.WriteLine("No owner collection found");
+                return false;
+            }
             var lenderCollection = collection.Find(lenderQuery).FirstOrDefault();
-            if (lenderCollection == null) return false;
+            if (lenderCollection == null)
+            {
+                Console.WriteLine("No lender collection found");
+                return false;
+            }
 
-            if (!ownerCollection.OwnedCards.ContainsKey(cardName)) return false;
-            if (!ownerCollection.OwnedCards[cardName].LentTo.ContainsKey(lendingUserId)) return false;
-            if (!lenderCollection.BorrowedCards.ContainsKey(cardName)) return false;
-            if (!lenderCollection.BorrowedCards[cardName].ContainsKey(ownerId)) return false;
+            if (!ownerCollection.OwnedCards.ContainsKey(cardName))
+            {
+                Console.WriteLine("Doesn't own this card");
+                return false;
+            }
+
+            if (!ownerCollection.OwnedCards[cardName].LentTo.ContainsKey(lendingUserId))
+            {
+                Console.WriteLine("claimed Lender didn't borrow card");
+                return false;
+            }
+
+            if (!lenderCollection.BorrowedCards.ContainsKey(cardName))
+            {
+                Console.WriteLine("Claimed lender doesnt have card");
+                return false;
+            }
+
+            if (!lenderCollection.BorrowedCards[cardName].ContainsKey(ownerId))
+            {
+                Console.WriteLine("Claimed lender didn't borrow card from claimed owner");
+                return false;
+            }
 
             var borrowedCard = lenderCollection.BorrowedCards[cardName][ownerId];
             borrowedCard.AmountBorrowed--;
