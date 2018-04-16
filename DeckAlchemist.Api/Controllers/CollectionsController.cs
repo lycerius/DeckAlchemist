@@ -72,7 +72,8 @@ namespace DeckAlchemist.Api.Controllers
                     CollectionId = result.CollectionId,
                     OwnedCards = result.OwnedCards,
                     UserId = result.UserId
-                }
+                },
+                UserIdToUserName = userNames
             };
             return model;  
         } 
