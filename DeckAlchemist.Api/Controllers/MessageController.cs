@@ -93,7 +93,7 @@ namespace DeckAlchemist.Api.Controllers
             var user = _userSource.Get(userId);
             user.Groups.Add(groupId);
             _userSource.Update(user);
-            //TODO: groupInvite.Accepted = true;
+
             _messageSource.DeleteMessage(userId, groupInvite.MessageId);
         }
 

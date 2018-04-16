@@ -243,51 +243,27 @@ namespace DeckAlchemist.Api.Sources.Collection
             var lenderQuery = _filter.Eq("UserId", lendingUserId);
 
             var ownerCollection = collection.Find(ownerQuery).FirstOrDefault();
-            if (ownerCollection == null)
-            {
-                Console.WriteLine("No owner collection found");
-                return false;
-            }
+            if (ownerCollection == null) return false;
             var lenderCollection = collection.Find(lenderQuery).FirstOrDefault();
-            if (lenderCollection == null)
-            {
-                Console.WriteLine("No lender collection found");
-                return false;
-            }
-
-            if (!ownerCollection.OwnedCards.ContainsKey(cardName))
-            {
-                Console.WriteLine("Doesn't own this card");
-                return false;
-            }
-
-            if (!ownerCollection.OwnedCards[cardName].LentTo.ContainsKey(lendingUserId))
-            {
-                Console.WriteLine("claimed Lender didn't borrow card");
-                return false;
-            }
-
-            if (!lenderCollection.BorrowedCards.ContainsKey(cardName))
-            {
-                Console.WriteLine("Claimed lender doesnt have card");
-                return false;
-            }
-
-            if (!lenderCollection.BorrowedCards[cardName].ContainsKey(ownerId))
-            {
-                Console.WriteLine("Claimed lender didn't borrow card from claimed owner");
-                return false;
-            }
+            if (lenderCollection == null) return false;
+            //Validation
+            if (!ownerCollection.OwnedCards.ContainsKey(cardName)) return false;
+            if (!ownerCollection.OwnedCards[cardName].LentTo.ContainsKey(lendingUserId)) return false;
+            if (!lenderCollection.BorrowedCards.ContainsKey(cardName)) return false;
+            if (!lenderCollection.BorrowedCards[cardName].ContainsKey(ownerId)) return false;
 
             var borrowedCard = lenderCollection.BorrowedCards[cardName][ownerId];
             borrowedCard.AmountBorrowed--;
+            //Remove entry for borrowed card for this lending user if no borrowed cards 
             if (borrowedCard.AmountBorrowed == 0) lenderCollection.BorrowedCards[cardName].Remove(ownerId);
+            //If no more borrowed cards of this type, remove
             if (lenderCollection.BorrowedCards[cardName].Count == 0) lenderCollection.BorrowedCards.Remove(cardName);
 
             ownerCollection.OwnedCards[cardName].LentTo[lendingUserId]--;
+            //Card is no longer lent to anyone
             if (ownerCollection.OwnedCards[cardName].LentTo[lendingUserId] == 0) 
                 ownerCollection.OwnedCards[cardName].LentTo.Remove(lendingUserId);
-
+            
             collection.FindOneAndReplace(ownerQuery, ownerCollection);
             collection.FindOneAndReplace(lenderQuery, lenderCollection);
 
