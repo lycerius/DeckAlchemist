@@ -11,6 +11,7 @@ namespace DeckAlchemist.Api.Sources.Collection
         bool MarkCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         bool AddCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         bool MarkCardsAsLendable(string userId, IDictionary<string, bool> lendingStatus);
+        bool RemoveBorrowedCards(string ownerId, string lendingUserId, string cardName);
         void Init();
         void Create(ICollection collec);
         void Update(ICollection collection);

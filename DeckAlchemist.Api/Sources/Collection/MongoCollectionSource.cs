@@ -235,5 +235,35 @@ namespace DeckAlchemist.Api.Sources.Collection
             collection.FindOneAndReplace(query, col);
             return true;
         }
+
+        public bool RemoveBorrowedCards(string ownerId, string lendingUserId, string cardName)
+        {
+            var ownerQuery = _filter.Eq("UserId", ownerId);
+            var lenderQuery = _filter.Eq("UserId", lendingUserId);
+
+            var ownerCollection = collection.Find(ownerQuery).FirstOrDefault();
+            if (ownerCollection == null) return false;
+            var lenderCollection = collection.Find(lenderQuery).FirstOrDefault();
+            if (lenderCollection == null) return false;
+
+            if (!ownerCollection.OwnedCards.ContainsKey(cardName)) return false;
+            if (!ownerCollection.OwnedCards[cardName].LentTo.ContainsKey(lendingUserId)) return false;
+            if (!lenderCollection.BorrowedCards.ContainsKey(cardName)) return false;
+            if (!lenderCollection.BorrowedCards[cardName].ContainsKey(ownerId)) return false;
+
+            var borrowedCard = lenderCollection.BorrowedCards[cardName][ownerId];
+            borrowedCard.AmountBorrowed--;
+            if (borrowedCard.AmountBorrowed == 0) lenderCollection.BorrowedCards[cardName].Remove(ownerId);
+            if (lenderCollection.BorrowedCards[cardName].Count == 0) lenderCollection.BorrowedCards.Remove(cardName);
+
+            ownerCollection.OwnedCards[cardName].LentTo[lendingUserId]--;
+            if (ownerCollection.OwnedCards[cardName].LentTo[lendingUserId] == 0) 
+                ownerCollection.OwnedCards[cardName].LentTo.Remove(lendingUserId);
+
+            collection.FindOneAndReplace(ownerQuery, ownerCollection);
+            collection.FindOneAndReplace(lenderQuery, lenderCollection);
+
+            return true;
+        }
     }
 }

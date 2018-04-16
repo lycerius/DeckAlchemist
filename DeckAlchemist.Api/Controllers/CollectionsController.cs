@@ -230,6 +230,15 @@ namespace DeckAlchemist.Api.Controllers
            return notExistingCards;     
         }
 
+        [HttpPost("lend/remove")]
+        public void RemoveBorrowedCards([FromBody] RemoveBorrowedCardsMessage message) 
+        {
+            var ownerId = HttpContext.User.Id();
+            var fromUser = message.FromUser;
+            var cardName = message.CardName;
+            _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
+        }
+
         string CreateTempFileAndAcceptUpload(Stream upload)
         {
             var tempFilePath = Path.GetTempFileName();
