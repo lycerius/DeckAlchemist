@@ -1,5 +1,4 @@
-﻿using System;
-namespace DeckAlchemist.Collector.Services
+﻿namespace DeckAlchemist.Collector.Services
 {
     public interface ICardDatabaseUpdater
     {

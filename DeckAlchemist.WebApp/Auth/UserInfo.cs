@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using Newtonsoft.Json;
+﻿using System.Security.Claims;
 using Newtonsoft.Json.Linq;
 
 namespace DeckAlchemist.Api.Auth

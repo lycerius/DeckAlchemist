@@ -300,6 +300,13 @@ ul.sidebar-nav li {
     height: 453.333333px;
 }
 
+.card-image {
+    position: fixed;
+    right: 0;
+    width: 325.333333px;
+    height: 453.333333px;
+}
+
 .decks {
     display: flex;
     flex-direction: row;
@@ -404,4 +411,18 @@ li.selected {
 
 .bad {
     background-color: #e06969;
+}
+
+#card-name {
+    width: 40%;
+    margin-right: 0.5rem;
+}
+
+.collection-card {
+    height: auto;
+    margin-right: -25px;
+}
+
+.collection-table {
+    padding: 20px 0px 50px;
 }

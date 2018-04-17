@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using DeckAlchemist.Collector.Objects.Messages;
 using DeckAlchemist.Collector.Schedulers;
 using Microsoft.AspNetCore.Mvc;
