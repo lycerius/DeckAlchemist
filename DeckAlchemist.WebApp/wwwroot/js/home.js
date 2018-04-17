@@ -122,7 +122,7 @@ $(document).ready(function () {
                 $(this).mouseenter(function () {
                     getCardImage(card.name).then(function (e) {
                         var src = e.normal;
-                        $('#card-img').show().attr('src', src);
+                        $('#card-borrowed-img').show().attr('src', src);
                     });
                 });
             });
@@ -132,6 +132,88 @@ $(document).ready(function () {
 
         //Make sure WE ALWAYS SHOW THE LIGHT
         $('#borrowedTable').on('post-body.bs.table', showImageOnHover);
+    }
+
+    function reloadLentTable(cards) {
+        //Ensure old tables don't override image
+        $('#lentTable').off('post-body.bs.table');
+        $('#lentTable').bootstrapTable("destroy");
+        $('#lentTable').bootstrapTable({
+            clickToSelect: true,
+            idField: 'id',
+            search: true,
+            columns: [{
+                field: 'state',
+                checkbox: true
+            }, {
+                field: 'name',
+                title: 'Name',
+                class: 'name-style',
+                align: 'center',
+                halign: 'center',
+                searchable: true
+            }, {
+                field: 'lender',
+                title: 'Lender',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'cmc',
+                title: 'Converted Cost',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'manaCost',
+                title: 'Full Cost',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'colors',
+                title: 'Colors',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'power',
+                title: 'Power',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'toughness',
+                title: 'Toughness',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'type',
+                title: 'Type',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'layout',
+                title: 'Set',
+                class: 'set-style',
+                align: 'center',
+                halign: 'center'
+            }],
+            data: cards
+        });
+
+        function showImageOnHover() {
+            $('#lentTable').children('tbody').children('tr[id]').each(function (index) {
+                var card = cards[index];
+
+                $(this).mouseenter(function () {
+                    getCardImage(card.name).then(function (e) {
+                        var src = e.normal;
+                        $('#card-lent-img').show().attr('src', src);
+                    });
+                });
+            });
+        }
+
+        showImageOnHover();
+
+        //Make sure WE ALWAYS SHOW THE LIGHT
+        $('#lentTable').on('post-body.bs.table', showImageOnHover);
     }
 
     function reloadCollectionTable(cards) {
@@ -238,8 +320,11 @@ $(document).ready(function () {
                 buildBorrowedTableFromCollection(data).then(function (borrowedData) {
                     reloadBorrowedTable(borrowedData);
                 });
+                
+                var lentData = buildLentFromCollection(tableData, data.userIdToUserName);
 
                 reloadCollectionTable(tableData);
+                reloadLentTable(lentData);
             }).catch(function (reason) {
                 swal("Collection Empty", "You don't have any cards :(\nAdd some using the \"Add Cards\" button!", "error");
                 reloadCollectionTable({});
@@ -461,6 +546,46 @@ $(document).ready(function () {
                 Promise.all(promiseArray).then(function (value) {
                     swal("Returned", selectedCards.length +  " card" + (selectedCards.length > 1 ? "s" : "") + " returned!", "success");
                     
+                    reloadCollection();
+                }).catch(function (reason) {
+                    swal("Couldn't Return Cards", "There was a problem returning the cards :(\nError: " + reason, "error");
+                })
+            }
+        );
+    });
+
+    $('#revoke-cards').click(function () {
+        var selectedCards = $('#lentTable').bootstrapTable('getSelections');
+
+        if (selectedCards.length == 0) {
+            swal("Select Cards", "Please select at least one borrowed card to return!", "error");
+            return;
+        }
+
+        swal({
+                title: "Return Card" + (selectedCards.length > 1 ? "s" : "" ) + "?",
+                text: "This will return " + selectedCards.length + " card" + (selectedCards.length > 1 ? "s" : "" ) + " back to your collection.\nWould you like to continue?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes",
+                closeOnConfirm: true
+            },
+            function () {
+                var promiseArray = [];
+                selectedCards.forEach(function (value) {
+                    var postData = {
+                        fromUser: value.lenderId,
+                        cardName: value.name
+                    };
+                    promiseArray.push(
+                        postWithAuth("http://" + window.location.hostname + ":5000/api/collection/lend/revoke", postData)
+                    );
+                });
+
+                Promise.all(promiseArray).then(function (value) {
+                    swal("Returned", selectedCards.length +  " card" + (selectedCards.length > 1 ? "s" : "") + " returned!", "success");
+
                     reloadCollection();
                 }).catch(function (reason) {
                     swal("Couldn't Return Cards", "There was a problem returning the cards :(\nError: " + reason, "error");

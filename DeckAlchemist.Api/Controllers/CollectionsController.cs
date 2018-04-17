@@ -43,7 +43,12 @@ namespace DeckAlchemist.Api.Controllers
             var cardInfo = GetCardInfo(uniqueCardNames);
 
             var newBorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
-            var userids = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
+            //var userids = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
+            var userids = result.OwnedCards.Where(card => card.Value.LentTo.Count > 0)
+                .SelectMany(card => card.Value.LentTo.Keys)
+                .Concat(
+                    result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key))
+                ).ToArray();
             var userNames = _userSource.GetUserNamesByUserIds(userids);
             foreach(var borrowedCards in result.BorrowedCards) {
                 var cardName = borrowedCards.Key;
@@ -236,6 +241,17 @@ namespace DeckAlchemist.Api.Controllers
         {
             var ownerId = message.FromUser;
             var fromUser = HttpContext.User.Id();
+            var cardName = message.CardName;
+            var result = _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
+            
+            return StatusCode(result ? 200 : 500);
+        }
+        
+        [HttpPost("lend/revoke")]
+        public IActionResult RevokeBorrowedCards([FromBody] RemoveBorrowedCardsMessage message)
+        {
+            var ownerId = HttpContext.User.Id();
+            var fromUser = message.FromUser;
             var cardName = message.CardName;
             var result = _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
             

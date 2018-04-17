@@ -151,6 +151,29 @@ function buildBorrowedTableFromCollection(collection) {
     });
 }
 
+function buildLentFromCollection(builtCollection, userIdToUserName) {
+    var lentCards = [];
+    
+    builtCollection.forEach(function (value) { 
+        if (Object.keys(value.lentTo).length === 0 && value.lentTo.constructor === Object) {
+            return;
+        }
+        
+        for (var lenderInfo in value.lentTo) {
+            if (value.lentTo.hasOwnProperty(lenderInfo)) {
+                var newCard = Object.assign({
+                    lenderId: lenderInfo,
+                    lender: userIdToUserName[lenderInfo]
+                }, value);
+                
+                lentCards.push(newCard);
+            }
+        }
+    });
+    
+    return lentCards;
+}
+
 function buildTableFromCollection(collection) {
     var cardInfo = collection.cardInfo;
     var owned = collection.userCollection.ownedCards;
