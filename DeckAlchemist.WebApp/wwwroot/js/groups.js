@@ -1,4 +1,4 @@
-﻿authorizeOrLogin();
+authorizeOrLogin();
 var groupsModel = {}
 
 function sameUser(userId) {

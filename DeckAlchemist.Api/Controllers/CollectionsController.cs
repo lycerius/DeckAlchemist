@@ -8,10 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.Api.Contracts;
 using DeckAlchemist.Support.Objects.Collection;
+using System.Net.Http;
 using DeckAlchemist.Api.Utility;
+using Newtonsoft.Json;
 using DeckAlchemist.Support.Objects.Cards;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -43,12 +46,7 @@ namespace DeckAlchemist.Api.Controllers
             var cardInfo = GetCardInfo(uniqueCardNames);
 
             var newBorrowedCards = new Dictionary<string, IDictionary<string, IBorrowedCard>>();
-            //var userids = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
-            var userids = result.OwnedCards.Where(card => card.Value.LentTo.Count > 0)
-                .SelectMany(card => card.Value.LentTo.Keys)
-                .Concat(
-                    result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key))
-                ).ToArray();
+            var userids = result.BorrowedCards.SelectMany(card => card.Value.Select(user => user.Key)).ToArray();
             var userNames = _userSource.GetUserNamesByUserIds(userids);
             foreach(var borrowedCards in result.BorrowedCards) {
                 var cardName = borrowedCards.Key;
@@ -77,8 +75,7 @@ namespace DeckAlchemist.Api.Controllers
                     CollectionId = result.CollectionId,
                     OwnedCards = result.OwnedCards,
                     UserId = result.UserId
-                },
-                UserIdToUserName = userNames
+                }
             };
             return model;  
         } 
@@ -89,9 +86,9 @@ namespace DeckAlchemist.Api.Controllers
             var result = _collectionSource.GetCollection(otherUID);
             if (result == null || result.OwnedCards == null || result.BorrowedCards == null) return null;
 
-            //Only lendable cards that are available should be here
+            //Only lendable cards should be here
             var ownedCards = result.OwnedCards;
-            var lendableOwnedCards = new Dictionary<string, IOwnedCard>(ownedCards.Where(card => card.Value.Lendable && card.Value.Available > 0));
+            var lendableOwnedCards = new Dictionary<string, IOwnedCard>(ownedCards.Where(card => card.Value.Lendable));
             var cardInfo = GetCardInfo(lendableOwnedCards.Keys);
             var model = new OwnedCardsModel
             {
@@ -234,28 +231,6 @@ namespace DeckAlchemist.Api.Controllers
             _collectionSource.AddCardToCollection(uId, toDict);
             
            return notExistingCards;     
-        }
-
-        [HttpPost("lend/remove")]
-        public IActionResult RemoveBorrowedCards([FromBody] RemoveBorrowedCardsMessage message)
-        {
-            var ownerId = message.FromUser;
-            var fromUser = HttpContext.User.Id();
-            var cardName = message.CardName;
-            var result = _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
-            
-            return StatusCode(result ? 200 : 500);
-        }
-        
-        [HttpPost("lend/revoke")]
-        public IActionResult RevokeBorrowedCards([FromBody] RemoveBorrowedCardsMessage message)
-        {
-            var ownerId = HttpContext.User.Id();
-            var fromUser = message.FromUser;
-            var cardName = message.CardName;
-            var result = _collectionSource.RemoveBorrowedCards(ownerId, fromUser, cardName);
-            
-            return StatusCode(result ? 200 : 500);
         }
 
         string CreateTempFileAndAcceptUpload(Stream upload)

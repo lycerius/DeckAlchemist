@@ -1,4 +1,5 @@
-﻿namespace DeckAlchemist.Support.Objects.Collection
+﻿using System;
+namespace DeckAlchemist.Support.Objects.Collection
 {
     public class BorrowedCard : IBorrowedCard
     {

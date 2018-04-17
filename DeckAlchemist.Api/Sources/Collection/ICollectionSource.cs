@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using DeckAlchemist.Support.Objects.Cards;
 using DeckAlchemist.Support.Objects.Collection;
+using DeckAlchemist.Support.Objects.User;
 
 namespace DeckAlchemist.Api.Sources.Collection
 {
@@ -11,7 +14,6 @@ namespace DeckAlchemist.Api.Sources.Collection
         bool MarkCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         bool AddCardAsLent(string lender, string lendee, IDictionary<string, int> namesAndAmounts);
         bool MarkCardsAsLendable(string userId, IDictionary<string, bool> lendingStatus);
-        bool RemoveBorrowedCards(string ownerId, string lendingUserId, string cardName);
         void Init();
         void Create(ICollection collec);
         void Update(ICollection collection);

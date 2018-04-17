@@ -1,4 +1,5 @@
-﻿namespace DeckAlchemist.Collector.Services
+﻿using System;
+namespace DeckAlchemist.Collector.Services
 {
     public interface IDeckDatabaseUpdater
     {

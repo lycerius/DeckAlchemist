@@ -4,183 +4,181 @@
 }
 
 @section Style {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+	
 }
 
 @section Scripts {
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
-            authDomain: "deckalchemist.firebaseapp.com",
-            databaseURL: "https://deckalchemist.firebaseio.com/",
-            projectId: "deckalchemist",
-            storageBucket: "deckalchemist.appspot.com",
-            messagingSenderId: "560047522639"
-        };
-        firebase.initializeApp(config);
-    </script>
-    <script src="~/js/decks.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+			authDomain: "deckalchemist.firebaseapp.com",
+			databaseURL: "https://deckalchemist.firebaseio.com/",
+			projectId: "deckalchemist",
+			storageBucket: "deckalchemist.appspot.com",
+			messagingSenderId: "560047522639"
+		};
+		firebase.initializeApp(config);
+	</script>
+	<script src="~/js/decks.js"></script>
 }
 
 
 @section SidebarOptions {
-    <li>@Html.ActionLink("My Collection", "Index", "Home")</li>
-    <li>@Html.ActionLink("Decks", "Decks", "Home")</li>
-    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
-    <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
-    <li>@Html.ActionLink("Meta Analytics", "Meta", "Home")</li>
-    <li>@Html.ActionLink("Logout", "Logout", "Login")</li>
+	<li>@Html.ActionLink("My Collection", "Index")</li>
+	<li><a href="#">Decks</a></li>
+	<li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+	<li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
+	<li>@Html.ActionLink("Meta Analytics", "Meta")</li>
 }
 
 
 <div class="home-content container">
-    <div style="width: 100%; display: table;">
-        <div class="decks">
-            <div class="deck-selection">
-                <ul id="deckList"></ul>
-            </div>
-            <div class="deck-card container">
+	<div style="width: 100%; display: table;">
+		<div class="decks">
+			<div class="deck-selection">
+				<ul id="deckList">
+				</ul>
+			</div>
+			<div class="deck-card container">
+				
+			</div>
+		</div>
+	</div>
+	
+	<!-- Deck Builder -->
+	<div id="deckBuilder" style="display: none;">
+		<h2 style="margin-bottom: 30px;">Deck Builder</h2>
+		<button id="reviewDeck" data-toggle="modal" data-target="#reviewDeckModal" class="btn btn-primary deck-builder-btn">Review</button>
+		<div class="row">
+			<div class="col col-lg-5">
+				<h4>Meta Decks</h4>
+				<input id="metaSearch" type="text" class="form-control" placeholder="Search.."/>
+				<ul id="metaDecksPick" class="deckList">
+				</ul>
+			</div>
+			<div class="col col-lg-2">
+				<h4>Actions</h4>
+				<div class="dSpacer"></div>
+				<button id="addMeta" class="btn btn-success btn-outline moveBtn">
+					<p><i class="fas fa-arrow-circle-right"></i></p></button>
+				<button id="removeMeta" class="btn btn-danger btn-outline moveBtn">
+					<p><i class="fas fa-arrow-circle-left"></i></p></button>
+				<button id="addSearchCard" data-toggle="modal" data-target="#searchDialog" class="btn btn-primary btn-outline moveBtn">
+					<p><i class="fas fa-plus-circle"></i></p></button>
+				<button id="clearAll" class="btn btn-danger btn-outline moveBtn">
+					<p><i class="fas fa-trash"></i></p></button>
+			</div>
+			<div class="col col-lg-5">
+				<h4>Workspace</h4>
+				<input id="metaAddedSearch" type="text" class="form-control" placeholder="Search.."/>
+				<ul id="metaDecksAdded" class="deckList">
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="reviewDeckModal" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Review Deck Contents</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- This table can't be styled because it's removed at runtime -->
+					<table id="table"></table>
+				</div>
+				<div class="modal-footer">
+					<input id="deckBuilderName" class="form-control" type="text" placeholder="Deck Name"/>
+					<button id="completeDeck" class="btn btn-success">Complete Deck</button>
+					<button id="editDeck" class="btn btn-primary" data-dismiss="modal">Continue Editing</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Deck View -->
+	<div id="deckView" style="display: none;">
+		<h2 id="deckName">Deck Name</h2>
+		<div class="row">
+			<div class="col col-lg-9">
 
-            </div>
-        </div>
-    </div>
+				<!-- This table can't be styled because it's removed at runtime -->
+				<table id="table"></table>
+			</div>
+			<img class="col col-lg-3" src="#" id="card-img"/>
+		</div>
 
-    <!-- Deck Builder -->
-    <div id="deckBuilder" style="display: none;">
-        <h2 style="margin-bottom: 30px;">Deck Builder</h2>
-        <button id="reviewDeck" data-toggle="modal" data-target="#reviewDeckModal" class="btn btn-primary deck-builder-btn">Review</button>
-        <div class="row">
-            <div class="col col-lg-5">
-                <h4>Meta Decks</h4>
-                <input id="metaSearch" type="text" class="form-control" placeholder="Search.." />
-                <ul id="metaDecksPick" class="deckList"></ul>
-            </div>
-            <div class="col col-lg-2">
-                <h4>Actions</h4>
-                <div class="dSpacer"></div>
-                <button id="addMeta" class="btn btn-success btn-outline moveBtn">
-                    <p><i class="fas fa-arrow-circle-right"></i></p>
-                </button>
-                <button id="removeMeta" class="btn btn-danger btn-outline moveBtn">
-                    <p><i class="fas fa-arrow-circle-left"></i></p>
-                </button>
-                <button id="addSearchCard" data-toggle="modal" data-target="#searchDialog" class="btn btn-primary btn-outline moveBtn">
-                    <p><i class="fas fa-plus-circle"></i></p>
-                </button>
-                <button id="clearAll" class="btn btn-danger btn-outline moveBtn">
-                    <p><i class="fas fa-trash"></i></p>
-                </button>
-            </div>
-            <div class="col col-lg-5">
-                <h4>Workspace</h4>
-                <input id="metaAddedSearch" type="text" class="form-control" placeholder="Search.." />
-                <ul id="metaDecksAdded" class="deckList"></ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="reviewDeckModal" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchForCards">Review Deck Contents</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- This table can't be styled because it's removed at runtime -->
-                    <table id="table"></table>
-                </div>
-                <div class="modal-footer">
-                    <input id="deckBuilderName" class="form-control" type="text" placeholder="Deck Name" />
-                    <button id="completeDeck" class="btn btn-success">Complete Deck</button>
-                    <button id="editDeck" class="btn btn-primary" data-dismiss="modal">Continue Editing</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Deck View -->
-    <div id="deckView" style="display: none;">
-        <h2 id="deckName">Deck Name</h2>
-        <div class="row">
-            <div class="col col-lg-9">
-
-                <!-- This table can't be styled because it's removed at runtime -->
-                <table id="table"></table>
-            </div>
-            <img class="col col-lg-3" src="#" id="card-img" />
-        </div>
-
-        <div class="row deck-btn-list">
-            <button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
-            <button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
-        </div>
-    </div>
+		<div class="row deck-btn-list">
+			<button id="add" data-toggle="modal" data-target="#searchDialog" type="button" class="btn btn-success btn-outline table-btn">Add Cards</button>
+			<button id="remove" type="button" class="btn btn-danger btn-outline table-btn">Remove Cards</button>
+		</div>
+	</div>
 
 
-    <!-- Search Modal -->
-    <div class="modal fade" id="searchDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchForCards">Search for Cards</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <input type="text" id="card-name" placeholder="Search by name..">
-                            <button id="search-btn" type="button" class="btn btn-success table-btn">Search</button>
-                        </div>
-                    </div>
+	<!-- Search Modal -->
+	<div class="modal fade" id="searchDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Search for Cards</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<input type="text" id="card-name" placeholder="Search by name..">
+							<button id="search-btn" type="button" class="btn btn-success table-btn">Search</button>
+						</div>
+					</div>
 
-                    <!-- This table can't be styled because it's removed at runtime -->
-                    <table id="searchTable"></table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button id="pushCards" type="button" class="btn btn-primary">Add Selected</button>
-                </div>
-            </div>
-        </div>
-    </div>
+					<!-- This table can't be styled because it's removed at runtime -->
+					<table id="searchTable"></table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button id="pushCards" type="button" class="btn btn-primary">Add Selected</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- Upload Modal -->
-    <div class="modal fade" id="uploadDialog" tabindex="-1" role="dialog" aria-labelledby="uploadCards" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchForCards">Upload CSV File</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="uploadForm" action="http://209.6.196.14:5000/api/collection/csv" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <div class="col-md-10">
-                                <p>Upload one or more files using this form:</p>
-                                <input type="file" name="files" multiple />
+	<!-- Upload Modal -->
+	<div class="modal fade" id="uploadDialog" tabindex="-1" role="dialog" aria-labelledby="uploadCards" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchForCards">Upload CSV File</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="uploadForm" action="http://209.6.196.14:5000/api/collection/csv" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<div class="col-md-10">
+								<p>Upload one or more files using this form:</p>
+								<input type="file" name="files" multiple/>
 
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button id="uploadCards" type="button" class="btn btn-primary">Upload</button>
-                </div>
-            </div>
-        </div>
-    </div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button id="uploadCards" type="button" class="btn btn-primary">Upload</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
