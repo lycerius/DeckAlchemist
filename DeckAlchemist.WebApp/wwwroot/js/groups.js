@@ -44,11 +44,13 @@ function populateGroupsList(groups) {
             if (sameUser(member.userId)) {
                 style += " group-member-self";
             }
-            var element = $("<a href='#' class='group-member-name' data-toggle='tooltip' data-placement='right' title='Send Message'>" + member.userName + "</a>")
+            var element = $("<a class='group-member-name' data-toggle='tooltip' data-placement='right'>" + member.userName + "</a>")
             col.append(element)
             row.append(col)
             col = $("<div class='col-sm-3'></div>")
             if (!sameUser(member.userId)) {
+                element.attr('title', 'Send Message')
+                element.attr('href', '#')
                 var loanButton = $("<button class='loan-button btn btn-outline btn-primary'>Loan</button>")
                 element.tooltip()
                 element.click(function (e) {
