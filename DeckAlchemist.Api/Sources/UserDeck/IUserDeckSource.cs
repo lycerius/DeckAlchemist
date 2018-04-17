@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DeckAlchemist.Support.Objects.UserDeck;
 namespace DeckAlchemist.Api.Sources.UserDeck
 {

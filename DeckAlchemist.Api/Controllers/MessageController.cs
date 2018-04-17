@@ -5,10 +5,10 @@ using DeckAlchemist.Api.Sources.Messages;
 using DeckAlchemist.Support.Objects.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using DeckAlchemist.Api.Contracts;
 using DeckAlchemist.Api.Sources.User;
 using DeckAlchemist.Api.Sources.Group;
-using DeckAlchemist.Api.Sources.Collection;
 
 namespace DeckAlchemist.Api.Controllers
 {
@@ -19,14 +19,12 @@ namespace DeckAlchemist.Api.Controllers
         readonly IMessageSource _messageSource;
         readonly IUserSource _userSource;
         readonly IGroupSource _groupSource;
-        readonly ICollectionSource _collectionSource;
 
-        public MessageController(IMessageSource messageSource, IUserSource userSource, IGroupSource groupSource, ICollectionSource collectionSource)
+        public MessageController(IMessageSource messageSource, IUserSource userSource, IGroupSource groupSource)
         {
             _messageSource = messageSource;
             _userSource = userSource;
             _groupSource = groupSource;
-            _collectionSource = collectionSource;
         }
 
         [Route("all")]
@@ -37,12 +35,11 @@ namespace DeckAlchemist.Api.Controllers
             return _messageSource.GetMessagesForUser(userId);
         }
 
-        [Route("delete/{messageId}")]
-        [HttpDelete]
-        public void DeleteMessage(string messageId)
+        [Route("read")]
+        [HttpPost]
+        public void MarkMessageAsRead([FromBody] string messageId)
         {
-            var userId = HttpContext.User.Id();
-            _messageSource.DeleteMessage(userId, messageId);
+            
         }
 
         [Route("send/user")]
@@ -86,14 +83,17 @@ namespace DeckAlchemist.Api.Controllers
         {
             var userId = HttpContext.User.Id();
             var message = _messageSource.GetMessageById(userId, messageId);
-            if (message == null || message.Type != "Group") return;
+            if (message.Type != "Group") return;
             var groupInvite = message as GroupInviteMessage;
             var groupId = groupInvite.GroupId;
-            _groupSource.AddUser(groupId, userId);
+            var client = new HttpClient();
+            var task = client.Auth(HttpContext.GetIdToken()).PutAsync($"http://209.6.196.14:5000/api/group/{groupId}/member", userId);
+            task.Wait();
+            task.Result.EnsureSuccessStatusCode();
             var user = _userSource.Get(userId);
             user.Groups.Add(groupId);
             _userSource.Update(user);
-
+            //TODO: groupInvite.Accepted = true;
             _messageSource.DeleteMessage(userId, groupInvite.MessageId);
         }
 
@@ -105,8 +105,14 @@ namespace DeckAlchemist.Api.Controllers
             var message = _messageSource.GetMessageById(userId, messageId);
             if (message.Type != "Loan") return;
             var loanRequest = message as LoanRequestMessage;
-            _collectionSource.MarkCardAsLent(loanRequest.RecipientId, loanRequest.SenderId, loanRequest.RequestedCardsAndAmounts);
-            _collectionSource.AddCardAsLent(loanRequest.RecipientId, loanRequest.SenderId, loanRequest.RequestedCardsAndAmounts);
+
+            var client = new HttpClient();
+            client.Auth(HttpContext.GetIdToken());
+
+            var loanTask = client.PostAsync("http://209.6.196.14:5000/api/collection/lend", 
+                                            new LendContract { Lender = loanRequest.RecipientId, Lendee = loanRequest.SenderId, CardsAndAmounts = loanRequest.RequestedCardsAndAmounts });
+            loanTask.Wait();
+            loanTask.Result.EnsureSuccessStatusCode();
             _messageSource.DeleteMessage(userId, messageId);
         }
 

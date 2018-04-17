@@ -1,6 +1,6 @@
 ﻿@using System.Collections.Specialized
 @{
-    ViewData["Title"] = "Groups";
+    ViewData["Title"] = "Home Page";
 }
 
 @section Style {
@@ -17,19 +17,19 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
     <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
-            authDomain: "deckalchemist.firebaseapp.com",
-            databaseURL: "https://deckalchemist.firebaseio.com/",
-            projectId: "deckalchemist",
-            storageBucket: "deckalchemist.appspot.com",
-            messagingSenderId: "560047522639"
-        };
-        firebase.initializeApp(config);
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+			authDomain: "deckalchemist.firebaseapp.com",
+			databaseURL: "https://deckalchemist.firebaseio.com/",
+			projectId: "deckalchemist",
+			storageBucket: "deckalchemist.appspot.com",
+			messagingSenderId: "560047522639"
+		};
+		firebase.initializeApp(config);
     </script>
     <script src="~/js/groups.js"></script>
-    <script name="kiwiconfig">window.kiwiConfig = function () { return { "startupScreen": "customServer" } }</script>
+    <script name="kiwiconfig">window.kiwiConfig = function(){return {"startupScreen": "customServer"}}</script>
 }
 
 
@@ -39,168 +39,167 @@
     <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
     <li>@Html.ActionLink("Inbox", "Index", "Messages")</li>
     <li>@Html.ActionLink("Meta Analytics", "Meta", "Home")</li>
-    <li>@Html.ActionLink("Logout", "Logout", "Login")</li>
 }
 
 
-
-<div class="home-content container">
-    <div class="table-actions row">
-        <button type="button" id="new-group-button" data-toggle="modal" data-target="#newGroupDialog" class="btn btn-primary btn-outline table-btn">+ New Group</button>
-    </div>
-    <div class="row">
-        <div class="col">
-            <hr />
+    
+    <div class="home-content container">
+        <div class="table-actions row">
+            <button type="button" id="new-group-button" data-toggle="modal" data-target="#newGroupDialog" class="btn btn-primary btn-outline table-btn">+ New Group</button>
         </div>
-    </div>
-
-    <div class="row app-content">
-        <div class="col-sm-4 groupInfo">
-
-            <div class="row" style="height:90%;">
-                <div class="col" style="height:100%;">
-                    <div id="groupInfoTable"></div>
-                </div>
-
+        <div class="row">
+            <div class="col">
+                <hr />
             </div>
         </div>
-
-        <div class="col">
-            <div id="group-chat-placehold">
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-<!-- New Group Modal -->
-<div class="modal fade" id="newGroupDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newGroupHeader">Create a New Group</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <input type="text" id="group-name" class="form-control" placeholder="Group Name...">
-
+        
+        <div class="row app-content">
+            <div class="col-sm-4 groupInfo">
+                
+               <div class="row" style="height:90%;">
+                    <div class="col" style="height:100%;">
+                        <div id="groupInfoTable"></div>
                     </div>
+
+               </div>
+            </div>
+        
+            <div class="col">
+                <div id="group-chat-placehold">
+                
                 </div>
 
+            </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="create-group-btn" type="button" class="btn btn-primary">Create Group</button>
-            </div>
         </div>
     </div>
-</div>
 
-<!-- New Message Modal -->
-<div class="modal fade" id="newMessageDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="composeMessageDialogHeader">New Message</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <label id="message-user">Test User</label>
+    <!-- New Group Modal -->
+    <div class="modal fade" id="newGroupDialog" tabindex="-1" role="dialog" aria-labelledby="searchForCards" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newGroupHeader">Create a New Group</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <input type="text" id="group-name" class="form-control" placeholder="Group Name...">
+
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg"><input type="text" class="form-control" id="message-subject" placeholder="Subject"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg">
-                            <textarea id="message-body" class="form-control" placeholder="Body"></textarea>
-                        </div>
-                    </div>
+                    
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="create-group-btn" type="button" class="btn btn-primary">Create Group</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <p class="error-text" id="new-user-message-error"></p>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="create-message-btn" type="button" class="btn btn-primary">Send Message</button>
-
-            </div>
-
         </div>
-
     </div>
-</div>
 
-<!-- New Group Invite Modal -->
-<div class="modal fade" id="newGroupInviteDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="composeGroupInviteDialogHeader">Invite Member</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <input type="text" class="form-control" id="invite-user" placeholder="User Name...">
-            </div>
-            <div class="modal-footer">
-                <p class="error-text" id="group-invite-error"></p>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="create-invite-btn" type="button" class="btn btn-primary">Send Invite</button>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-
-<!-- New Loan Request Modal -->
-<div class="modal fade" id="newLoanDialog" tabindex="-1" role="dialog" aria-labelledby="sendLoanMessage" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="composeLoanMessageDialogHeader">Initiate Loan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <p id="loanUser"></p>
-                                <input type="text" id="loan-subject" class="form-control" style="margin-bottom: 20px" placeholder="Subject" />
-                                <textarea id="loan-body" class="form-control" placeholder="Body"></textarea>
+    <!-- New Message Modal -->
+    <div class="modal fade" id="newMessageDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="composeMessageDialogHeader">Compose Message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <label id="message-user">Test User</label>
                             </div>
-                        </div><!--endcol-->
-                    </div><!--endrow-->
-                    <div class="row">
-                        <table id="collectionTable"></table>
-                    </div><!--endrow-->
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-1"><label>Subject:</label></div>
+                            <div class="col-lg-10"><input type="text" id="message-subject" placeholder="Subject"></input></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg">
+                                <textarea id="message-body" class="form-control" ></textarea>
+                            </div>
+                        </div>  
+                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <p class="error-text" id="loan-request-error"></p>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button id="create-loan-btn" type="button" class="btn btn-primary">Send Loan</button>
-            </div>
+                    <div class="modal-footer">
+                        <p class="error-text" id="new-user-message-error"></p>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="create-message-btn" type="button" class="btn btn-primary">Send Message</button>
 
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
-    </div>
-</div>
+    <!-- New Group Invite Modal -->
+    <div class="modal fade" id="newGroupInviteDialog" tabindex="-1" role="dialog" aria-labelledby="sendUserMessage" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered small-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="composeGroupInviteDialogHeader">Invite Member</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                                    <input type="text" class="form-control" id="invite-user" placeholder="User Name...">
+                </div>
+                    <div class="modal-footer">
+                        <p class="error-text" id="group-invite-error"></p>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="create-invite-btn" type="button" class="btn btn-primary">Send Invite</button>
+                    </div>
 
+                </div>
+
+            </div>
+        </div>
+
+    <!-- New Loan Request Modal -->
+    <div class="modal fade" id="newLoanDialog" tabindex="-1" role="dialog" aria-labelledby="sendLoanMessage" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered big-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="composeLoanMessageDialogHeader">Initiate Loan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <input type="text" id="loan-subject" class="form-control" style="margin-bottom: 20px" placeholder="Subject"/>
+                                    <textarea id="loan-body" class="form-control" placeholder="Body"></textarea>
+                                </div>
+                            </div><!--endcol-->
+                        </div><!--endrow-->
+                        <div class="row">
+                            <table id="collectionTable"></table>
+                        </div><!--endrow-->
+                    </div>
+                </div>
+                    <div class="modal-footer">
+                        <p class="error-text" id="loan-request-error"></p>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button id="create-loan-btn" type="button" class="btn btn-primary">Send Message</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+       

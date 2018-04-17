@@ -1,4 +1,5 @@
-﻿namespace DeckAlchemist.Support.Objects.Messages
+﻿using System;
+namespace DeckAlchemist.Support.Objects.Messages
 {
     public interface IMessage
     {
