@@ -6,8 +6,6 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
 {
     public class MtgJsonCard
     {
-
-
         public string ManaCost { get; set; }
         public string Cmc { get; set; }
         public string[] Colors { get; set; }
@@ -40,7 +38,7 @@ namespace DeckAlchemist.Collector.Sources.Cards.Mtg.External
                 Toughness = card.Toughness,
                 Type = card.Type,
                 Types = card.Types,
-                Legality = card.Legality != null ?  card.Legality.Select(ToMtgLegality).ToList() : null
+                Legality = card.Legality?.Select(ToMtgLegality).ToList()
             };
         }
 

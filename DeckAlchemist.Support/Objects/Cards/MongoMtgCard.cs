@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -22,7 +21,6 @@ namespace DeckAlchemist.Support.Objects.Cards
         public string ImageName { get; set; }
         public string Name { get; set; }
         [BsonIgnoreIfNull]
-
         public IEnumerable<MtgLegality> Legality { get; set; }
 
         public static MongoMtgCard FromMtgCard(IMtgCard card)

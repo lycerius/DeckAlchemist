@@ -1,0 +1,36 @@
+﻿@section Scripts {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyA3lipjX8Xa23qd2PEBNl1mqQyI_zMqChk",
+            authDomain: "deckalchemist.firebaseapp.com",
+            databaseURL: "https://deckalchemist.firebaseio.com/",
+            projectId: "deckalchemist",
+            storageBucket: "deckalchemist.appspot.com",
+            messagingSenderId: "560047522639"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        $(document).ready(function () {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    firebase.auth().signOut().then(function () {
+                        window.location = "/"
+                    })
+                } else {
+                    window.location = "/"
+                }
+            })
+        })
+    </script>
+
+}
+
+@section SidebarOptions {
+    <li><a href="#">Login</a></li>
+    <li><a href="#">Create Account</a></li>
+}
+

@@ -44,8 +44,6 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
                 Name = (string)jCard["name"]
             });
 
-            //TODO: Issues with sideboard, right now I think the logic is that cards located in the sideboard is essentially part of the whole deck construction,
-            //So if cards of the same type exist in the sideboard, just add to the count for that card type
             foreach (var card in deckCards)
             {
                 if (conversion.ContainsKey(card.Name))
@@ -53,8 +51,6 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
                 else
                     conversion[card.Name] = card;
             }
-
-
             return conversion;
         }
 
@@ -88,6 +84,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
             return download.Result;
         }
 
+        #region OpenScrape Config
         const string StandardLinksParsingConfig = @"
             {
                 ""decklinks"": {
@@ -133,5 +130,6 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.External
         readonly StructuredDataExtractor DeckLinksScraper = new StructuredDataExtractor(StructuredDataConfig.ParseJsonString(StandardLinksParsingConfig));
 
         readonly Regex PercentageMatchingPattern = new Regex("((\\d+(?:\\.\\d+))%)");
+        #endregion
     }
 }

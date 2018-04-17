@@ -1,5 +1,4 @@
-﻿using System;
-namespace DeckAlchemist.Collector.Schedulers
+﻿namespace DeckAlchemist.Collector.Schedulers
 {
     public interface IDeckDatabaseServiceScheduler
     {

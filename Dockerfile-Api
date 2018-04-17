@@ -16,5 +16,5 @@ RUN cd ./DeckAlchemist.Api && dotnet publish -c Release -o out && cd ..
 FROM microsoft/aspnetcore:2.0
 WORKDIR /app
 COPY --from=build-env /app/DeckAlchemist.Api/out .
-EXPOSE 80
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "DeckAlchemist.Api.dll"]

@@ -16,7 +16,6 @@ namespace DeckAlchemist.Api.Utility
             if (properties == null) return null;
             var email = properties.identities.email as JArray;
             return email.First.Value<string>();
-      
         }
 
         public static bool AuthenticUser(this ClaimsPrincipal requestingUser, string userId)
