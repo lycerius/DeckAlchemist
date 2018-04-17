@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeckAlchemist.WebApp
 {
-
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -50,11 +54,6 @@ namespace DeckAlchemist.WebApp
                 routes.MapRoute(
                     name: "Home",
                     template: "{controller=Home}/{action=Index}"
-                );
-
-                routes.MapRoute(
-                    name: "Logout",
-                    template: "{controller=Login}/{action=Logout}"
                 );
             });
 

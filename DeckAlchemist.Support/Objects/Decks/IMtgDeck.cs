@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DeckAlchemist.Support.Objects.Decks
 {
@@ -8,5 +9,6 @@ namespace DeckAlchemist.Support.Objects.Decks
         double Meta { get; set; }
         string id { get; set; }
         IDictionary<string, IMtgDeckCard> Cards { get; set; }
+        float CompareDecks(IMtgDeck other);
     }
 }

@@ -27,12 +27,19 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
             collection = database.GetCollection<MongoMtgDeck>(MongoCollection);
         }
 
+
         public void UpdateAllDecks(IEnumerable<IMtgDeck> externalDecks)
         {
             database.DropCollection(MongoCollection);
             EnsureCollectionExists(database);
             var mongoCards = externalDecks.Select(externalDeck => { var deck = MongoMtgDeck.FromMtgDeck(externalDeck); deck.id = CreateUniqueIdForDeck(deck); return deck; });
             collection.InsertMany(mongoCards);
+
+            /* We need a way to match an external deck to one that is already in the database. Name is not enough (because it can change and names can be duplicated, making it unable to be a PK)
+            var existingDecks = FindDecksByName(externalDecks.Select(deck => deck.Name).ToList());
+            var plan = CreateDeckUpdatePlan(existingDecks, externalDecks);
+            collection.BulkWrite(plan);
+            */
         }
 
         public string CreateUniqueIdForDeck(IMtgDeck deck)
@@ -87,6 +94,7 @@ namespace DeckAlchemist.Collector.Sources.Decks.Mtg.Internal
 
         bool DifferencesExist(IMtgDeck deck1, IMtgDeck deck2)
         {
+            //TODO: Determin proper differences
             return deck1.Name != deck2.Name ||
                         System.Math.Abs(deck1.Meta - deck2.Meta) > 0.001 ||
                         CardDifferencesExist(deck1.Cards, deck2.Cards);

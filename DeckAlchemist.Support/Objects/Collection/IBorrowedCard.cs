@@ -1,4 +1,7 @@
-﻿namespace DeckAlchemist.Support.Objects.Collection
+﻿using System;
+using System.Collections.Generic;
+
+namespace DeckAlchemist.Support.Objects.Collection
 {
     public interface IBorrowedCard
     {

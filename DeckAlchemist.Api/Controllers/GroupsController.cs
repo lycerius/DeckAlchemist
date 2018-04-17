@@ -29,6 +29,14 @@ namespace DeckAlchemist.Api.Controllers
             _userSource = userSource;
         }
 
+        // GET api/group/{name}/all
+        [HttpGet("{name}/all")]
+        public IEnumerable<IUser> Get(string name)
+        {
+            var members = _source.GetAllUsers(name);
+            return members;
+        }
+
         // PUT api/group/{name}/member
         [HttpPut("{groupName}/member")]
         public IActionResult AddMember(string groupName, [FromBody]string userName)

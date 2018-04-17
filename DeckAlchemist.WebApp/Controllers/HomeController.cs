@@ -1,6 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DeckAlchemist.WebApp.Models;
+using DeckAlchemist.Api.Auth;
 
 namespace DeckAlchemist.WebApp.Controllers
 {

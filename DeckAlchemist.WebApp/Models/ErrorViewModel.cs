@@ -1,3 +1,5 @@
+using System;
+
 namespace DeckAlchemist.WebApp.Models
 {
     //copyright code 2004 University of Alabama, Nicholas Revere.
