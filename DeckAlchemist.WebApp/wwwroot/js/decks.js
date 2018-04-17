@@ -430,11 +430,8 @@ $(document).ready(function () {
                         deckBuilding = true;
                     }
                 });
-
-                if (data.length == 0)
-                    newLi.click();
-                else
-                    firstLi.click();
+                
+                newLi.click();
 
 
             }).catch(function (reason) {
