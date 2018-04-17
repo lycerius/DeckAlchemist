@@ -435,8 +435,7 @@ $(document).ready(function () {
                     newLi.click();
                 else
                     firstLi.click();
-                    
-                
+                   
             }).catch(function (reason) {
                 swal("Couldn't Create Decks", "There was a problem creating your decks :(\nError: " + reason, "error");
                 reloadDeckTable({});
