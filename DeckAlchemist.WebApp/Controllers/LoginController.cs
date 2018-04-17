@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using DeckAlchemist.Api.Auth;
 using DeckAlchemist.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,14 +8,17 @@ namespace DeckAlchemist.WebApp.Controllers
     {
         public IActionResult Index()
         {
-            
-            
             return View("Login");
         }
 
         public IActionResult CreateAccount()
         {
             return View("CreateAccount");
+        }
+
+        public IActionResult Logout()
+        {
+            return View("Logout");
         }
 
         public IActionResult Error()

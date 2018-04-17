@@ -1,13 +1,13 @@
 $(document).ready(function () {
     "use strict";
-    
+
     // Options for Message
     //----------------------------------------------
     var options = {
         'btn-loading': '<i class="fa fa-spinner fa-pulse"></i>',
         'btn-success': '<i class="fa fa-check"></i>',
         'btn-error': '<i class="fa fa-remove"></i>',
-        'msg-success': 'All Good! Redirecting...',
+        'msg-success': 'All Good! Check Your Email.',
         'msg-error': 'Wrong login credentials!',
         'useAJAX': true,
     };
@@ -78,10 +78,10 @@ $(document).ready(function () {
     //----------------------------------------------
     // Validation
 
-    $("#forgot-password").click(function(e) {
+    $("#forgot-password").click(function (e) {
         e.preventDefault();
         $("#forgotPasswordDialog").modal("toggle")
-        $("#forgot-password-send").click(function(e){
+        $("#forgot-password-send").click(function (e) {
             var email = $("#forgot-password-email").val();
             forgotPassword(email);
             $("#forgotPasswordDialog").modal("toggle")
@@ -125,7 +125,7 @@ $(document).ready(function () {
         $form.find('[type=submit]').addClass('success').html(options['btn-success']);
         $form.find('.login-form-main-message').addClass('show success').html(options['msg-success']);
 
-        document.location.href = "Home";
+        //document.location.href = "Home";
     }
 
     function form_failed($form, msg) {
@@ -166,7 +166,9 @@ $(document).ready(function () {
                         form_failed($form, "Email must be verified")
                     }
                     else {
-                        fetchWithAuth("http://" + window.location.hostname + ":5000/api/login").then(function () { form_success($form) })
+                        fetchWithAuth("http://" + window.location.hostname + ":5000/api/login").then(function () { 
+                            window.location = "/Home"
+                        })
                     }
                 })
                 .catch(function (error) {
@@ -188,7 +190,11 @@ $(document).ready(function () {
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
                 .then(function () {
-                    firebase.auth().currentUser.sendEmailVerification().then(function () {
+                    var actionCodeSettings = {
+                        url: "http://209.6.196.14:81",
+                    }
+
+                    firebase.auth().currentUser.sendEmailVerification(actionCodeSettings).then(function () {
                         form_success($form);
                         firebase.auth().signOut()
                     });

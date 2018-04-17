@@ -6,7 +6,6 @@ namespace DeckAlchemist.Collector.Services
     public class CardDatabaseUpdater : ICardDatabaseUpdater
     {
         readonly IMtgExternalCardSource _externalCardSource;
-
         readonly IMtgInternalCardSource _internalCardSource;
 
         public CardDatabaseUpdater(IMtgExternalCardSource externalSource, IMtgInternalCardSource internalSource)

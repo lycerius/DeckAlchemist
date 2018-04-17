@@ -47,7 +47,7 @@ namespace DeckAlchemist.Collector.Schedulers
                 }
                 catch
                 {
-                    //TODO: Log
+                    
                 }
                 var now = DateTimeOffset.UtcNow;
                 var tomorrow = new DateTimeOffset(now.Year, now.Month, now.Day, hourTriggerDaily, 0, 0, 0, TimeSpan.FromMilliseconds(0)).AddDays(1);

@@ -1,5 +1,4 @@
-﻿using System;
-using DeckAlchemist.Support.Objects.Collection;
+﻿using DeckAlchemist.Support.Objects.Collection;
 
 namespace DeckAlchemist.Api.Contracts
 {

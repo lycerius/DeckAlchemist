@@ -1,5 +1,5 @@
 ﻿promiseQueue = [];
-var apiEndPoint = "http://"+window.location.hostname+":5000/";
+var apiEndPoint = "http://" + window.location.hostname + ":5000/";
 /*
     * Fetches a resource from an endpoint that expects authorization.
     * Achieves this by automatically appending the firebase id token
@@ -13,7 +13,7 @@ function fetchWithAuth(url, fetchProps = {}) {
     return new Promise(function (resolve, reject) {
         try {
             var u = firebase.auth().currentUser;
-            
+
             var toRum = function doAuth(currentUser) {
                 try {
                     currentUser.getIdToken(true).then(function (idToken) {
@@ -29,14 +29,14 @@ function fetchWithAuth(url, fetchProps = {}) {
                     reject(error);
                 }
             };
-            
+
             if (u == null) {
                 promiseQueue.push(toRum);
             } else {
                 toRum(u);
             }
-            
-            
+
+
         } catch (error) {
             reject(error);
         }
@@ -102,6 +102,7 @@ function buildBorrowedTableFromCollection(collection) {
             cardId
             lender
             amountBorrowed
+            lenderUserName
              */
             var c = borrowed[name][Object.keys(borrowed[name])[0]];
 
@@ -126,36 +127,60 @@ function buildBorrowedTableFromCollection(collection) {
             var newCard = Object.assign({
                 amountBorrowed: c.amountBorrowed,
                 lender: c.lenderUserName,
+                lenderId: c.lender,
                 id: id
             }, info);
 
             result.push(newCard);
             id++;
-            
+
             //promiseHell.push(
-                //getUserName(c.lender).then(function (value) { 
-                    //newCard.lender = value;
-                //})
+            //getUserName(c.lender).then(function (value) { 
+            //newCard.lender = value;
+            //})
             //);
         }
     }
 
     return new Promise(function (resolve, reject) {
-        Promise.all(promiseHell).then(function (value) { 
+        Promise.all(promiseHell).then(function (value) {
             resolve(result);
-        }).catch(function (reason) { 
-            resolve(result); //FUCK IT
+        }).catch(function (reason) {
+            resolve(result);
         })
     });
+}
+
+function buildLentFromCollection(builtCollection, userIdToUserName) {
+    var lentCards = [];
+    
+    builtCollection.forEach(function (value) { 
+        if (Object.keys(value.lentTo).length === 0 && value.lentTo.constructor === Object) {
+            return;
+        }
+        
+        for (var lenderInfo in value.lentTo) {
+            if (value.lentTo.hasOwnProperty(lenderInfo)) {
+                var newCard = Object.assign({
+                    lenderId: lenderInfo,
+                    lender: userIdToUserName[lenderInfo]
+                }, value);
+                
+                lentCards.push(newCard);
+            }
+        }
+    });
+    
+    return lentCards;
 }
 
 function buildTableFromCollection(collection) {
     var cardInfo = collection.cardInfo;
     var owned = collection.userCollection.ownedCards;
     var borrowed = collection.userCollection.borrowedCards;
-    
+
     var result = [];
-    
+
     var id = 1;
     for (var name in owned) {
         if (owned.hasOwnProperty(name)) {
@@ -168,7 +193,7 @@ function buildTableFromCollection(collection) {
             lendable
              */
             var c = owned[name];
-            
+
             /*
             cmc
             colors
@@ -186,7 +211,7 @@ function buildTableFromCollection(collection) {
             _id
              */
             var info = cardInfo[c.cardId];
-            
+
             var newCard = Object.assign({
                 lendable: c.lendable,
                 available: c.available,
@@ -195,12 +220,12 @@ function buildTableFromCollection(collection) {
                 totalAmount: c.totalAmount,
                 id: id
             }, info);
-            
+
             result.push(newCard);
             id++;
         }
     }
-    
+
     return result;
 }
 
@@ -215,13 +240,13 @@ function formWithAuth(aUrl, aData, aType) {
                         $.ajax({
                             type: aType,
                             url: aUrl,
-                            beforeSend: function(request) {
+                            beforeSend: function (request) {
                                 request.setRequestHeader("Authorization", "Bearer " + idToken);
                             },
                             data: aData,
                             contentType: false,
                             processData: false,
-                            success: function(data){
+                            success: function (data) {
                                 resolve(data);
                             },
                             error: function (xhr, textStatus, error) {
@@ -252,7 +277,7 @@ function ajaxWithAuth(aUrl, aData, aType) {
     return new Promise(function (resolve, reject) {
         try {
             var u = firebase.auth().currentUser;
-            
+
             var toRun = function (currentUser) {
                 try {
                     currentUser.getIdToken(true).then(function (idToken) {
@@ -260,11 +285,11 @@ function ajaxWithAuth(aUrl, aData, aType) {
                             type: aType,
                             contentType: "application/json",
                             url: aUrl,
-                            beforeSend: function(request) {
+                            beforeSend: function (request) {
                                 request.setRequestHeader("Authorization", "Bearer " + idToken);
                             },
                             data: JSON.stringify(aData),
-                            success: function(data){
+                            success: function (data) {
                                 resolve(data);
                             },
                             error: function (xhr, textStatus, error) {
@@ -280,7 +305,7 @@ function ajaxWithAuth(aUrl, aData, aType) {
                     reject(error);
                 }
             };
-            
+
             if (u == null) {
                 promiseQueue.push(toRun);
             } else {
@@ -308,18 +333,18 @@ function getCardImage(cardName) {
     const scryImageSearchURI = "https://api.scryfall.com/cards/named?exact=";
     return new Promise(function (resolve, reject) {
         try {
-            fetch(scryImageSearchURI+cardName).then(function(result) {
+            fetch(scryImageSearchURI + cardName).then(function (result) {
                 return result.json()
-            }).then(function(json){
+            }).then(function (json) {
                 if (json.image_uris == null) {
                     resolve(json.card_faces[0].image_uris);
                 } else {
                     resolve(json.image_uris)
                 }
-            }).catch(function(error){
+            }).catch(function (error) {
                 reject(error)
             })
-        } catch(error) {
+        } catch (error) {
             reject(error)
         }
     });
@@ -327,7 +352,7 @@ function getCardImage(cardName) {
 
 function getGroups() {
     return new Promise(function (resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/user").then(function (result) {
+        fetchWithAuth(apiEndPoint + "api/user").then(function (result) {
             return result.json();
         }).then(function (json) {
             resolve(json.groups)
@@ -338,12 +363,12 @@ function getGroups() {
 }
 
 function getAllUserGroups() {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/group/all").then(function(result) {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/group/all").then(function (result) {
             return result.json();
-        }).then(function(json){
+        }).then(function (json) {
             resolve(json)
-        }).catch(function(error){
+        }).catch(function (error) {
             reject(error);
         })
     })
@@ -351,9 +376,9 @@ function getAllUserGroups() {
 
 function getGroupInfo(groupId) {
     return new Promise(function (resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/group/" + groupId).then(function (result) {
+        fetchWithAuth(apiEndPoint + "api/group/" + groupId).then(function (result) {
             return result.json();
-        }).then(function(json){
+        }).then(function (json) {
             resolve(json);
         }).catch(function (error) {
             reject(error)
@@ -362,143 +387,156 @@ function getGroupInfo(groupId) {
 }
 
 function getUserNamesByUserIds(userIds) {
-    return new Promise(function(resolve, reject){
-        fetchWithAuth(apiEndPoint+"api/user/names", 
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/user/names",
             {
-                method: "POST", 
-                body: JSON.stringify(userIds), 
+                method: "POST",
+                body: JSON.stringify(userIds),
                 headers: {
                     'content-type': "application/json"
                 }
-            }).then(function(result) {
-            return result.json();
-        }).then(function(json){
-            resolve(json);
-        }).catch(function(error){
-            reject(error)
-        })
+            }).then(function (result) {
+                return result.json();
+            }).then(function (json) {
+                resolve(json);
+            }).catch(function (error) {
+                reject(error)
+            })
     });
 }
 
 function createGroup(groupName) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/group/"+groupName+"/create", {method: "POST"}).then(function() {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/group/" + groupName + "/create", { method: "POST" }).then(function () {
             resolve()
-        }).catch(function(error) {
+        }).catch(function (error) {
             reject(error)
         })
     });
 }
 
 function sendUserMessage(message) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/message/send/user", 
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/send/user",
             {
                 method: "POST",
                 body: JSON.stringify(message),
                 headers: {
                     'content-type': "application/json"
                 }
-            }).then(function() {
-            resolve()
-        }).catch(function(error) {
-            reject(error)
-        })
+            }).then(function () {
+                resolve()
+            }).catch(function (error) {
+                reject(error)
+            })
     })
 }
 
 function sendGroupInvite(message) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/message/send/invite", 
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/send/invite",
             {
                 method: "POST",
                 body: JSON.stringify(message),
                 headers: {
                     'content-type': "application/json"
                 }
-            }).then(function() {
+            }).then(function (result) {
+                if(result.status == 404) reject("user not found")
+                else resolve()
+            }).catch(function (error) {
+                reject(error)
+            })
+    })
+}
+
+function deleteMessage(messageId) {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/delete/" + messageId, {
+            method: "DELETE"
+        }).then(function (result) {
             resolve()
-        }).catch(function(error) {
+        }).catch(function (error) {
             reject(error)
         })
     })
 }
 
 function getOwnedCardsForUser(userId) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/collection", {
-        method: "POST",
-        body: JSON.stringify(userId),
-        headers: {
-            'content-type': "application/json"
-        }
-    }).then(function(result){
-        return result.json();
-    }).then(function(json){
-        resolve(json)
-    }).catch(function(error){
-        reject(error);
-    })
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/collection", {
+            method: "POST",
+            body: JSON.stringify(userId),
+            headers: {
+                'content-type': "application/json"
+            }
+        }).then(function (result) {
+            return result.json();
+        }).then(function (json) {
+            resolve(json)
+        }).catch(function (error) {
+            reject(error);
+        })
 
     })
 
 }
 
 function acceptLoanRequest(messageId) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/message/accept/loan", {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/accept/loan", {
             method: "POST",
             body: JSON.stringify(messageId),
             headers: {
                 'content-type': "application/json"
-            }  
-        }).then(function(response) {
+            }
+        }).then(function (response) {
             resolve()
-        }).catch(function(error){
+        }).catch(function (error) {
             reject(error)
         })
     })
 }
 
 function acceptGroupInvite(messageId) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/message/accept/invite", {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/accept/invite", {
             method: "POST",
             body: JSON.stringify(messageId),
             headers: {
                 'content-type': "application/json"
-            }  
-        }).then(function(response) {
+            }
+        }).then(function (response) {
             resolve();
-        }).catch(function(error){
+        }).catch(function (error) {
             reject(error)
         })
     })
 }
 
 function sendLoanRequest(message) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/message/send/loan", {
-             method: "POST",
-             body: JSON.stringify(message),
-             headers: {
-                 'content-type': "application/json"
-             }
-        }).then(function() {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/send/loan", {
+            method: "POST",
+            body: JSON.stringify(message),
+            headers: {
+                'content-type': "application/json"
+            }
+        }).then(function () {
             resolve();
-        }).catch(function(error){
+        }).catch(function (error) {
             reject(error);
         })
     })
 }
 
 function getMessages() {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/message/all").then(function(response){
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/message/all").then(function (response) {
             return response.json();
-        }).then(function(json){
+        }).then(function (json) {
             resolve(json);
-        }).catch(function(error) {
+        }).catch(function (error) {
             reject(error);
         })
     });
@@ -506,31 +544,30 @@ function getMessages() {
 
 
 function getUserName(userId) {
-    return new Promise(function(resolve, reject) {
-        fetchWithAuth(apiEndPoint+"api/user/name/"+userId).then(function(result) {
+    return new Promise(function (resolve, reject) {
+        fetchWithAuth(apiEndPoint + "api/user/name/" + userId).then(function (result) {
             return result.text();
-        }).then(function(json){
+        }).then(function (json) {
             resolve(json);
-        }).catch(function(error){
+        }).catch(function (error) {
             reject(error);
         })
     })
 }
 
-function forgotPassword(email){
-        firebase.auth().sendPasswordResetEmail(email).then(function(result){
-            swal("sent")
-        })
-    }
+function forgotPassword(email) {
+    firebase.auth().sendPasswordResetEmail(email).then(function (result) {
+        swal("sent")
+    })
+}
 
 function authorizeOrLogin() {
     //if(firebase.auth().currentUser == null) window.location = "/"
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
     "use strict";
-
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             //Flush
             promiseQueue.forEach(function (f) {
