@@ -421,6 +421,7 @@ li.selected {
 .collection-card {
     height: auto;
     margin-right: -25px;
+    min-height: 600px;
 }
 
 .collection-table {
